@@ -1,0 +1,17 @@
+﻿  data_structures.cpp
+C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(18,26): warning C4305: 'argument': truncation from 'double' to 't'
+          with
+          [
+              t=float
+          ]
+C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(19,26): warning C4305: 'argument': truncation from 'double' to 't'
+          with
+          [
+              t=float
+          ]
+C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(21,30): warning C4305: 'argument': truncation from 'double' to 't'
+          with
+          [
+              t=float
+          ]
+  data_structures.vcxproj -> C:\Users\dev\Desktop\DSA\data_structures\data_structures\Debug\data_structures.exe
