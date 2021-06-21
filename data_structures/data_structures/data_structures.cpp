@@ -9,20 +9,22 @@ using namespace singlyLinkedList;
 int main() {
 
     linkedList<int> firstOne;
-    linkedList<std::string> names;
-    linkedList<float> floats;
 
     firstOne.push_back(14);
-    firstOne.push_back(16);
-
-    floats.push_back(1.44);
-    floats.push_back(5.44);
-    floats.push_back(1.99f);
-    floats.push_back(-14.9909);
-
 
     firstOne.showAll();
-    floats.showAll();
+    std::cout << "===================" << std::endl;
+
+    firstOne.push_back(77);
+
+    firstOne.showAll();
+    std::cout << "===================" << std::endl;
+
+    firstOne.push_back(88);
+    firstOne.push_back(99);
+
+    firstOne.showAll();
+    std::cout << "===================" << std::endl;
 
     return 0;
 }

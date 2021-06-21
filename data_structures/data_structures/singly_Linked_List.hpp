@@ -1,4 +1,11 @@
 
+// == singly linke list ==
+/*
+    push_back  => o(1)
+    push_front => o(1)
+    
+*/
+
 namespace singlyLinkedList {
 
     template<typename t> class node {
@@ -15,9 +22,23 @@ namespace singlyLinkedList {
     public:
         linkedList() {}
         void push_back(t value) {
-            ;
             node<t>* newNode = new node<t>;
-            newNode->value = value;
+                     newNode->value = value;
+
+            if (first == NULL && last == NULL) {
+                first = newNode;
+                last = newNode;
+                return;
+            }
+            else {
+                last->next = newNode;
+                last = newNode;
+            }
+        }
+
+        void push_front(t value) {
+            node<t>* newNode = new node<t>;
+                     newNode->value = value;
 
             if (first == NULL && last == NULL) {
                 first = newNode;
@@ -25,9 +46,10 @@ namespace singlyLinkedList {
                 first->next = last;
                 return;
             }
+
             else {
-                last->next = newNode;
-                last = newNode;
+                newNode->next = first;
+                first = newNode;
             }
         }
 
