@@ -11,20 +11,19 @@ int main() {
     linkedList<int> firstOne;
 
     firstOne.push_back(14);
-
-    firstOne.showAll();
-    std::cout << "===================" << std::endl;
-
     firstOne.push_back(77);
-
-    firstOne.showAll();
-    std::cout << "===================" << std::endl;
-
     firstOne.push_back(88);
     firstOne.push_back(99);
 
-    firstOne.showAll();
-    std::cout << "===================" << std::endl;
+    //std::cout << "===================" << std::endl;
+
+    std::vector<int> lints = firstOne.toVector();
+    int *arr = firstOne.toArray();
+    
+    for (int x = 0; x < firstOne.length(); x += 1 ) {
+        std::cout << *(arr + x) << std::endl;
+    }
+
 
     return 0;
 }
