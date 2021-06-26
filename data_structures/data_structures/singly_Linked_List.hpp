@@ -7,6 +7,13 @@
     push_back       => o(1)
     push_front      => o(1)
     push_at         => o(n)
+    
+    replace         => o(n)
+    has             => o(n)
+
+    delete          => o(n)
+    delete_last     => o(1)
+    delete_first    => o(1)
 
     getFistElement  => o(1)
     getFistValue    => o(1)
@@ -199,6 +206,48 @@ public:
 
             first = NULL;
             last = NULL;
+        }
+
+        // o(n)
+        // replace function take "target value" and replace it with "new value" 
+        // if replace not found "target" don't do anything & return false 
+        // else replace and return true as confirmation :)
+        bool replace(t targetValue , t newValue) {
+            // temp node for checking we start from "first or head"
+            node<t>* temp = first;
+            
+            // loop over all
+            while (temp != NULL) {
+                // in case we found target value
+                if (temp->value == targetValue) {
+                    // then replace it with new one
+                    temp->value = newValue;
+                    // and return true as confirmation 
+                    return true;
+                }
+                // else keep going to next one
+                temp = temp->next;
+            }
+            // in case target not found that mean replace not happen soo return must be false
+            return false;
+        }
+
+        // o(n)
+        // searh for value if it in linked list or not
+        bool has(t wanted_value) {
+            node<t>* temp = first;
+
+            // loop over all and check
+            while(temp != NULL){
+                // in case value found 
+                if (temp->value == wanted_value) {
+                    return true;
+                }
+                temp = temp->next;
+            }
+
+            // in case value not found 
+            return false;
         }
 
         // o(1)
