@@ -18,12 +18,11 @@ int main() {
     
     firstOne.showAll();
 
-    firstOne.clear();
-
-    firstOne.push_back(5);
-    firstOne.push_back(9);
-
+    firstOne.remove_first();
+    firstOne.remove_first();
+    
     firstOne.showAll();
+    std::cout << firstOne.getLastValue() << std::endl;
 
     return 0;
 }

@@ -11,9 +11,9 @@
     replace         => o(n)
     has             => o(n)
 
-    delete          => o(n)
-    delete_last     => o(1)
-    delete_first    => o(1)
+    remove          => o(n)
+    remove_first    => o(1)
+    remove_last     => o(n)
 
     getFistElement  => o(1)
     getFistValue    => o(1)
@@ -125,19 +125,6 @@ public:
             last = newNode;
         }
 
-        // o(n)
-        // just test function who print all values in console
-        void showAll() {
-            node<t>* tempNode = first;
-
-            std::cout << "==================================================" << std::endl;
-            while (tempNode != NULL) {
-                std::cout << tempNode->value << std::endl;
-                tempNode = tempNode->next;
-            }
-            std::cout << "==================================================" << std::endl;
-        }
-
         // o(1)
         // get first node in linked list
         node<t> getFirstElement() {
@@ -169,11 +156,13 @@ public:
 
             node<t>* tempNode = first;
 
+            // loop over all & push to the vector
             while (tempNode != NULL) {
                 vec.push_back(tempNode->value);
                 tempNode = tempNode->next;
             }
 
+            // return vector of values
             return vec;
         }
 
@@ -183,13 +172,14 @@ public:
             t* arr = new t[len];
             node<t>* tempNode = first;
 
+            // loop over all & push to the array
             int i = 0;
             while (tempNode != NULL) {
                 *(arr+i) = tempNode->value;
                 tempNode = tempNode->next;
                 i+=1;
             }
-
+            // return array of values as pointer
             return arr;
         }
 
@@ -250,10 +240,97 @@ public:
             return false;
         }
 
+        // o(1) ==> o(n)
+        // remove take target if it found delete it and return true as confirmation 
+        // else return false
+        bool remove(t target_value) {
+            // in case target value in first 
+            if (first->value == target_value) {
+                // make next equal to first and delete old first 
+                node<t>* next = first->next;
+                delete first;
+                first = next;
+                // return true as confirmation 
+                return true;
+            }
+
+            // else we start loop over all nodes & check 
+            // we need "previous" and "next one" for this operation 
+            node<t>* prev = first;
+            node<t>* current = first->next;
+
+            // check by using current or "next one"
+            while (current != NULL) {
+                // in case target value founded that mean we need to delete that "current"
+                if (current->value == target_value) {
+                    // make previouse connected to next of current and delete current
+                    prev->next = current->next;
+                    delete current;
+
+                    // in case target is last , make sure to update last 
+                    if (prev->next == NULL) last = prev;
+
+                    // then return true as confirmation 
+                    return true;
+                }
+                // else keep going and looking for next one
+                prev = current;         // prev to current
+                current = prev->next;   // current to next
+            }
+
+            // in case target not found 
+            return false;
+        }
+
+        // o(1)
+        // just method remove "first or head" & replace it with next one
+        void remove_first() {
+            node<t>* next = first->next;
+            delete first;
+            first = next;
+        }
+
+        // o(n)
+        // remove "last one or tail"
+        void remove_last() {
+            node<t>* prevtemp = first;
+            node<t>* temp = first->next;
+
+            // loop over all until reach the last one
+            while (temp != NULL) {
+                if (temp->next == NULL) {
+                    // then make previous => new last 
+                    last = prevtemp;
+                    //and next of that new one equal to null 
+                    last->next = NULL;
+                    // delete old last and return for stop function
+                    delete temp;
+                    return;
+                }
+                // else going to next one in list
+                prevtemp = temp;
+                temp = temp->next;
+            }
+
+        }
+
         // o(1)
         // return length of linked size :) 
         int length() {
             return len;
+        }
+
+        // o(n)
+        // just test function who print all values in console
+        void showAll() {
+            node<t>* tempNode = first;
+
+            std::cout << "==================================================" << std::endl;
+            while (tempNode != NULL) {
+                std::cout << tempNode->value << std::endl;
+                tempNode = tempNode->next;
+            }
+            std::cout << "==================================================" << std::endl;
         }
 };
 
