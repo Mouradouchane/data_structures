@@ -142,7 +142,8 @@
     <ClCompile Include="data_structures.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="singly_Linked_List.hpp" />
+    <ClInclude Include="doubly_LinkeList.hpp" />
+    <ClInclude Include="singly_LinkedList.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

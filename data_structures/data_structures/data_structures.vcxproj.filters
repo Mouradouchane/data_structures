@@ -20,7 +20,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="singly_Linked_List.hpp">
+    <ClInclude Include="singly_LinkedList.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="doubly_LinkeList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

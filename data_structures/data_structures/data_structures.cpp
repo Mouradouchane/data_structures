@@ -3,26 +3,32 @@
 #include <algorithm>
 #include <map>
 
-#include "singly_Linked_List.hpp"
+#include "singly_LinkedList.hpp"
+#include "doubly_LinkeList.hpp"
 
-using namespace singlyLinkedList;
+using namespace singly_linkedlist;
+using namespace doubly_linkedlist;
+
 
 int main() {
 
-    singly_linkedList<int> firstOne;
+    doubly_LinkeList<int> firstOne;
 
-    firstOne.push_back(14);
-    firstOne.push_back(77);
+    firstOne.push_front(77);
+    firstOne.push_back(11);
+    firstOne.push_back(44);
+
+
+    /*
+    firstOne.push_front(77);
+    firstOne.push_back(24);
+
     firstOne.push_back(88);
     firstOne.push_back(99);
+    */
     
     firstOne.showAll();
 
-    firstOne.remove_first();
-    firstOne.remove_first();
-    
-    firstOne.showAll();
-    std::cout << firstOne.getLastValue() << std::endl;
 
     return 0;
 }
