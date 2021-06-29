@@ -103,6 +103,22 @@ namespace doubly_linkedlist {
                 }
             }
 
+            void reverse() {
+
+                d_node<t>* newF = new d_node<t>(last->value);
+                d_node<t>* newL = new d_node<t>(first->value);
+
+                d_node<t>* temp = last->prev;
+                d_node<t>* newNode = NULL;
+
+                while (temp != NULL) {
+                    newNode = new d_node<t>(temp->value);
+                    newF->next = newNode;
+                    temp = temp->prev;
+                }
+
+                first = newF;
+            }
 
             // o(1)
             // return length of linked size :) 
