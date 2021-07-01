@@ -103,21 +103,27 @@ namespace doubly_linkedlist {
                 }
             }
 
+            // o(n)
             void reverse() {
+                // we start form the last to the first for making 'reverse'
+                d_node<t>* oldNode = last;
 
-                d_node<t>* newF = new d_node<t>(last->value);
-                d_node<t>* newL = new d_node<t>(first->value);
+                // clear first & last for new reversed linked list :)
+                first = NULL;
+                last  = NULL;
+               
+                // start form last
+                while (oldNode != NULL) {
+                    // using push_back it that task
+                    // push values 
+                    push_back(oldNode->value);
+                    // go to previous one
+                    oldNode = oldNode->prev;
 
-                d_node<t>* temp = last->prev;
-                d_node<t>* newNode = NULL;
-
-                while (temp != NULL) {
-                    newNode = new d_node<t>(temp->value);
-                    newF->next = newNode;
-                    temp = temp->prev;
+                    // in case old not equal to null delete it :)
+                    if(oldNode != NULL && oldNode->next != NULL) delete oldNode->next;
                 }
 
-                first = newF;
             }
 
             // o(1)
