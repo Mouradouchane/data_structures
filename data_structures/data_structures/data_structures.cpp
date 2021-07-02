@@ -20,7 +20,10 @@ int main() {
     firstOne.push_back(88);
     firstOne.push_back(99);
 
-    firstOne.reverse();
+    // firstOne.reverse();
+    
+    firstOne.push_at(99,45);
+    
     firstOne.showAll();
 
 
