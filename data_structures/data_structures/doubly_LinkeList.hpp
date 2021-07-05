@@ -29,7 +29,7 @@
     showAll         => o(n)
 */
 
-namespace doubly_linkedlist {
+namespace linkedlist {
 
     // special node for doubly linked list wich ca take previous and next
 	template<typename t>class d_node {
@@ -107,7 +107,6 @@ namespace doubly_linkedlist {
             // push in specific poition in linked list
             void push_at(t positionValue , t value) {
 
-
                 // new node with new value
                 d_node<t>* newNode = new d_node<t>(value);
 
@@ -152,7 +151,8 @@ namespace doubly_linkedlist {
                 // clear first & last for new reversed linked list :)
                 first = NULL;
                 last  = NULL;
-               
+                len = 0;
+
                 // start form last
                 while (oldNode != NULL) {
                     // using push_back it that task
@@ -184,6 +184,8 @@ namespace doubly_linkedlist {
                     first = newFirst;
                     first->prev = NULL;
 
+                    len -= 1;
+
                     // return must be true as confirmation of sucessed operation :)
                     return true;
                 }
@@ -202,6 +204,8 @@ namespace doubly_linkedlist {
 
                     last = newLast;
                     last->next = NULL;
+
+                    len -= 1;
 
                     return true;
                 }
@@ -222,6 +226,8 @@ namespace doubly_linkedlist {
                 // set head & tail to null because linked list empty right know :)
                 first = NULL;
                 last  = NULL;
+                len = 0;
+
             }
 
             bool replace(t oldValue , t NewValue) {
@@ -282,6 +288,9 @@ namespace doubly_linkedlist {
                     if (temp->value == value) {
                         temp->prev->next = temp->next;
                         delete temp;
+
+                        len -= 1;
+
                         return true;
                     }
                     // else keep going 
@@ -311,11 +320,50 @@ namespace doubly_linkedlist {
                 return false;
             }
 
+            // o(n)
+            // get linked list values in vector
+            std::vector<t> toVector() {
+
+                std::vector<t> vec;
+
+                // loop over all & push to vector
+                d_node<t>* temp = first;
+                while (temp != NULL) {
+                    vec.push_back(temp->value);
+                    temp = temp->next;
+                }
+               
+                // return vector 
+                return vec;
+            }
+
+            // o(n)
+            // get linked list values as "pointer as array"
+            t* toArray() {
+                // array as pointer who take all values
+                t* array = new t[length()];
+
+                d_node<t>* temp = first;
+
+                // loop over all
+                long long int i = 0;
+                while (temp != NULL) {
+                    // push value to the array
+                    array[i] = temp->value;
+                    temp = temp->next;
+                    i += 1;
+                }
+
+                // return array as pointer
+                return array;
+            }
+
             // o(1)
             // return length of linked size :) 
             int length() {
                 return len;
             }
+
 
             // just "test function" who print all values in console
             void showAll() {

@@ -6,9 +6,7 @@
 #include "singly_LinkedList.hpp"
 #include "doubly_LinkeList.hpp"
 
-using namespace singly_linkedlist;
-using namespace doubly_linkedlist;
-
+using namespace linkedlist;
 
 int main() {
 
@@ -20,12 +18,8 @@ int main() {
     firstOne.push_back(88);
     firstOne.push_back(99);
 
-    // firstOne.reverse();
-    
-    firstOne.push_at(99,45);
-    
+    std::cout << firstOne.length() << '\n';
     firstOne.showAll();
-
 
     return 0;
 }

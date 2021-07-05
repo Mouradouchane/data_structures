@@ -28,7 +28,7 @@
     showAll         => o(n)
 */
 
-namespace singly_linkedlist {
+namespace linkedlist {
 
 // ========== node ============
 template<typename t> class node {
@@ -173,7 +173,7 @@ public:
             node<t>* tempNode = first;
 
             // loop over all & push to the array
-            int i = 0;
+            long long int i = 0;
             while (tempNode != NULL) {
                 *(arr+i) = tempNode->value;
                 tempNode = tempNode->next;
@@ -184,7 +184,7 @@ public:
         }
 
         // o(n)
-        // method delete all nodes in linked list 
+        // method delete all nodes in linked list & make it clear 
         void clear() {
             node<t>* temp = first;
 
@@ -194,8 +194,11 @@ public:
                 temp = next_temp;
             }
 
+            // start from 0
             first = NULL;
             last = NULL;
+            len = 0;
+
         }
 
         // o(n)
@@ -250,6 +253,9 @@ public:
                 node<t>* next = first->next;
                 delete first;
                 first = next;
+
+                len -= 1;
+
                 // return true as confirmation 
                 return true;
             }
@@ -270,6 +276,8 @@ public:
                     // in case target is last , make sure to update last 
                     if (prev->next == NULL) last = prev;
 
+                    len -= 1;
+
                     // then return true as confirmation 
                     return true;
                 }
@@ -285,6 +293,8 @@ public:
         // o(1)
         // just method remove "first or head" & replace it with next one
         void remove_first() {
+            len -= 1;
+            // set head to next one & delete old one
             node<t>* next = first->next;
             delete first;
             first = next;
@@ -305,6 +315,9 @@ public:
                     last->next = NULL;
                     // delete old last and return for stop function
                     delete temp;
+
+                    len -= 1;
+
                     return;
                 }
                 // else going to next one in list
