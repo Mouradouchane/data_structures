@@ -4,21 +4,21 @@
 #include <map>
 
 #include "singly_LinkedList.hpp"
-#include "doubly_LinkeList.hpp"
+#include "doubly_LinkedList.hpp"
+#include "circly_singly_LinkedList.hpp"
 
 using namespace linkedlist;
 
 int main() {
 
-    doubly_LinkeList<int> firstOne;
+    circly_singly_linkedList<int> firstOne;
 
     firstOne.push_back(11);
-    firstOne.push_back(44);
-    firstOne.push_back(77);
-    firstOne.push_back(88);
-    firstOne.push_back(99);
+    firstOne.push_back(66);
 
-    std::cout << firstOne.length() << '\n';
+    firstOne.clear();
+    //std::cout << fst.value << '\n';
+
     firstOne.showAll();
 
     return 0;

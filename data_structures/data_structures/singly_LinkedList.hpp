@@ -83,7 +83,7 @@ public:
             if (first == NULL && last == NULL) {
                 first = newNode;
                 last = newNode;
-                first->next = last;
+                //first->next = last;
                 return;
             }
 

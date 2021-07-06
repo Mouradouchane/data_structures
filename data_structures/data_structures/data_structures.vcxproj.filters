@@ -23,7 +23,10 @@
     <ClInclude Include="singly_LinkedList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="doubly_LinkeList.hpp">
+    <ClInclude Include="doubly_LinkedList.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="circly_singly_LinkedList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
