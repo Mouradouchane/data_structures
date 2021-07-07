@@ -86,7 +86,7 @@ public:
         c_node<t>* temp = first;
 
         // loop over all nodes in linked list & check for position
-        while (temp != NULL) {
+        while (temp != last) {
             // in case we found position 
             if (temp->value == position) {
                 // getting next
@@ -211,10 +211,12 @@ public:
     // o(n)
     // searh for value if it in linked list or not
     bool has(t wanted_value) {
+        if (wanted_value == first->value || wanted_value == last->value)return true;
+
         c_node<t>* temp = first;
 
         // loop over all and check
-        while (temp->next != first) {
+        while (temp != last) {
             // in case value found 
             if (temp->value == wanted_value) {
                 return true;
@@ -235,21 +237,22 @@ public:
             // make next equal to first and delete old first 
             c_node<t>* next = first->next;
             delete first;
+            
             first = next;
-
+            last->next = first;
             len -= 1;
 
             // return true as confirmation 
             return true;
         }
 
-        // else we start loop over all nodes & check 
-        // we need "previous" and "next one" for this operation 
+        // else we start loop over all & check 
+        // we need "previous" for that "remove operation"
         c_node<t>* prev = first;
         c_node<t>* current = first->next;
 
         // check by using current or "next one"
-        while (current->next != first) {
+        while (current != first) {
             // in case target value founded that mean we need to delete that "current"
             if (current->value == target_value) {
                 // make previouse connected to next of current and delete current
@@ -286,6 +289,7 @@ public:
         // set head to next one & delete old one
         c_node<t>* next = first->next;
         delete first;
+
         first = next;
         last->next = first;
     }
@@ -297,7 +301,7 @@ public:
         c_node<t>* temp = first->next;
 
         // loop over all until reach the last one
-        while (temp->next != first) {
+        while (temp != first) {
             if (temp->next == first) {
                 // then make previous => new last 
                 last = prevtemp;
@@ -330,7 +334,13 @@ public:
     // o(n)
     // just "test function" who print all values in console
     void showAll() {
-        if (first == NULL || last == NULL) return;
+        if (first == NULL && last == NULL) return;
+        if(first == last) {
+            std::cout << "==================================================" << std::endl;
+            std::cout << first->value << std::endl;
+            std::cout << "==================================================" << std::endl;
+            return;
+        }
         c_node<t>* tempNode = first->next;
 
         std::cout << "==================================================" << std::endl;
