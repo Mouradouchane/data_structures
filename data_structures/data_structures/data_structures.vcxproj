@@ -145,6 +145,7 @@
     <ClInclude Include="circly_singly_LinkedList.hpp" />
     <ClInclude Include="doubly_LinkedList.hpp" />
     <ClInclude Include="singly_LinkedList.hpp" />
+    <ClInclude Include="singly_Reversed_LinkedList.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

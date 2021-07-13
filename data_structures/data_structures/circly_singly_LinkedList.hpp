@@ -19,7 +19,7 @@ public:
 
 
 // ========== singly linked list ============
-template<typename t> class circly_singly_linkedList {
+template<typename t> class circly_singly_LinkedList {
 
 private:
     int len = 0; // len => length
@@ -27,8 +27,8 @@ private:
     c_node<t>* last = NULL; // tail
 
 public:
-    circly_singly_linkedList() {}
-    ~circly_singly_linkedList() {}
+    circly_singly_LinkedList() {}
+    ~circly_singly_LinkedList() {}
 
     // o(1)
     // push new value direct from the back of linked list (or you can say 'new tail')
@@ -323,6 +323,56 @@ public:
             temp = temp->next;
         }
 
+    }
+
+    // o(n²)
+    // sorting linked list using linear sort "worst one :)"
+    void sort(bool from_greater_to_smaller = false) {
+        c_node<t>* temp = first;
+
+
+        // in case you want sort from greatest to smallest
+        if (from_greater_to_smaller) {
+            // just linear sort o(n²)
+            do {
+                c_node<t>* comp = first;
+
+                do {
+                    if (comp->value < temp->value) {
+                        t tempValue = comp->value;
+                        comp->value = temp->value;
+                        temp->value = tempValue;
+                    }
+
+                    comp = comp->next;
+
+                } while (comp != first);
+
+                temp = temp->next;
+
+            } while (temp != first);
+        }
+        // in case you want sort from smallest to greatest
+        else {
+            do {
+                c_node<t>* comp = first;
+
+                do {
+                    if (comp->value > temp->value) {
+                        t tempValue = comp->value;
+                        comp->value = temp->value;
+                        temp->value = tempValue;
+                    }
+
+                    comp = comp->next;
+
+                } while (comp != first);
+
+                temp = temp->next;
+
+            } while (temp != first);
+        }
+  
     }
 
     // o(1)

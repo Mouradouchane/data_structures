@@ -8,10 +8,13 @@
     push_front      => o(1)
     push_at         => o(n)
     
-    replace         => o(n)
-    has             => o(n)
+    replace         => o(1) ==> o(n)
+    has             => o(1) ==> o(n)
 
-    remove          => o(n)
+    reverse         => o(n)
+    sort            => o(n²)
+
+    remove          => o(1) ==> o(n)
     remove_first    => o(1)
     remove_last     => o(n)
 
@@ -30,7 +33,7 @@
 
 namespace linkedlist {
 
-// ========== node ============
+// ============= node ===============
 template<typename t> class node {
 public:
     node() { }
@@ -44,7 +47,7 @@ public:
 
 
 // ========== singly linked list ============
-template<typename t> class singly_linkedList {
+template<typename t> class singly_LinkedList {
 
 private : 
         int len = 0; // len => length
@@ -52,8 +55,8 @@ private :
         node<t>* last  = NULL; // tail
 
 public:
-        singly_linkedList() {}
-        ~singly_linkedList() {}
+        singly_LinkedList() {}
+        ~singly_LinkedList() {}
 
         // o(1)
         // push new value direct from the back of linked list (or you can say 'new tail')
@@ -323,6 +326,51 @@ public:
                 // else going to next one in list
                 prevtemp = temp;
                 temp = temp->next;
+            }
+
+        }
+
+        // o(n²)
+        // sorting linked list using linear sort "worst one :)"
+        void sort(bool from_greater_to_smaller = false) {
+            node<t>* temp = first;
+
+            // in case you want sort from greatest to smallest
+            if (from_greater_to_smaller) {
+
+                // just linear sort o(n²)
+                while (temp != NULL) {
+                    node<t>* comp = first;
+
+                    while (comp != NULL) {
+                        if (comp->value < temp->value) {
+                            t tempValue = comp->value;
+                            comp->value = temp->value;
+                            temp->value = tempValue;
+                        }
+                        comp = comp->next;
+                    }
+                    temp = temp->next;
+                }
+
+            }
+            // in case you want sort from smallest to greatest
+            else {
+
+                while (temp != NULL) {
+                    node<t>* comp = first;
+
+                    while (comp != NULL) {
+                        if (comp->value > temp->value) {
+                            t tempValue = comp->value;
+                            comp->value = temp->value;
+                            temp->value = tempValue;
+                        }
+                        comp = comp->next;
+                    }
+                    temp = temp->next;
+                }
+
             }
 
         }

@@ -12,6 +12,9 @@
     replace         => o(1) ==> o(n)
     has             => o(n)
 
+    reverse         => o(n)
+    sort            => o(n²)
+
     remove          => o(1) ==> o(n)
     remove_first    => o(1)
     remove_last     => o(1)
@@ -380,6 +383,54 @@ namespace linkedlist {
             // get "last/tail" but value only 
             t getLastValue() {
                 return last->value;
+            }
+
+            // o(n²)
+            // sorting linked list using linear sort "worst one :)"
+            void sort(bool from_greater_to_smaller = false) {
+                d_node<t>* temp = first;
+
+                // in case you want sort from greatest to smallest
+                if (from_greater_to_smaller) {
+
+                    // just linear sort o(n²)
+                    while (temp != NULL) {
+                        d_node<t>* comp = first;
+
+                        while (comp != NULL) {
+
+                            if (comp->value < temp->value) {
+                                t tempValue = comp->value;
+                                comp->value = temp->value;
+                                temp->value = tempValue;
+                            }
+                            comp = comp->next;
+                        }
+                        temp = temp->next;
+                    }
+
+                }
+                // in case you want sort from smallest to greatest
+                else {
+
+                    while (temp != NULL) {
+                        d_node<t>* comp = first;
+
+
+                        while (comp != NULL) {
+
+                            if (comp->value > temp->value) {
+                                t tempValue = comp->value;
+                                comp->value = temp->value;
+                                temp->value = tempValue;
+                            }
+                            comp = comp->next;
+                        }
+                        temp = temp->next;
+                    }
+
+                }
+
             }
 
             // o(1)

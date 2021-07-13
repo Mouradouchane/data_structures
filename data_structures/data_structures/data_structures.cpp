@@ -11,19 +11,17 @@ using namespace linkedlist;
 
 int main() {
 
-    circly_singly_linkedList<int> firstOne;
+    doubly_LinkeList<int> firstOne;
 
-    firstOne.push_back(66);
-    firstOne.push_back(88);
-    firstOne.push_back(99);
-    firstOne.push_back(100);
+    firstOne.push_front(60);
+    firstOne.push_front(3);
+    firstOne.push_front(6);
 
-    //firstOne.clear();
-    std::cout << firstOne.has(66) << '\n';
-    std::cout << firstOne.has(88) << '\n';
-    std::cout << firstOne.has(77) << '\n';
+
+    firstOne.sort();
 
     firstOne.showAll();
+    std::cout << firstOne.length() << std::endl;
 
     return 0;
 }
