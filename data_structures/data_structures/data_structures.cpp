@@ -11,17 +11,32 @@ using namespace linkedlist;
 
 int main() {
 
-    doubly_LinkeList<int> firstOne;
+    circly_singly_LinkedList<int> linkedList_A;
+    linkedList_A.push_back(4);
+    /*
+    linkedList_A.push_back(3);
+    linkedList_A.push_back(45);
+    */
 
-    firstOne.push_front(60);
-    firstOne.push_front(3);
-    firstOne.push_front(6);
+    circly_singly_LinkedList<int> linkedList_B;
+    linkedList_B.push_back(2);
+    /*
+    linkedList_B.push_back(1);
+    linkedList_B.push_back(10);
+    */
+    
+    std::vector<int> testV = {};
 
+    linkedList_A += linkedList_B;
 
-    firstOne.sort();
+    c_node<int> Af = linkedList_A.getFirstElement();
+    c_node<int> Al = linkedList_A.getLastElement();
 
-    firstOne.showAll();
-    std::cout << firstOne.length() << std::endl;
+    linkedList_A.showAll();
+    std::cout << "first  : " << linkedList_A.getFirstValue() << std::endl;
+    std::cout << "last   : " << linkedList_A.getLastValue() << std::endl;
+    std::cout << "length : " << linkedList_A.length() << std::endl;
+
 
     return 0;
 }

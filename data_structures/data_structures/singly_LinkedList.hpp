@@ -3,6 +3,8 @@
 
 // === singly linke list ~ methods ===
 /*
+  -- NAME ------------ BEST --> WORST 
+
     length          => o(1)
     push_back       => o(1)
     push_front      => o(1)
@@ -11,12 +13,15 @@
     replace         => o(1) ==> o(n)
     has             => o(1) ==> o(n)
 
-    reverse         => o(n)
+    reverse         => o(n*3)
     sort            => o(n²)
 
     remove          => o(1) ==> o(n)
     remove_first    => o(1)
     remove_last     => o(n)
+
+    getFirstAsPointer => o(1)
+    getLastAsPointer  => o(1)
 
     getFistElement  => o(1)
     getFistValue    => o(1)
@@ -29,6 +34,8 @@
 
     clear           => o(n)
     showAll         => o(n)
+
+    +=              => o(1) ==> o(n)
 */
 
 namespace linkedlist {
@@ -57,6 +64,19 @@ private :
 public:
         singly_LinkedList() {}
         ~singly_LinkedList() {}
+
+        // o(1)
+        // return "first/head" as pointer
+        node<t>* getFirstAsPointer() {
+            return first;
+        }
+
+        // o(1)
+        // return "last/tail" as pointer
+        node<t>* getLastAsPointer() {
+            return last;
+        }
+
 
         // o(1)
         // push new value direct from the back of linked list (or you can say 'new tail')
@@ -131,25 +151,23 @@ public:
         // o(1)
         // get first node in linked list
         node<t> getFirstElement() {
-            node<t> copy = *first;
-            return copy;
+            return (first != NULL) ? *first : NULL;
         }
         // o(1)
         // get first value in first node in linked list
         t getFirstValue() {
-            return first->value;
+            return (first != NULL) ? first->value : NULL;
         }
 
         // o(1)
         // get last node in linked list
         node<t> getLastElement() {
-            node<t> copy = *last;
-            return copy;
+            return (last != NULL) ? *last : NULL;
         }
         // o(1)
         // get last value in last node in linked list
         t getLastValue() {
-            return last->value;
+            return (last != NULL) ? last->value : NULL;
         }
 
         // o(n)
@@ -375,6 +393,28 @@ public:
 
         }
 
+        // o(n*3)
+        void reverse() {
+            std::vector<t> temp_vec;
+            node<t>* temp = first;
+
+            // o(n) : take all linked list element & push them to vector
+            while (temp != NULL){
+                temp_vec.insert(temp_vec.begin(),temp->value);
+                temp = temp->next;
+            }
+
+            // o(n) : clear linked list 
+            clear();
+
+            // o(n) : push_back all reversed values to linked list 
+            for (t value : temp_vec) {
+                push_back(value);
+            }
+
+        }
+
+
         // o(1)
         // return length of linked size :) 
         int length() {
@@ -393,7 +433,30 @@ public:
             }
             std::cout << "==================================================" << std::endl;
         }
+
+        // o(1) ==> o(n)
+        // += operator for concat external linked list with current linked list
+        void operator +=(singly_LinkedList<t> & slinkedlist) {
+            
+            node<t>* stemp = slinkedlist.getFirstAsPointer();
+
+            while (stemp != NULL) {
+                push_back(stemp->value);
+                stemp = stemp->next;
+            }
+        }
+
+        // o(1) ==> o(n)
+        // like first += operator but this one for vector of values :)
+        void operator +=(std::vector<t> new_values) {
+
+            for (t value : new_values) {
+                push_back(value);
+            }
+
+        }
 };
+
 
 
 

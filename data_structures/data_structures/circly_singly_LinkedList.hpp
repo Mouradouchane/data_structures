@@ -31,6 +31,18 @@ public:
     ~circly_singly_LinkedList() {}
 
     // o(1)
+    // return "first/head" as pointer
+    c_node<t>* getFirstAsPointer() {
+        return first;
+    }
+
+    // o(1)
+    // return "last/tail" as pointer
+    c_node<t>* getLastAsPointer() {
+        return last;
+    }
+
+    // o(1)
     // push new value direct from the back of linked list (or you can say 'new tail')
     void push_back(t value) {
         c_node<t>* newNode = new c_node<t>(value);
@@ -112,25 +124,23 @@ public:
     // o(1)
     // get first node in linked list
     c_node<t> getFirstElement() {
-        c_node<t> copy = *first;
-        return copy;
+        return (first != NULL) ? *first : NULL;
     }
     // o(1)
     // get first value in first node in linked list
     t getFirstValue() {
-        return first->value;
+        return (first != NULL) ? first->value : NULL;
     }
 
     // o(1)
     // get last node in linked list
     c_node<t> getLastElement() {
-        c_node<t> copy = *last;
-        return copy;
+        return (last != NULL) ? *last : NULL;
     }
     // o(1)
     // get last value in last node in linked list
     t getLastValue() {
-        return last->value;
+        return (last != NULL) ? last->value : NULL;
     }
 
     // o(n)
@@ -172,11 +182,11 @@ public:
     void clear() {
         c_node<t>* temp = first;
 
-        while (temp->next != first) {
+        do{
             c_node<t>* next_temp = temp->next;
             delete temp;
             temp = next_temp;
-        }
+        } while (temp != first && temp != NULL);
 
         // start from 0
         first = NULL;
@@ -375,6 +385,53 @@ public:
   
     }
 
+    // o(n*3)
+    void reverse() {
+        std::vector<t> temp_vec;
+        c_node<t>* temp = first;
+
+        // o(n) : take all linked list element & push them to vector
+        do{
+            temp_vec.insert(temp_vec.begin(), temp->value);
+            temp = temp->next;
+        } while (temp != first && temp != NULL);
+
+        // o(n) : clear linked list 
+        clear();
+
+        // o(n) : push_back all reversed values to linked list 
+        for (t value : temp_vec) {
+            push_back(value);
+        }
+
+    }
+
+
+    // o(1) ==> o(n)
+    // += operator for concat external linked list with current linked list
+    void operator +=(circly_singly_LinkedList<t> & c_s_linkedlist) {
+        c_node<t>* cs_first = c_s_linkedlist.getFirstAsPointer();
+
+        c_node<t>* stemp = c_s_linkedlist.getFirstAsPointer();
+        
+        do{
+            if (stemp == NULL || cs_first == NULL) break;
+            push_back(stemp->value);
+            stemp = stemp->next;
+
+        } while (stemp != cs_first);
+    }
+
+    // o(1) ==> o(n)
+    // like first += operator but this one for vector of values :)
+    void operator +=(std::vector<t> new_values) {
+
+        for (t value : new_values) {
+            push_back(value);
+        }
+
+    }
+
     // o(1)
     // return length of linked size :) 
     int length() {
@@ -384,13 +441,19 @@ public:
     // o(n)
     // just "test function" who print all values in console
     void showAll() {
-        if (first == NULL && last == NULL) return;
+        if (first == NULL && last == NULL) {
+            std::cout << "==================================================" << std::endl;
+            std::cout << "==================================================" << std::endl;
+            return;
+        } 
+
         if(first == last) {
             std::cout << "==================================================" << std::endl;
             std::cout << first->value << std::endl;
             std::cout << "==================================================" << std::endl;
             return;
         }
+
         c_node<t>* tempNode = first->next;
 
         std::cout << "==================================================" << std::endl;
