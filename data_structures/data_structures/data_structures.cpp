@@ -3,40 +3,39 @@
 #include <algorithm>
 #include <map>
 
-#include "singly_LinkedList.hpp"
-#include "doubly_LinkedList.hpp"
-#include "circly_singly_LinkedList.hpp"
+#include "linkedlists/singly_LinkedList.hpp"
+#include "linkedlists/doubly_LinkedList.hpp"
+#include "linkedlists/circly_singly_LinkedList.hpp"
+
+#include "stacks/dynamic_stack.hpp"
 
 using namespace linkedlist;
+using namespace stacks;
 
 int main() {
-
-    circly_singly_LinkedList<int> linkedList_A;
-    linkedList_A.push_back(4);
-    /*
-    linkedList_A.push_back(3);
-    linkedList_A.push_back(45);
-    */
-
-    circly_singly_LinkedList<int> linkedList_B;
-    linkedList_B.push_back(2);
-    /*
-    linkedList_B.push_back(1);
-    linkedList_B.push_back(10);
-    */
     
-    std::vector<int> testV = {};
+    dynamic_stack<int> stack;
 
-    linkedList_A += linkedList_B;
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+    stack.push(4);
+    stack.print();
 
-    c_node<int> Af = linkedList_A.getFirstElement();
-    c_node<int> Al = linkedList_A.getLastElement();
+    stack.pop();
+    stack.pop();
+    stack.pop();
+    stack.print();
 
-    linkedList_A.showAll();
-    std::cout << "first  : " << linkedList_A.getFirstValue() << std::endl;
-    std::cout << "last   : " << linkedList_A.getLastValue() << std::endl;
-    std::cout << "length : " << linkedList_A.length() << std::endl;
+    stack.push(8);
+    stack.push(6); 
+    stack.push(7);
+    stack.push(5);
+    stack.print();
 
+    stack.pop();
+    stack.pop();
+    stack.print();
 
     return 0;
 }
