@@ -9,8 +9,7 @@
 	peek	=> o(1)
 
 	isEmpty => o(1)
-	isFull	=> o(n)
-	find	=> o(1) ==> o(n)
+	search	=> o(1) ==> o(n)
 
 	length	=> o(1)
 	print	=> o(n)
@@ -24,7 +23,7 @@ namespace stacks {
 template<typename t> class dynamic_stack {
 
 private :
-	// stack length
+	// len represent stack length & stack top index 
 	unsigned int len = 0;
 
 	// dynamic vector represent "stack"
@@ -34,11 +33,15 @@ public :
 	dynamic_stack(){}
 	~dynamic_stack(){}
 
+	// o(1)
+	// push data to stack "make new top element :)"
 	void push(t newValue) {
 		len += 1;
 		stack.push_back(newValue);
 	}
 
+	// o(1)
+	// get data in top index & delete it "pop data"
 	t pop() {
 		if (len == 0) return NULL;
 
@@ -49,8 +52,11 @@ public :
 		return value;
 	}
 
+	// o(1)
+	// get copy of data at top index but not delete it 
 	t peek() {
-		return (len != 0) ? stack[len] : NULL;
+		// in case stack is empty return null else return value
+		return (len != 0) ? stack[len-1] : NULL;
 	}
 
 	// o(1) length =>  elements length not vector length
@@ -67,6 +73,33 @@ public :
 		}
 			std::cout << "|___|" << '\n';
 			std::cout << "Length => "<< len << '\n';
+	}
+
+	// o(1)
+	// check if stack is empty or not
+	bool isEmpty() {
+		return (len == 0) ? true : false;
+	}
+
+	//o(1) ==> o(n)
+	// clear stack
+	void clear() {
+		stack.clear();
+		len = 0;
+	}
+
+	// o(1) ==> o(n)
+	// search if something is in stack or not
+	bool search(t target_value) {
+
+		// loop over all 
+		for (t value : stack) {
+			// check 
+			if (value == target_value) return true;
+		}
+
+		// in case not found 
+		return false;
 	}
 };
 

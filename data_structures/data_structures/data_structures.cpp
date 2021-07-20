@@ -15,27 +15,18 @@ using namespace stacks;
 int main() {
     
     dynamic_stack<int> stack;
-
+    /*
     stack.push(1);
     stack.push(2);
     stack.push(3);
     stack.push(4);
+    */
+
+    
     stack.print();
 
-    stack.pop();
-    stack.pop();
-    stack.pop();
-    stack.print();
-
-    stack.push(8);
-    stack.push(6); 
-    stack.push(7);
-    stack.push(5);
-    stack.print();
-
-    stack.pop();
-    stack.pop();
-    stack.print();
+    std::cout << "search : " << stack.search(3) << '\n';
+    std::cout << "search : " << stack.search(39) << '\n';
 
     return 0;
 }
