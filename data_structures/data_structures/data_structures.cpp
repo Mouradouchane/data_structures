@@ -8,25 +8,22 @@
 #include "linkedlists/circly_singly_LinkedList.hpp"
 
 #include "stacks/dynamic_stack.hpp"
+#include"stacks/static_stack.hpp"
 
 using namespace linkedlist;
 using namespace stacks;
 
 int main() {
     
-    dynamic_stack<int> stack;
-    /*
-    stack.push(1);
-    stack.push(2);
-    stack.push(3);
-    stack.push(4);
-    */
-
+    //dynamic_stack<int> stack;
+    static_stack<int> stack(4);
     
     stack.print();
 
-    std::cout << "search : " << stack.search(3) << '\n';
-    std::cout << "search : " << stack.search(39) << '\n';
+    stack.peek();
+
+    std::cout << "EMPTY : " << stack.isEmpty() << '\n';
+    std::cout << "FULL  : " << stack.isFull() << '\n';
 
     return 0;
 }
