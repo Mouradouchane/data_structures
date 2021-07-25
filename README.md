@@ -27,6 +27,9 @@ repository contain a collection of data structures using c++
   }
 
 ```
+### Wiki/Docs : 
+- you can use [doc](https://github.com/Mouradouchane/data_structures/wiki) to understand how **'thing's'** work with examples .
+
 ## linked lists : 
 
 singly | [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
@@ -61,3 +64,5 @@ clear           | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](ht
 showAll         | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) |  [![](https://img.shields.io/badge/O-(N)-success)](#) | 
 operator +=     | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | 
 
+### contribution :
+if want to contribute/reporte , your welcome 😙
