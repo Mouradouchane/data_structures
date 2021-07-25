@@ -1,2 +1,2 @@
-# data_structures
-Practicing -> making data structures
+## about :
+repository contain a collection of data structures using c++
