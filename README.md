@@ -35,28 +35,29 @@ doubly | [![status](https://img.shields.io/badge/status-stable-brightgreen?style
 singly circular | [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
 
 
+#### linked listes time complexity of all functions :
 functions | singly | doubly  | singly circular
 ------------ | ------------- | ------------- | ------------- 
-length          | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-push_back       | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-push_front      | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-push_at         | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-replace         | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-has             | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#)| | 
-reverse         | [![](https://img.shields.io/badge/O-(N*3)-orange)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-sort            | [![](https://img.shields.io/badge/O-(N%C2%B2)-red)](#)| [![](https://img.shields.io/badge/O-(N%C2%B2)-red)](#) | | 
-remove          | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) |  [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-remove_first    | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-remove_last     | [![](https://img.shields.io/badge/O-(N)-success)](#)| [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-getFirstAsPointer | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-getLastAsPointer  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-getFirstElement  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-getFirstValue    | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-getLastElement  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-getLastValue    | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | | 
-toVector        | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-toArray         | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-clear           | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-showAll         | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
-operator +=     | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | | 
+length          | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)| 
+push_back       | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)| 
+push_front      | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)| 
+push_at         | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#)| 
+replace         | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#)| 
+has             | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#)|[![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+reverse         | [![](https://img.shields.io/badge/O-(N*3)-orange)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N*3)-orange)](#) | 
+sort            | [![](https://img.shields.io/badge/O-(N%C2%B2)-red)](#)| [![](https://img.shields.io/badge/O-(N%C2%B2)-red)](#) | [![](https://img.shields.io/badge/O-(N%C2%B2)-red)](#) | 
+remove          | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+remove_first    | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) |  [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)| 
+remove_last     | [![](https://img.shields.io/badge/O-(N)-success)](#)| [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+getFirstAsPointer | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | 
+getLastAsPointer  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) |  [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | 
+getFirstElement  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) |  [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | 
+getFirstValue    | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | 
+getLastElement  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) |  [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) | 
+getLastValue    | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) |  [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | 
+toVector        | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+toArray         | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+clear           | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) |  [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+showAll         | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) |  [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+operator +=     | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | 
 
