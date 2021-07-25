@@ -2,14 +2,14 @@
 repository contain a collection of data structures using c++
 
 ## usage & implementation :
-**note** : each data structure in 'unique file' all what you need to do is :
-> 1 - copy 'data structure file' to your project folder .
+**note** : each data structure in **'unique file'** all what you need to do is :
+> 1 - copy **'data structure file'** to your project folder .
 
-> 2 - include 'data structure file' in your project .
+> 2 - include **'data structure file'** in your project .
 
-> 3 - optional => use namespace of 'data structure' or you can use :: access .
+> 3 - optional => use namespace of **'data structure'** or you can use :: access .
 
-> 4 - have a fun .
+> 4 - have a fun :sweat_smile: .
 
 ### usage example :
 ```c++
