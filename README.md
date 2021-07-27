@@ -61,7 +61,7 @@ getLastValue    | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#)  | [![
 toVector        | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | 
 toArray         | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) | 
 clear           | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) |  [![](https://img.shields.io/badge/O-(N)-success)](#) | 
-showAll         | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) |  [![](https://img.shields.io/badge/O-(N)-success)](#) | 
+print        | [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(N)-success)](#) |  [![](https://img.shields.io/badge/O-(N)-success)](#) | 
 operator +=     | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | [![](https://img.shields.io/badge/O-(1)-blueviolet)](#) to [![](https://img.shields.io/badge/O-(N)-success)](#) | 
 
 ### contribution :
