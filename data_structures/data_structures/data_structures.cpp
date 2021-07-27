@@ -8,22 +8,35 @@
 #include "linkedlists/circly_singly_LinkedList.hpp"
 
 #include "stacks/dynamic_stack.hpp"
-#include"stacks/static_stack.hpp"
+#include "stacks/static_stack.hpp"
+
+#include "queues/static_queue.hpp"
 
 using namespace linkedlist;
 using namespace stacks;
+using namespace queue;
 
 int main() {
-    
-    //dynamic_stack<int> stack;
-    static_stack<int> stack(4);
-    
-    stack.print();
+   
+    static_queue<int> qe(4);
+   
+    qe.add(4);
+    qe.add(8);
+    qe.add(12);
+    qe.add(18);
+    qe.add(20);
 
-    stack.peek();
+    qe.print();
 
-    std::cout << "EMPTY : " << stack.isEmpty() << '\n';
-    std::cout << "FULL  : " << stack.isFull() << '\n';
+    qe.remove();
+    qe.remove();
+    qe.remove();
+  
+
+    qe.print();
+
+    std::cout << qe.length() << '\n';
+    std::cout << '\n';
 
     return 0;
 }

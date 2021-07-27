@@ -295,11 +295,23 @@ public:
     // o(1)
     // just method remove "first or head" & replace it with next one
     void remove_first() {
+        // check if empty
+        if (first == NULL) return;
+
+        // check if one element in 
+        if (first == last) {
+            first = NULL;
+            last = NULL;
+            len = 0;
+            return;
+        }
+
         len -= 1;
         // set head to next one & delete old one
         c_node<t>* next = first->next;
         delete first;
 
+        // update circle 
         first = next;
         last->next = first;
     }
@@ -307,8 +319,20 @@ public:
     // o(n)
     // remove "last one or tail"
     void remove_last() {
+        // check if empty
+        if (first == NULL) return;
+
         c_node<t>* prevtemp = first;
+
         c_node<t>* temp = first->next;
+
+        // check if one element in
+        if (first->next == NULL) {
+            first = NULL;
+            last = NULL;
+            len -= 1;
+            return;
+        }
 
         // loop over all until reach the last one
         while (temp != first) {
@@ -339,7 +363,6 @@ public:
     // sorting linked list using linear sort "worst one :)"
     void sort(bool from_greater_to_smaller = false) {
         c_node<t>* temp = first;
-
 
         // in case you want sort from greatest to smallest
         if (from_greater_to_smaller) {
@@ -440,7 +463,7 @@ public:
 
     // o(n)
     // just "test function" who print all values in console
-    void showAll() {
+    void print() {
         if (first == NULL && last == NULL) {
             std::cout << "==================================================" << std::endl;
             std::cout << "==================================================" << std::endl;

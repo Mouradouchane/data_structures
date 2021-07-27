@@ -29,11 +29,5 @@
     <ClInclude Include="linkedlists\singly_LinkedList.hpp">
       <Filter>linkedLists</Filter>
     </ClInclude>
-    <ClInclude Include="stacks\dynamic_stack.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stacks\static_stack.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

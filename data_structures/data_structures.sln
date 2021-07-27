@@ -5,6 +5,25 @@ VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "data_structures", "data_structures\data_structures.vcxproj", "{3F88DA9E-D0E7-4F28-9DE5-FF60EFA36320}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "queue", "queue", "{62E6F9A9-0D94-4D33-9779-D224BEF4F9A8}"
+	ProjectSection(SolutionItems) = preProject
+		data_structures\queues\dynamic_queue.hpp = data_structures\queues\dynamic_queue.hpp
+		data_structures\queues\static_queue.hpp = data_structures\queues\static_queue.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "linked lists", "linked lists", "{8F7F6654-E75C-47B2-8735-7D26A40160CD}"
+	ProjectSection(SolutionItems) = preProject
+		data_structures\linkedlists\circly_singly_LinkedList.hpp = data_structures\linkedlists\circly_singly_LinkedList.hpp
+		data_structures\linkedlists\doubly_LinkedList.hpp = data_structures\linkedlists\doubly_LinkedList.hpp
+		data_structures\linkedlists\singly_LinkedList.hpp = data_structures\linkedlists\singly_LinkedList.hpp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stacks", "stacks", "{A86D3866-5707-45A9-881C-5AD11BF84965}"
+	ProjectSection(SolutionItems) = preProject
+		data_structures\stacks\dynamic_stack.hpp = data_structures\stacks\dynamic_stack.hpp
+		data_structures\stacks\static_stack.hpp = data_structures\stacks\static_stack.hpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

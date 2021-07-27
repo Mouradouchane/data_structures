@@ -33,7 +33,7 @@
     toArray         => o(n)
 
     clear           => o(n)
-    showAll         => o(n)
+    print         => o(n)
 
     +=              => o(1) ==> o(n)
 */
@@ -314,6 +314,18 @@ public:
         // o(1)
         // just method remove "first or head" & replace it with next one
         void remove_first() {
+            // check if empty
+            if (first == NULL) return;
+
+            // check if one element in 
+            if (first == last) {
+                first = NULL;
+                last  = NULL;
+                len   = 0;
+                return;
+            }
+
+            // in case linked list not empty
             len -= 1;
             // set head to next one & delete old one
             node<t>* next = first->next;
@@ -324,8 +336,20 @@ public:
         // o(n)
         // remove "last one or tail"
         void remove_last() {
+            // check if  empty
+            if (first == NULL) return;
+            
             node<t>* prevtemp = first;
+
             node<t>* temp = first->next;
+
+            // check if one element in
+            if (first->next == NULL) {
+                first = NULL;
+                last  = NULL;
+                len -= 1;
+                return;
+            }
 
             // loop over all until reach the last one
             while (temp != NULL) {
@@ -423,7 +447,7 @@ public:
 
         // o(n)
         // just "test function" who print all values in console
-        void showAll() {
+        void print() {
             node<t>* tempNode = first;
 
             std::cout << "==================================================" << std::endl;

@@ -33,7 +33,7 @@
     toArray         => o(n)
 
     clear           => o(n)
-    showAll         => o(n)
+    print         => o(n)
 
     +=              => o(1) ==> o(n)
 */
@@ -480,7 +480,7 @@ public :
         }
 
         // just "test function" who print all values in console
-        void showAll() {
+        void print() {
             d_node<t>* tempNode = first;
 
             std::cout << "==================================================" << std::endl;

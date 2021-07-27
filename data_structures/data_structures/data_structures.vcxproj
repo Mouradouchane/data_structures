@@ -145,8 +145,6 @@
     <ClInclude Include="linkedlists\circly_singly_LinkedList.hpp" />
     <ClInclude Include="linkedlists\doubly_LinkedList.hpp" />
     <ClInclude Include="linkedlists\singly_LinkedList.hpp" />
-    <ClInclude Include="stacks\dynamic_stack.hpp" />
-    <ClInclude Include="stacks\static_stack.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
