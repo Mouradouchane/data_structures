@@ -1,14 +1,2 @@
 ﻿  data_structures.cpp
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\queues\static_queue.hpp(43,23): warning C4018: '>=': signed/unsigned mismatch
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\queues\static_queue.hpp(40): message : while compiling class template member function 'bool queue::static_queue<int>::add(t)'
-          with
-          [
-              t=int
-          ]
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(23): message : see reference to function template instantiation 'bool queue::static_queue<int>::add(t)' being compiled
-          with
-          [
-              t=int
-          ]
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(21): message : see reference to class template instantiation 'queue::static_queue<int>' being compiled
   data_structures.vcxproj -> C:\Users\dev\Desktop\DSA\data_structures\data_structures\Debug\data_structures.exe

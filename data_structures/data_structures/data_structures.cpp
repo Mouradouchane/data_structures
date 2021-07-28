@@ -11,6 +11,7 @@
 #include "stacks/static_stack.hpp"
 
 #include "queues/static_queue.hpp"
+#include "queues/dynamic_queue.hpp"
 
 using namespace linkedlist;
 using namespace stacks;
@@ -18,26 +19,13 @@ using namespace queue;
 
 int main() {
    
-    static_queue<int> qe(4);
+    static_queue<int> sq(4);
+    dynamic_queue<int> dq;
+    
+    dq.push(4);
+
+    std::cout << dq.isEmpty();
    
-    qe.add(4);
-    qe.add(8);
-    qe.add(12);
-    qe.add(18);
-    qe.add(20);
-
-    qe.print();
-
-    qe.remove();
-    qe.remove();
-    qe.remove();
-  
-
-    qe.print();
-
-    std::cout << qe.length() << '\n';
-    std::cout << '\n';
-
     return 0;
 }
 

@@ -15,6 +15,7 @@
 
     reverse         => o(n*3)
     sort            => o(n²)
+    search          => o(n)
 
     remove          => o(1) ==> o(n)
     remove_first    => o(1)
@@ -438,6 +439,19 @@ public:
 
         }
 
+        // o(n)
+        // search of target value 
+        bool search(t target_value) {
+            if (first == NULL) return false;
+            node<t>* temp = first;
+
+            while ( temp != NULL){
+                if (temp->value == target_value) return true;
+                temp = temp->next;
+            }
+
+            return false;
+        }
 
         // o(1)
         // return length of linked size :) 
