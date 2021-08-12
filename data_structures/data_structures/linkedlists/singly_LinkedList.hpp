@@ -3,7 +3,7 @@
 
 // === singly linke list ~ methods ===
 /*
-  -- NAME ------------ BEST --> WORST 
+ -- NAME ------------ BEST --> WORST 
 
     length          => o(1)
     push_back       => o(1)
