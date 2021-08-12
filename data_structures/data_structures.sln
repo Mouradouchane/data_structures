@@ -24,6 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stacks", "stacks", "{A86D38
 		data_structures\stacks\static_stack.hpp = data_structures\stacks\static_stack.hpp
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hash tables", "hash tables", "{4D2AF6F4-EAA8-4319-AE7C-9AB10AF7DAC6}"
+	ProjectSection(SolutionItems) = preProject
+		data_structures\hash tables\hash_table.hpp = data_structures\hash tables\hash_table.hpp
+		data_structures\hash tables\hash_table_chaining.hpp = data_structures\hash tables\hash_table_chaining.hpp
+		data_structures\hash tables\hash_table_openAddressing.hpp = data_structures\hash tables\hash_table_openAddressing.hpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
