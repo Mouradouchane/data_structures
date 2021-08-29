@@ -13,18 +13,18 @@
 #include "queues/static_queue.hpp"
 #include "queues/dynamic_queue.hpp"
 
+#include "hash tables/hash_table.hpp"
+
 using namespace linkedlist;
 using namespace stacks;
 using namespace queue;
+using namespace hash_tables;
 
 int main() {
    
-    static_queue<int> sq(4);
-    dynamic_queue<int> dq;
-    
-    dq.push(4);
+    hash_table<int> hasht(14);
 
-    std::cout << dq.isEmpty();
+    std::cout << "programe end ";
    
     return 0;
 }
