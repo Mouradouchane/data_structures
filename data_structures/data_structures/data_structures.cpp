@@ -24,7 +24,16 @@ int main() {
    
     hash_table<int> hasht(14);
 
-    std::cout << "programe end ";
+    hasht.set(14);
+    hasht.set(16);
+    hasht.set(8);
+    hasht.set(4);
+    hasht.set(20);
+
+    hasht.print();
+
+    std::cout << "table length \t" << hasht.length() << '\n';
+    std::cout << "table size \t" << hasht.size() << '\n';
    
     return 0;
 }
