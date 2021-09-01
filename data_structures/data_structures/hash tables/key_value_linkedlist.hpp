@@ -6,37 +6,20 @@
  -- NAME ------------ BEST --> WORST
 
     length          => o(1)
+
     push_back       => o(1)
     push_front      => o(1)
-    push_at         => o(n)
+
+    get             => o(1) ==> o(n)
+    getPair         => o(1) ==> o(n)
 
     replace         => o(1) ==> o(n)
-    has             => o(1) ==> o(n)
-
-    reverse         => o(n*3)
-    sort            => o(n²)
     search          => o(n)
 
     remove          => o(1) ==> o(n)
-    remove_first    => o(1)
-    remove_last     => o(n)
-
-    getFirstAsPointer => o(1)
-    getLastAsPointer  => o(1)
-
-    getFistElement  => o(1)
-    getFistValue    => o(1)
-
-    getLastElement  => o(1)
-    getLastValue    => o(1)
-
-    toVector        => o(n)
-    toArray         => o(n)
-
     clear           => o(n)
-    print         => o(n)
 
-    +=              => o(1) ==> o(n)
+    print         => o(n)
 */
 
 namespace key_value_linkedlist {
@@ -44,8 +27,8 @@ namespace key_value_linkedlist {
 template<typename k , typename v> class kv_node {
     public:
         // only value & pointer for next one :)
-        k key = NULL;
-        v value = NULL;
+        k key;
+        v value;
         kv_node<k,v>* next = NULL;
 
         // empty constructor
@@ -62,8 +45,8 @@ template<typename k , typename v> class kv_node {
 };
 
 
-    // ========== singly linked list but key value pair ============
-template<typename k , typename v> class key_value_LinkedList {
+    // ========== singly linked list but key value pair only ============
+template<typename k , typename v> class key_value_linked_list {
 
     private:
         int len = 0; // len => length
@@ -71,21 +54,8 @@ template<typename k , typename v> class key_value_LinkedList {
         kv_node<k, v>* last  = NULL; // tail
 
     public:
-        key_value_LinkedList() {}
-        ~key_value_LinkedList() {}
-
-        // o(1)
-        // return "first/head" as pointer
-        kv_node<k,v>* getFirstAsPointer() {
-            return first;
-        }
-
-        // o(1)
-        // return "last/tail" as pointer
-        kv_node<k,v>* getLastAsPointer() {
-            return last;
-        }
-
+        key_value_linked_list() {}
+        ~key_value_linked_list() {}
 
         // o(1)
         // push new value direct from the back of linked list (or you can say 'new tail')
@@ -103,6 +73,46 @@ template<typename k , typename v> class key_value_LinkedList {
                 last->next = newNode;
                 last = newNode;
             }
+        }
+
+        // o(1) ==> o(n)
+        // get function return value if it found otherwise return null
+        v get(k target_key){
+            // in case linked list empty
+            if (first == NULL) return NULL;
+
+            // loop over all & search of target
+            kv_node<k,v>* temp = first;
+            while (temp != NULL) {
+                // in case found return value
+                if (temp->key == target_key) return temp->value;
+                else temp = temp->next;
+            }
+
+            // in case not found return will be null
+            return NULL;
+        }
+
+        // o(1) ==> o(n)
+        // get a pair { key , value }
+        std::pair<k,v> getPair(k target_key) {
+            // in case linked list empty return will be a empty pair
+            if (first == NULL) return std::pair<k, v>();
+
+            // loop over all & search of target
+            kv_node<k, v>* temp = first;
+            while (temp != NULL) {
+                // in case found return value
+                if (temp->key == target_key) {
+                    std::pair<k,v> tpair(temp->key, temp->value);
+                    return tpair;
+                }
+                // going to next one 
+                else temp = temp->next;
+            }
+
+            // in case not found return will be a empty pair
+            return std::pair<k, v>();
         }
 
         // o(1)
@@ -126,61 +136,6 @@ template<typename k , typename v> class key_value_LinkedList {
         }
 
         // o(n)
-        // push new value in linked list with specific position 
-        void push_at(k key_position, k key , v value) {
-            len += 1; // just length of linked list :)
-
-            // new node with value 
-            kv_node<k,v>* newNode = new kv_node<k,v>(key , value);
-
-            // temp for loop over all nodes & check one by one :) 
-            kv_node<k,v>* temp = first;
-
-            // loop over all nodes in linked list & check for position
-            while (temp != NULL) {
-                // in case we found position 
-                if (temp->key == key_position) {
-                    // getting next
-                    kv_node<k,v>* next = temp->next;
-                    // make next => newNode
-                    temp->next = newNode;
-                    // make newNode referring to next
-                    newNode->next = next;
-                    return; // stop as last step
-                }
-                // else keep going to next one 
-                temp = temp->next;
-            }
-
-            // in case position value not found we add newNode as last one 
-            last->next = newNode;
-            last = newNode;
-        }
-
-        // o(1)
-        // get first node in linked list
-        kv_node<k,v> getFirstElement() {
-            return (first != NULL) ? *first : NULL;
-        }
-        // o(1)
-        // get first value in first node in linked list
-        v getFirstValue() {
-            return (first != NULL) ? first->value : NULL;
-        }
-
-        // o(1)
-        // get last node in linked list
-        kv_node<k,v> getLastElement() {
-            return (last != NULL) ? *last : NULL;
-        }
-        // o(1)
-        // get last value in last node in linked list
-        v getLastValue() {
-            return (last != NULL) ? last->value : NULL;
-        }
-
-
-        // o(n)
         // method delete all nodes in linked list & make it clear 
         void clear() {
             kv_node<k,v>* temp = first;
@@ -195,14 +150,13 @@ template<typename k , typename v> class key_value_LinkedList {
             first = NULL;
             last = NULL;
             len = 0;
-
         }
 
         // o(n)
-        // replace function take "target value" and replace it with "new value" 
-        // if replace not found "target" don't do anything & return false 
-        // else replace and return true as confirmation :)
+        // replace old value by new one using  "key" 
+        // if it found replace else don't ==> and return will be "true or false" as confirmation :)
         bool replace(k target_key, v new_value) {
+
             // temp node for checking we start from "first or head"
             kv_node<k,v>* temp = first;
 
@@ -222,23 +176,21 @@ template<typename k , typename v> class key_value_LinkedList {
             return false;
         }
 
-        // o(n)
-        // searh for value if it in linked list or not
-        bool has(k target_key) {
-            kv_node<k,v>* temp = first;
 
-            // loop over all and check
+        // o(n)
+        // search for target using key
+        bool search(k target_key) {
+            if (first == NULL) return false;
+
+            kv_node<k, v>* temp = first;
             while (temp != NULL) {
-                // in case value found 
-                if (temp->key == target_key) {
-                    return true;
-                }
+                if (temp->key == target_key) return true;
                 temp = temp->next;
             }
 
-            // in case value not found 
             return false;
         }
+
 
         // o(1) ==> o(n)
         // remove take target if it found delete it and return true as confirmation 
@@ -288,146 +240,7 @@ template<typename k , typename v> class key_value_LinkedList {
             return false;
         }
 
-        // o(1)
-        // just method remove "first or head" & replace it with next one
-        void remove_first() {
-            // check if empty
-            if (first == NULL) return;
-
-            // check if one element in 
-            if (first == last) {
-                first = NULL;
-                last = NULL;
-                len = 0;
-                return;
-            }
-
-            // in case linked list not empty
-            len -= 1;
-            // set head to next one & delete old one
-            kv_node<k,v>* next = first->next;
-            delete first;
-            first = next;
-        }
-
-        // o(n)
-        // remove "last one or tail"
-        void remove_last() {
-            // check if  empty
-            if (first == NULL) return;
-
-            kv_node<k,v>* prevtemp = first;
-
-            kv_node<k,v>* temp = first->next;
-
-            // check if one element in
-            if (first->next == NULL) {
-                first = NULL;
-                last = NULL;
-                len -= 1;
-                return;
-            }
-
-            // loop over all until reach the last one
-            while (temp != NULL) {
-                if (temp->next == NULL) {
-                    // then make previous => new last 
-                    last = prevtemp;
-                    //and next of that new one equal to null 
-                    last->next = NULL;
-                    // delete old last and return for stop function
-                    delete temp;
-
-                    len -= 1;
-
-                    return;
-                }
-                // else going to next one in list
-                prevtemp = temp;
-                temp = temp->next;
-            }
-
-        }
-
-        // o(n²)
-        // sorting linked list using linear sort "worst one :)"
-        void sort(bool from_greater_to_smaller = false) {
-            kv_node<k,v>* temp = first;
-
-            // in case you want sort from greatest to smallest
-            if (from_greater_to_smaller) {
-
-                // just linear sort o(n²)
-                while (temp != NULL) {
-                    kv_node<k,v>* comp = first;
-
-                    while (comp != NULL) {
-                        if (comp->value < temp->value) {
-                            v tempValue = comp->value;
-                            comp->value = temp->value;
-                            temp->value = tempValue;
-                        }
-                        comp = comp->next;
-                    }
-                    temp = temp->next;
-                }
-
-            }
-            // in case you want sort from smallest to greatest
-            else {
-
-                while (temp != NULL) {
-                    kv_node<k,v>* comp = first;
-
-                    while (comp != NULL) {
-                        if (comp->value > temp->value) {
-                            v tempValue = comp->value;
-                            comp->value = temp->value;
-                            temp->value = tempValue;
-                        }
-                        comp = comp->next;
-                    }
-                    temp = temp->next;
-                }
-
-            }
-
-        }
-
-        // o(n*3)
-        void reverse() {
-            std::vector<std::pair<k, v>> temp_vec;
-            kv_node<k,v>* temp = first;
-
-            // o(n) : take all linked list element & push them to vector
-            while (temp != NULL) {
-                temp_vec.insert(temp_vec.begin(), { temp->key , temp->value });
-                temp = temp->next;
-            }
-
-            // o(n) : clear linked list 
-            clear();
-
-            // o(n) : push_back all reversed values to linked list 
-            for (std::pair<k,v> kv : temp_vec) {
-                push_back(kv->key , kv->value);
-            }
-
-        }
-
-        // o(n)
-        // search of target value 
-        bool search(k target_key) {
-            if (first == NULL) return false;
-            kv_node<k,v>* temp = first;
-
-            while (temp != NULL) {
-                if (temp->key == target_key) return true;
-                temp = temp->next;
-            }
-
-            return false;
-        }
+      
 
         // o(1)
         // return length of linked size :) 
@@ -441,10 +254,10 @@ template<typename k , typename v> class key_value_LinkedList {
             kv_node<k,v>* tempNode = first;
 
             while (tempNode != NULL) {
-                std::cout << "| " << tempNode->key << " | " << tempNode->value << "|-->";
+                std::cout << "|" << tempNode->key << "|" << tempNode->value << "|--> ";
                 tempNode = tempNode->next;
             }
-            std::cout << "==================================================" << std::endl;
+            std::cout << "\n==================================================" << std::endl;
         }
 
 };
