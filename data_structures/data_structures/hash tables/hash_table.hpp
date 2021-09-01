@@ -75,6 +75,8 @@ template<typename t> class hash_table {
 			int index = hash(data);
 			// put data in target index
 			table[index] = data;
+
+			len += 1;
 		}
 
 		// get data by value from hash table
@@ -103,7 +105,7 @@ template<typename t> class hash_table {
 		// simple function print values in console only work in that simple hash table
 		void print() {
 			std::cout << " HASH-TABLE :\t\t\n";
-			std::cout << " ============\t\t\n";
+			std::cout << " ==================================\n";
 
 			// loop over all
 			for (int i = 0; i < table_size; i += 1) {
@@ -114,7 +116,7 @@ template<typename t> class hash_table {
 				else std::cout << "| " << i << "\t\t   " << table[i] << "\n";
 			}
 			
-			std::cout << " ============\t\t\n";
+			std::cout << " ==================================\n";
 
 		}
 

@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hash tables", "hash tables"
 		data_structures\hash tables\hash_table.hpp = data_structures\hash tables\hash_table.hpp
 		data_structures\hash tables\hash_table_chaining.hpp = data_structures\hash tables\hash_table_chaining.hpp
 		data_structures\hash tables\hash_table_openAddressing.hpp = data_structures\hash tables\hash_table_openAddressing.hpp
+		data_structures\hash tables\key_value_linkedlist.hpp = data_structures\hash tables\key_value_linkedlist.hpp
 	EndProjectSection
 EndProject
 Global

@@ -14,11 +14,14 @@
 #include "queues/dynamic_queue.hpp"
 
 #include "hash tables/hash_table.hpp"
+#include "hash tables/key_value_linkedlist.hpp"
 
 using namespace linkedlist;
 using namespace stacks;
 using namespace queue;
+
 using namespace hash_tables;
+using namespace key_value_linkedlist;
 
 int main() {
    
@@ -29,6 +32,9 @@ int main() {
     hasht.set(8);
     hasht.set(4);
     hasht.set(20);
+    hasht.set(10);
+    hasht.set(7);
+    hasht.set(2);
 
     hasht.print();
 
