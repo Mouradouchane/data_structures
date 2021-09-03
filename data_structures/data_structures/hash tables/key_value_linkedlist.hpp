@@ -1,4 +1,4 @@
-#include <vector>
+#include <iostream>
 #pragma once
 
 // === singly linke list but key value pair system for hash tables ===
@@ -32,7 +32,8 @@ template<typename k , typename v> class kv_node {
         kv_node<k,v>* next = NULL;
 
         // empty constructor
-        kv_node() { }
+        kv_node() {  }
+
         // key value constructor
         kv_node(k Key, v Value) { 
             key = Key; 

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include "key_value_linkedlist.hpp"
 #pragma once
 
 /*
@@ -8,28 +10,31 @@
 
 // === hash table ~ methods ===========
 /*
-   -- NAME ------------ BEST --> WORST
+   -- NAME ----------- BEST  --> WORST
+	
+	hash			=> o(n)
 
-	clear			=> o(n)  --> o(n)
-	clone			=> o(n)	 --> o(n)
-	elements		=> o(n)	 --> o(n)
+	clear			=> o(n)  
+	elements		=> o(n)	 
 
-	set				=> o(1)
-	get				=> o(1)
+	set				=> o(n) // note !! o(n) for hash function
+	get				=> o(n) // note !! o(n) for hash function
 
-	remove			=> o(1)
-	replace			=> o(1)
-	replaceAll		=> o(n)	 --> o(n)
+	remove			=> o(n) // note !! o(n) for hash function
+	replace			=> o(n) // note !! o(n) for hash function
 
 	isEmpty			=> o(1)
 	isFull			=> o(1)
 
-	values			=> o(n)	 --> o(n)
+	values			=> o(n)	 
 
-	print			=> o(n)	 --> o(n)
+	print			=> o(n)
+
 	length			=> o(1)
 	size			=> o(1)
 */
+
+using namespace key_value_linkedlist;
 
 namespace hash_tables {
 
@@ -39,9 +44,14 @@ template<typename k, typename v> class hash_table {
 		unsigned int table_size = 0;
 		unsigned int len = 0;
 		const unsigned int min_size = 3;
-		std::pair<k,v>* table = NULL;
 
-		// simple hash function all what to do is => key % table_size
+		v emptyToken = NULL;
+
+		// hash table or array key value nodes
+		kv_node<k,v>* table = NULL;
+
+		// o(n)
+		// simple hash function all what to do is => key_size % table_size
 		int hash(k key) {
 
 			// hash trick
@@ -57,9 +67,22 @@ template<typename k, typename v> class hash_table {
 			return hash_index;
 		}
 
+		// table size must be prime number 
+		unsigned int isPrimeNumber(unsigned int num) {
+			// in case number prime return directlly 
+			if (num % 2 != 0) return num;
+
+			// else loop until we get prime number 
+			for (; ; num += 1) {
+				if (num % 2 != 0) return num;
+			}
+
+		}
+
+
 	public:
 		// constructor 
-		hash_table(unsigned int hash_table_size = min_size){
+		hash_table(unsigned int hash_table_size = min_size , v empty_token = NULL){
 
 			// check if table_size is bigger than min size allowed "3"
 			table_size = (hash_table_size < min_size) ? min_size : hash_table_size;
@@ -69,15 +92,20 @@ template<typename k, typename v> class hash_table {
 			table_size = isPrimeNumber(table_size);
 
 			// define hash table with valid size in construction time
-			table = new std::pair<k,v>[table_size];
+			table = new kv_node<k,v>[table_size];
 
-			
-			// fill hash table by null's
+			// set empty_token
+			emptyToken = empty_token;
+
+			// loop over all empty nodes & fill it by "empty token"
 			for (unsigned int i = 0; i <= hash_table_size; i += 1) {
-				table[i] = std::pair<k,v>();
+				table[i].value = emptyToken;
 			}
 			
 		}
+
+		// deconstructor
+		~hash_table() { }
 
 		// set data by value to hash table
 		void set(k key , v value) {
@@ -86,13 +114,31 @@ template<typename k, typename v> class hash_table {
 			int index = hash(key);
 
 			// check if that index empty or not , only for updating lenght
-			if (table[index].second == NULL) {
+			if (table[index].value == emptyToken) {
 				len += 1;
 			}
 
 			// otherwise in case is empty or not 
 			// put data in target index "replacement concept " 
-			table[index] = std::pair<k,v>(key,value);
+			table[index] = kv_node<k,v>(key,value);
+		}
+
+		// o(n)
+		// replace old value with new one & return bool as confirmation
+		bool replace(k target_key, v new_value) {
+			// hash & get index
+			int index = hash(target_key);
+
+			// check if same target or not
+			if (table[index].key == target_key) {
+				// in case right do replacement
+				table[index].value = new_value;
+
+				// and return true as confirmation
+				return true;
+			}
+			// in case target not found or "replaced | deleted"
+			else return false;
 		}
 
 		// get data by value from hash table
@@ -100,50 +146,132 @@ template<typename k, typename v> class hash_table {
 			// hash & get index
 			int index = hash(key);
 
-			// check if data is equal to parameter value
-			if (table[index].first == key) return table[index].second;
+			// check if "target key" is still in table or "deleted | replaced"
+			if (table[index].key == key) return table[index].value;
 
-			// get data in that index & return it 
+			// in case key != key that mean target "deleted | replaced"
 			return NULL;
 		}
 
-		// deconstructor
-		~hash_table() { }
+		// o(n)
+		// remove element from table
+		bool remove(k target_key) {
 
-		// table size must be prime number 
-		unsigned int isPrimeNumber(unsigned int num) {
-			// in case number prime return directlly 
-			if (num % 2 != 0) return num;
-			
-			// else loop until we get prime number 
-			for ( ; ; num += 1 ) {
-				if (num % 2 != 0) return num;
+			// hash & get target index
+			int index = hash(target_key);
+
+			// check if target is still in table or not 
+			if (table[index].key == target_key) {
+				// just override old node by new one with emptyToken
+				table[index] = kv_node<k, v>();
+				table[index].value = emptyToken;
+
+				// update length
+				len -= 1;
+
+				// confirmation of remove operation
+				return true;
 			}
-
+			// otherwise that mean target not found
+			else return false;
+			
 		}
-
+	
+		// o(n)
 		// simple function print values in console only work in that simple hash table
 		void print() {
-			std::cout << " HASH-TABLE :\t\t\n";
+			std::cout << " ==================================\n";
+			std::cout << "|| HASH-TABLE :                   ||\n";
 			std::cout << " ==================================\n";
 
 			// loop over all
 			for (int i = 0; i < table_size; i += 1) {
 				// in case value NULL that mean EMPTY
-				if (table[i].second == NULL) {
-					std::cout << "| " << i << "\t\t <EMPTY> \n";
+				if (table[i].value == emptyToken) {
+					std::cout << "| " << i << "\t\t [EMPTY] \n";
 				}
-				else std::cout << "| " << i << "\t\t [" << table[i].first << " | " << table[i].second << "] \n";
+				else std::cout << "| " << i << "\t\t [" << table[i].key << " | " << table[i].value << "] \n";
 			}
 			
-			std::cout << " ==================================\n";
+			std::cout << "====================================\n";
+			std::cout << "table length \t" << length() << '\n';
+			std::cout << "table size \t" << size() << '\n';
+			std::cout << "is empty \t" << isEmpty() << '\n';
+			std::cout << "is full \t" << isFull() << '\n';
+			std::cout << "====================================\n";
 
 		}
 
+		// o(1)
+		// check if table is empty
+		bool isEmpty() {
+			return (len <= 0) ? true : false;
+		}
+
+		// o(1)
+		// check if table is full
+		bool isFull() {
+			return (len >= table_size) ? true : false;
+		}
+
+		// o(n)
+		// delete all elements in hash table
+		void clear() {
+
+			delete[] table;
+
+			// make new one
+			table = new kv_node<k, v>[table_size];
+
+			// loop over all empty nodes & fill it by "empty token"
+			for (unsigned int i = 0; i <= table_size; i += 1) {
+				table[i].value = emptyToken;
+			}
+
+			// reset lenght 
+			len = 0;
+
+		}
+
+
+		// o(n)
+		// return vector of values 
+		std::vector<v> values() {
+
+			// new vector
+			std::vector<v> vals;
+
+			// fill vector
+			for (int i = 0; i < table_size; i += 1) {
+				if (table[i].value != emptyToken) vals.push_back(table[i].value);	
+			}
+
+			// return vector
+			return vals;
+		}
+
+
+		// o(n)
+		// looks like values but this return vector with nodes <key,value> pair
+		std::vector<kv_node<k, v>> elements() {
+
+			std::vector<kv_node<k, v>> nodes;
+
+			for (int i = 0; i < table_size; i += 1) {
+				if (table[i].value != emptyToken) nodes.push_back(table[i]);
+			}
+
+			return nodes;
+		}
+
+		// o(1)
+		// get size of that hash table
 		unsigned int size() {
 			return table_size;
 		}
 
+		// o(1)
+		// get length of elements in that hash table
 		unsigned int length() {
 			return len;
 		}
