@@ -155,7 +155,7 @@ template<typename k, typename v> class hash_table {
 			return NULL;
 		}
 
-		// o(n)
+		// o(h+1)
 		// get a key value pair if it found 
 		std::pair<k,v> getPair(k target_key){
 			// hash & get index

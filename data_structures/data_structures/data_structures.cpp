@@ -36,10 +36,10 @@ int main() {
     lphasht.set("tsqdvr",20);
     lphasht.set("sara",4);
     lphasht.set("name",10);
-    lphasht.set("name", 20);
-    lphasht.set("name", 30);
-    lphasht.set("name", 40);
-   
+    lphasht.set("gta", 20);
+    lphasht.set("yty", 30);
+    lphasht.set("zxy", 40);
+    
     /*
     lphasht.set("getl",7);
     lphasht.set("rx7",2);

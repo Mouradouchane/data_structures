@@ -59,7 +59,7 @@ public :
 	// return will be a boolean as confirmation of that  operation "set success or not" :)
 	bool set(k key, v value) {
 
-		// check if table is full or not 
+		// check if table is full or empty  
 		if (this->isFull()) return false;
 
 		// hash key & get index
@@ -132,6 +132,129 @@ public :
 		}
 		// in case not found return must be null
 		return NULL;
+	}
+
+	// o(h+1) --> o(h+n)
+	// get a key value pair if it found 
+	std::pair<k, v> getPair(k target_key) {
+
+		// in case table empty
+		if (this->isEmpty()) return std::pair<k, v>();
+
+		// hash & get index
+		int index = this->hash(target_key);
+
+		// check if "target" found
+		if (this->table[index].key == target_key) {
+			// return will be a <key , value> pair 
+			return std::pair<k, v>(this->table[index].key, this->table[index].value);
+		}
+		// otherwise loop over all from index to the of table
+		else{
+
+			for (int i = index + 1; i < this->table_size; i += 1) {
+
+				if (this->table[i].key == target_key) {
+					// return will be a <key , value> pair 
+					return std::pair<k, v>(this->table[i].key, this->table[i].value);
+				}
+
+			}
+
+		}
+
+		// in case target not found return will be an empty pair
+		return std::pair<k, v>();
+	}
+
+	// o(h+1) --> o(h+n)
+	// remove element from table
+	bool remove(k target_key) {
+
+		// check if table is  empty  
+		if (this->isEmpty()) return false;
+
+		// hash & get target index
+		int index = this->hash(target_key);
+
+		// check if target is still in table or not 
+		if (this->table[index].key == target_key) {
+			// just override old node by new one with emptyToken
+			this->table[index] = kv_node<k, v>();
+			this->table[index].value = this->emptyToken;
+
+			// update length
+			this->len -= 1;
+
+			// confirmation of remove operation
+			return true;
+		}
+		// otherwise that mean we need to loop over all from index to the end of table
+		else {
+
+			for (int i = index + 1; i < this->table_size; i += 1) {
+				// in case target found 
+				if (this->table[i].key == target_key) {
+
+					// just override old node by new one with emptyToken
+					this->table[index] = kv_node<k, v>();
+					this->table[index].value = this->emptyToken;
+
+					// update length
+					this->len -= 1;
+
+					// confirmation of remove operation
+					return true;
+				}
+			}
+
+		}
+			
+		// in case not found 
+		return false;
+	}
+
+	// o(h+1) --> o(h+n)
+	// replace old value by new one it if found 
+	bool replace(k key, v value) {
+
+		// check if table is empty  
+		if (this->isEmpty()) return false;
+
+		// hash key & get index
+		int index = this->hash(key);
+
+		// in case that key is found in first try
+		if (this->table[index].key == key) {
+
+			// replace old value by new one
+			this->table[index].value = value;
+
+			// true as confrimation
+			return true;
+		}
+		// in case not found !
+		else {
+
+			// loop over all form index to the end of table
+			for (int i = index + 1; i < this->table_size; i += 1) {
+
+				// in case key found
+				if (this->table[i].key == key) {
+
+					// replace old value by new one
+					this->table[i].value = value;
+
+					// true as confrimation
+					return true;
+				}
+
+			}
+
+		}
+
+		// in case not found
+		return false;
 	}
 
 	// o(n)
