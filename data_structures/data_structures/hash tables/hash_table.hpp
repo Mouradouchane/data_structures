@@ -12,17 +12,17 @@
 /*
    -- NAME ----------- BEST  --> WORST
 	
-	hash			=> o(n)
+	hash			=> o(h)
 
 	clear			=> o(n)  
 	elements		=> o(n)	 
 
-	set				=> o(n) // note !! o(n) for hash function
-	get				=> o(n) // note !! o(n) for hash function
-	getPair			=> o(n) // note !! o(n) for hash function
+	set				=> o(h + 1) // note !! o(h) for hash time + extra one step
+	get				=> o(h + 1) // note !! o(h) for hash time + extra one step
+	getPair			=> o(h + 1) // note !! o(h) for hash time + extra one step
 
-	remove			=> o(n) // note !! o(n) for hash function
-	replace			=> o(n) // note !! o(n) for hash function
+	remove			=> o(h + 1) // note !! o(h) for hash time + extra one step
+	replace			=> o(h + 1) // note !! o(h) for hash time + extra one step
 
 	isEmpty			=> o(1)
 	isFull			=> o(1)
@@ -41,6 +41,7 @@ namespace hash_tables {
 
 // simple hash table => "" replacemenet hash table "" there's no keys only values
 template<typename k, typename v> class hash_table {
+
 	protected :
 		unsigned int table_size = 0;
 		unsigned int len = 0;
@@ -142,7 +143,7 @@ template<typename k, typename v> class hash_table {
 			else return false;
 		}
 
-		// get data by value from hash table
+		// get value from hash table using key
 		v get(k target_key) {
 			// hash & get index
 			int index = hash(target_key);
@@ -150,7 +151,7 @@ template<typename k, typename v> class hash_table {
 			// check if "target key" is still in table or "deleted | replaced"
 			if (table[index].key == target_key) return table[index].value;
 
-			// in case key != key that mean target "deleted | replaced"
+			// in case target_key != key that mean target "deleted | replaced"
 			return NULL;
 		}
 

@@ -28,7 +28,7 @@ using namespace key_value_linkedlist;
 int main() {
    
     //hash_table<std::string,int> hasht(14,-1);
-    LP_hash_table<std::string, int> lphasht(2, -1);
+    LP_hash_table<std::string, int> lphasht(12, -1);
     
     lphasht.set("gx", 14);
     lphasht.set("grey",16);
@@ -36,22 +36,21 @@ int main() {
     lphasht.set("tsqdvr",20);
     lphasht.set("sara",4);
     lphasht.set("name",10);
-    
+    lphasht.set("name", 20);
+    lphasht.set("name", 30);
+    lphasht.set("name", 40);
+   
     /*
-    hasht.set("getl",7);
-    hasht.set("rx7",2);
-    hasht.set("ddl",1);
-    hasht.set("gxx",-14);
-    hasht.set("erze", -14);
-    hasht.set("stazel", -14);
-    hasht.set("fsdftl", -14);
-    hasht.set("taazel", -14);
+    lphasht.set("getl",7);
+    lphasht.set("rx7",2);
+    lphasht.set("ddl",1);
+    lphasht.set("gxx",-14);
+    lphasht.set("erze", -14);
+    lphasht.set("stazel", -14);
+    lphasht.set("fsdftl", -14);
+    lphasht.set("taazel", -14);
     */
     
-    lphasht.print();
-
-    lphasht.clear();
-
     lphasht.print();
 
     return 0;
