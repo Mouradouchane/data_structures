@@ -19,6 +19,7 @@
 
 	set				=> o(n) // note !! o(n) for hash function
 	get				=> o(n) // note !! o(n) for hash function
+	getPair			=> o(n) // note !! o(n) for hash function
 
 	remove			=> o(n) // note !! o(n) for hash function
 	replace			=> o(n) // note !! o(n) for hash function
@@ -40,7 +41,7 @@ namespace hash_tables {
 
 // simple hash table => "" replacemenet hash table "" there's no keys only values
 template<typename k, typename v> class hash_table {
-	private:
+	protected :
 		unsigned int table_size = 0;
 		unsigned int len = 0;
 		const unsigned int min_size = 3;
@@ -142,15 +143,30 @@ template<typename k, typename v> class hash_table {
 		}
 
 		// get data by value from hash table
-		v get(k key) {
+		v get(k target_key) {
 			// hash & get index
-			int index = hash(key);
+			int index = hash(target_key);
 
 			// check if "target key" is still in table or "deleted | replaced"
-			if (table[index].key == key) return table[index].value;
+			if (table[index].key == target_key) return table[index].value;
 
 			// in case key != key that mean target "deleted | replaced"
 			return NULL;
+		}
+
+		// o(n)
+		// get a key value pair if it found 
+		std::pair<k,v> getPair(k target_key){
+			// hash & get index
+			int index = hash(target_key);
+
+			// check if "target key" is still in table or "deleted | replaced"
+			if (table[index].key == target_key) {
+				// in case still in table return will be a <key , value> pair 
+				return std::pair<k, v>(table[index].key, table[index].value);
+			}
+			// else return will be a empty pair
+			else return std::pair<k, v>();
 		}
 
 		// o(n)
