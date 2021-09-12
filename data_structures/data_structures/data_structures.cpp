@@ -28,29 +28,36 @@ using namespace key_value_linkedlist;
 int main() {
    
     //hash_table<std::string,int> hasht(14,-1);
-    LP_hash_table<std::string, int> lphasht(12, -1);
+    QP_hash_table<std::string, int> lphasht(14, -1);
     
     lphasht.set("gx", 14);
     lphasht.set("grey",16);
     lphasht.set("rzae",8);
-    lphasht.set("tsqdvr",20);
+    lphasht.set("tsqr",20);
     lphasht.set("sara",4);
     lphasht.set("name",10);
-    lphasht.set("gta", 20);
-    lphasht.set("yty", 30);
-    lphasht.set("zxy", 40);
-    
-    /*
-    lphasht.set("getl",7);
-    lphasht.set("rx7",2);
-    lphasht.set("ddl",1);
-    lphasht.set("gxx",-14);
-    lphasht.set("erze", -14);
-    lphasht.set("stazel", -14);
-    lphasht.set("fsdftl", -14);
-    lphasht.set("taazel", -14);
-    */
-    
+    lphasht.set("gta",20);
+    lphasht.set("yty",30); //
+    lphasht.set("zxy",40);
+    lphasht.set("getl",7); 
+    lphasht.set("rx7",2);  
+    lphasht.set("ddl",1); 
+
+    lphasht.print();
+
+    lphasht.remove("gfsfdx");
+    lphasht.remove("grey");
+    lphasht.remove("rqsfqsfzae");
+    lphasht.remove("tsqr");
+    lphasht.remove("safqsfra");
+    lphasht.remove("nsdfdfsdfame");
+    lphasht.remove("gsdfsdfta");
+    lphasht.remove("yty");
+    lphasht.remove("zxy");
+    lphasht.remove("getl");
+    lphasht.remove("rx7");
+    lphasht.remove("dfqsfqsdl");
+
     lphasht.print();
 
     return 0;
