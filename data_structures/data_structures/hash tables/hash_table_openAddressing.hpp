@@ -5,7 +5,7 @@
 /*
 	this file contain 3 "hash tables" all using "open addressing" technique in hash
 	- Linear Probing
-	- Quadratic Probing
+	- like Quadratic Probing
 	- Double Hashing
 */
 
@@ -43,7 +43,6 @@ namespace hash_tables {
 	// LP = Linear Probing 
 	// inherit from base hash_table
 template<typename k , typename v>class LP_hash_table : public hash_table<k,v> {
-
 
 public : 
 	// constructor 
@@ -258,6 +257,7 @@ public :
 
 	// o(n)
 	// simple function print values in console only work in that simple hash table
+	
 	void print() {
 		std::cout << " =====================================\n";
 		std::cout << "|| LP HASH-TABLE :                   ||\n";
@@ -279,16 +279,15 @@ public :
 		std::cout << "is full \t" << this->isFull() << '\n';
 		std::cout << "======================================\n";
 	}
+	
 };
 
 
 
-	// QP = Quadratic Probing
+	// QP = like Quadratic Probing
 	// inherit from Linear Probing 
 	// but using different technique of hashing
 template<typename k, typename v> class QP_hash_table : public LP_hash_table<k, v> {
-
-protected : 
 
 public : 	
 	// constructor 
@@ -300,7 +299,7 @@ public :
 
 
 	// o(h+1) --> o(h+n)
-	// set data by "key , value" to hash table "using quadratic hashing"
+	// set data by "key , value" to hash table "using like quadratic hashing"
 	// return will be a boolean as confirmation of that  operation "set success or not" :)
 	bool set(k key, v value) {
 
@@ -324,8 +323,7 @@ public :
 		// in case not empty !
 		else {
 			 
-
-			// "quadratic probing" concept 
+			// "like quadratic probing" concept but only going by +=2 in each step
 			// looking for empty place :)
 			for (int i = index+1; i < this->table_size; i += 2) {
 
@@ -463,6 +461,74 @@ public :
 		return false;
 	}
 
+
+	// o(h+1) --> o(h+n)
+	// replace old value by new one it if found 
+	bool replace(k key, v value) {
+
+		// check if table is empty  
+		if (this->isEmpty()) return false;
+
+		// hash key & get index
+		int index = this->hash(key);
+
+		// in case that key is found in first try
+		if (this->table[index].key == key) {
+
+			// replace old value by new one
+			this->table[index].value = value;
+
+			// true as confrimation
+			return true;
+		}
+		// in case not found !
+		else {
+
+			// loop over all form index to the end of table
+			for (int i = index + 1; i < this->table_size; i += 2) {
+
+				// in case key found
+				if (this->table[i].key == key) {
+
+					// replace old value by new one
+					this->table[i].value = value;
+
+					// true as confrimation
+					return true;
+				}
+
+			}
+
+		}
+
+		// in case not found
+		return false;
+	}
+
+	// o(n)
+	// simple function print values in console only work in that simple hash table
+	void print() {
+		std::cout << " =====================================\n";
+		std::cout << "|| QP HASH-TABLE :                   ||\n";
+		std::cout << " =====================================\n";
+
+		// loop over all
+		for (int i = 0; i < this->table_size; i += 1) {
+			// in case value NULL that mean EMPTY
+			if (this->table[i].value == this->emptyToken) {
+				std::cout << "| " << i << "\t\t [EMPTY] \n";
+			}
+			else std::cout << "| " << i << "\t\t [" << this->table[i].key << " | " << this->table[i].value << "] \n";
+		}
+
+		std::cout << "======================================\n";
+		std::cout << "table length \t" << this->length() << '\n';
+		std::cout << "table size \t" << this->size() << '\n';
+		std::cout << "is empty \t" << this->isEmpty() << '\n';
+		std::cout << "is full \t" << this->isFull() << '\n';
+		std::cout << "======================================\n";
+	}
+	
 };
 
 

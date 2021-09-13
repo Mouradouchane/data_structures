@@ -45,18 +45,18 @@ int main() {
 
     lphasht.print();
 
-    lphasht.remove("gfsfdx");
-    lphasht.remove("grey");
-    lphasht.remove("rqsfqsfzae");
-    lphasht.remove("tsqr");
-    lphasht.remove("safqsfra");
-    lphasht.remove("nsdfdfsdfame");
-    lphasht.remove("gsdfsdfta");
-    lphasht.remove("yty");
-    lphasht.remove("zxy");
-    lphasht.remove("getl");
-    lphasht.remove("rx7");
-    lphasht.remove("dfqsfqsdl");
+    lphasht.replace("gx", 2021);
+    lphasht.replace("grey",  2021);
+    lphasht.replace("rzae", 2021);
+    lphasht.replace("tsqr",  2021);
+    lphasht.replace("sara", 2021);
+    lphasht.replace("name",  2021);
+    lphasht.replace("gta", 2021);
+    lphasht.replace("yty", 2021); //
+    lphasht.replace("zxy", 2021);
+    lphasht.replace("getl", 2021);
+    lphasht.replace("rx7", 2021);
+    lphasht.replace("ddl", 2021);
 
     lphasht.print();
 

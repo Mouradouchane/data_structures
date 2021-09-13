@@ -43,6 +43,7 @@ namespace hash_tables {
 template<typename k, typename v> class hash_table {
 
 	protected :
+
 		unsigned int table_size = 0;
 		unsigned int len = 0;
 		const unsigned int min_size = 3;
@@ -196,9 +197,9 @@ template<typename k, typename v> class hash_table {
 	
 		// o(n)
 		// simple function print values in console only work in that simple hash table
-		void print() {
+		virtual void print() {
 			std::cout << " ==================================\n";
-			std::cout << "|| HASH-TABLE :                   ||\n";
+			std::cout << "|| BASIC HASH - TABLE :           || \n";
 			std::cout << " ==================================\n";
 
 			// loop over all
