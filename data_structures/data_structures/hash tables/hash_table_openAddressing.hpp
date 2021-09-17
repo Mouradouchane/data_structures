@@ -532,5 +532,21 @@ public :
 	
 };
 
+template<typename v> class DP_hash_table : public LP_hash_table<v> {
+
+	protected :
+		int hash2(std::string key) {
+			return 0;
+		}
+
+	public :
+		// constructor
+		DP_hash_table(unsigned int hash_table_size = 3) : LP_hash_table<v>(hash_table_size) {}
+
+		// destructor
+		~DP_hash_table() {}
+
+};
+
 
 }

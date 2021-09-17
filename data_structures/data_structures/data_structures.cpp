@@ -27,38 +27,37 @@ using namespace key_value_linkedlist;
 
 int main() {
    
-    //hash_table<int> lphasht(14);
-    QP_hash_table<int> lphasht(14);
+    DP_hash_table<int> hasht(14);
     
-    lphasht.set("gx", 14);
-    lphasht.set("grey",16);
-    lphasht.set("rzae",8);
-    lphasht.set("tsqr",20);
-    lphasht.set("sara",4);
-    lphasht.set("name",10);
-    lphasht.set("gta",20);
-    lphasht.set("yty",30); //
-    lphasht.set("zxy",40);
-    lphasht.set("getl",7); 
-    lphasht.set("rx7",2);  
-    lphasht.set("ddl",1); 
+    hasht.set("gx", 14);
+    hasht.set("grey",16);
+    hasht.set("rzae",8);
+    hasht.set("tsqr",20);
+    hasht.set("sara",4);
+    hasht.set("name",10);
+    hasht.set("gta",20);
+    hasht.set("yty",30); //
+    hasht.set("zxy",40);
+    hasht.set("getl",7); 
+    hasht.set("rx7",2);  
+    hasht.set("ddl",1); 
 
-    lphasht.print();
+    hasht.print();
 
-    lphasht.replace("gx", 2021);
-    lphasht.replace("grey",  2021);
-    lphasht.replace("rzae", 2021);
-    lphasht.replace("tsqr",  2021);
-    lphasht.replace("sara", 2021);
-    lphasht.replace("name",  2021);
-    lphasht.replace("gta", 2021);
-    lphasht.replace("yty", 2021); //
-    lphasht.replace("zxy", 2021);
-    lphasht.replace("getl", 2021);
-    lphasht.replace("rx7", 2021);
-    lphasht.replace("ddl", 2021);
+    hasht.replace("gx", 2021);
+    hasht.replace("getl", 2021);
+    hasht.replace("rx7", 2021);
+    hasht.replace("ddl", 2021);
+    hasht.replace("grey",  2021);
+    hasht.replace("gta", 2021);
+    hasht.replace("yty", 2021); //
+    hasht.replace("rzae", 2021);
+    hasht.replace("tsqr",  2021);
+    hasht.replace("zxy", 2021);
+    hasht.replace("sara", 2021);
+    hasht.replace("name",  2021);
 
-    lphasht.print();
+    hasht.print();
 
     return 0;
 }
