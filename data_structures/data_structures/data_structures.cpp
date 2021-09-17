@@ -27,8 +27,8 @@ using namespace key_value_linkedlist;
 
 int main() {
    
-    //hash_table<std::string,int> hasht(14,-1);
-    QP_hash_table<std::string, int> lphasht(14, -1);
+    //hash_table<int> lphasht(14);
+    QP_hash_table<int> lphasht(14);
     
     lphasht.set("gx", 14);
     lphasht.set("grey",16);

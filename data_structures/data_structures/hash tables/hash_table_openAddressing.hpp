@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "hash_table.hpp"
 #pragma once
 
@@ -42,11 +43,11 @@ namespace hash_tables {
 
 	// LP = Linear Probing 
 	// inherit from base hash_table
-template<typename k , typename v>class LP_hash_table : public hash_table<k,v> {
+template<typename v> class LP_hash_table : public hash_table<v> {
 
 public : 
 	// constructor 
-	LP_hash_table(unsigned int hash_table_size = 3 , v emptyToken = NULL) : hash_table<k,v>(hash_table_size , emptyToken) {
+	LP_hash_table(unsigned int hash_table_size = 3) : hash_table<v>(hash_table_size) {
 
 	}
 	// destructor
@@ -55,7 +56,7 @@ public :
 	// o(h+1) --> o(h+n)
 	// set data by "key , value" to hash table
 	// return will be a boolean as confirmation of that  operation "set success or not" :)
-	bool set(k key, v value) {
+	bool set(std::string key, v value) {
 
 		// check if table is full or empty  
 		if (this->isFull()) return false;
@@ -70,7 +71,7 @@ public :
 		if (this->table[index].key == key) return false;
 
 		// as first step , check if that hashed index empty or not 
-		if (this->table[index].value == this->emptyToken) {
+		if (this->table[index].key == this->emptyToken) {
 			success = true;
 			this->len += 1;
 		}
@@ -85,7 +86,7 @@ public :
 				if (this->table[i].key == key) return false;
 
 				// in case empty place founded 
-				if (this->table[i].value == this->emptyToken) {
+				if (this->table[i].key == this->emptyToken) {
 					success = true;
 					this->len += 1;
 
@@ -101,7 +102,7 @@ public :
 		// in case empty place found 
 		if (success) {
 			// operation will be successfully & return will be true 
-			this->table[index] = kv_node<k, v>(key, value);
+			this->table[index] = kv_node<std::string , v>(key, value);
 			return success;
 		}
 		// otherwise false 
@@ -110,7 +111,7 @@ public :
 
 	// o(h+1) --> o(h+n)
 	// get value from hash table using key
-	v get(k target_key) {
+	v get(std::string target_key) {
 
 		// hash & get index 
 		int index = this->hash(target_key);
@@ -134,10 +135,10 @@ public :
 
 	// o(h+1) --> o(h+n)
 	// get a key value pair if it found 
-	std::pair<k, v> getPair(k target_key) {
+	std::pair<std::string , v> getPair(std::string target_key) {
 
 		// in case table empty
-		if (this->isEmpty()) return std::pair<k, v>();
+		if (this->isEmpty()) return std::pair<std::string, v>();
 
 		// hash & get index
 		int index = this->hash(target_key);
@@ -145,7 +146,7 @@ public :
 		// check if "target" found
 		if (this->table[index].key == target_key) {
 			// return will be a <key , value> pair 
-			return std::pair<k, v>(this->table[index].key, this->table[index].value);
+			return std::pair<std::string, v>(this->table[index].key, this->table[index].value);
 		}
 		// otherwise loop over all from index to the of table
 		else{
@@ -154,7 +155,7 @@ public :
 
 				if (this->table[i].key == target_key) {
 					// return will be a <key , value> pair 
-					return std::pair<k, v>(this->table[i].key, this->table[i].value);
+					return std::pair<std::string, v>(this->table[i].key, this->table[i].value);
 				}
 
 			}
@@ -162,12 +163,12 @@ public :
 		}
 
 		// in case target not found return will be an empty pair
-		return std::pair<k, v>();
+		return std::pair<std::string, v>();
 	}
 
 	// o(h+1) --> o(h+n)
 	// remove element from table
-	bool remove(k target_key) {
+	bool remove(std::string target_key) {
 
 		// check if table is  empty  
 		if (this->isEmpty()) return false;
@@ -178,8 +179,8 @@ public :
 		// check if target is still in table or not 
 		if (this->table[index].key == target_key) {
 			// just override old node by new one with emptyToken
-			this->table[index] = kv_node<k, v>();
-			this->table[index].value = this->emptyToken;
+			this->table[index] = kv_node<std::string , v>();
+			this->table[index].key = this->emptyToken;
 
 			// update length
 			this->len -= 1;
@@ -195,8 +196,8 @@ public :
 				if (this->table[i].key == target_key) {
 
 					// just override old node by new one with emptyToken
-					this->table[i] = kv_node<k, v>();
-					this->table[i].value = this->emptyToken;
+					this->table[i] = kv_node<std::string , v>();
+					this->table[i].key = this->emptyToken;
 
 					// update length
 					this->len -= 1;
@@ -214,7 +215,7 @@ public :
 
 	// o(h+1) --> o(h+n)
 	// replace old value by new one it if found 
-	bool replace(k key, v value) {
+	bool replace(std::string key, v new_value) {
 
 		// check if table is empty  
 		if (this->isEmpty()) return false;
@@ -226,7 +227,7 @@ public :
 		if (this->table[index].key == key) {
 
 			// replace old value by new one
-			this->table[index].value = value;
+			this->table[index].value = new_value;
 
 			// true as confrimation
 			return true;
@@ -241,7 +242,7 @@ public :
 				if (this->table[i].key == key) {
 
 					// replace old value by new one
-					this->table[i].value = value;
+					this->table[i].value = new_value;
 
 					// true as confrimation
 					return true;
@@ -266,7 +267,7 @@ public :
 		// loop over all
 		for (int i = 0; i < this->table_size; i += 1) {
 			// in case value NULL that mean EMPTY
-			if (this->table[i].value == this->emptyToken) {
+			if (this->table[i].key == this->emptyToken) {
 				std::cout << "| " << i << "\t\t [EMPTY] \n";
 			}
 			else std::cout << "| " << i << "\t\t [" << this->table[i].key << " | " << this->table[i].value << "] \n";
@@ -287,11 +288,11 @@ public :
 	// QP = like Quadratic Probing
 	// inherit from Linear Probing 
 	// but using different technique of hashing
-template<typename k, typename v> class QP_hash_table : public LP_hash_table<k, v> {
+template<typename v> class QP_hash_table : public LP_hash_table<v> {
 
 public : 	
 	// constructor 
-	QP_hash_table(unsigned int hash_table_size = 3, v emptyToken = NULL) : LP_hash_table<k, v>(hash_table_size, emptyToken) {
+	QP_hash_table(unsigned int hash_table_size = 3) : LP_hash_table<v>(hash_table_size) {
 
 	}
 	// destructor
@@ -301,7 +302,7 @@ public :
 	// o(h+1) --> o(h+n)
 	// set data by "key , value" to hash table "using like quadratic hashing"
 	// return will be a boolean as confirmation of that  operation "set success or not" :)
-	bool set(k key, v value) {
+	bool set(std::string key, v value) {
 
 		// check if table is full or empty  
 		if (this->isFull()) return false;
@@ -316,7 +317,7 @@ public :
 		if (this->table[index].key == key) return false;
 
 		// as first step , check if that hashed index empty or not 
-		if (this->table[index].value == this->emptyToken) {
+		if (this->table[index].key == this->emptyToken) {
 			success = true;
 			this->len += 1;
 		}
@@ -334,7 +335,7 @@ public :
 				if (this->table[i].key == key) return false;
 
 				// in case empty place founded 
-				if (this->table[i].value == this->emptyToken) {
+				if (this->table[i].key == this->emptyToken) {
 					success = true;
 					this->len += 1;
 
@@ -350,7 +351,7 @@ public :
 		// in case empty place found 
 		if (success) {
 			// operation will be successfully & return will be true 
-			this->table[index] = kv_node<k, v>(key, value);
+			this->table[index] = kv_node<std::string , v>(key, value);
 			return success;
 		}
 		// otherwise false 
@@ -359,7 +360,7 @@ public :
 
 	// o(h+1) --> o(h+n)
 	// get value from hash table using key
-	v get(k target_key) {
+	v get(std::string  target_key) {
 
 		// hash & get index 
 		int index = this->hash(target_key);
@@ -383,10 +384,10 @@ public :
 
 	// o(h+1) --> o(h+n)
 	// get a key value pair if it found 
-	std::pair<k, v> getPair(k target_key) {
+	std::pair<std::string , v> getPair(std::string target_key) {
 
 		// in case table empty
-		if (this->isEmpty()) return std::pair<k, v>();
+		if (this->isEmpty()) return std::pair<std::string , v>();
 
 		// hash & get index
 		int index = this->hash(target_key);
@@ -394,16 +395,16 @@ public :
 		// check if "target" found
 		if (this->table[index].key == target_key) {
 			// return will be a <key , value> pair 
-			return std::pair<k, v>(this->table[index].key, this->table[index].value);
+			return std::pair<std::string , v>(this->table[index].key, this->table[index].value);
 		}
 		// otherwise loop over all from index to the of table
 		else {
 
 			for (int i = index + 1; i < this->table_size; i += 2) {
 
-				if (this->table[i].key == target_key) {
+				if (this->table[i].key == target_key){
 					// return will be a <key , value> pair 
-					return std::pair<k, v>(this->table[i].key, this->table[i].value);
+					return std::pair<std::string , v>(this->table[i].key, this->table[i].value);
 				}
 
 			}
@@ -411,12 +412,12 @@ public :
 		}
 
 		// in case target not found return will be an empty pair
-		return std::pair<k, v>();
+		return std::pair<std::string , v>();
 	}
 
 	// o(h+1) --> o(h+n)
 	// remove element from table
-	bool remove(k target_key) {
+	bool remove(std::string target_key) {
 
 		// check if table is  empty  
 		if (this->isEmpty()) return false;
@@ -427,8 +428,8 @@ public :
 		// check if target is still in table or not 
 		if (this->table[index].key == target_key) {
 			// just override old node by new one with emptyToken
-			this->table[index] = kv_node<k, v>();
-			this->table[index].value = this->emptyToken;
+			this->table[index] = kv_node<std::string , v>();
+			this->table[index].key = this->emptyToken;
 
 			// update length
 			this->len -= 1;
@@ -444,8 +445,8 @@ public :
 				if (this->table[i].key == target_key) {
 
 					// just override old node by new one with emptyToken
-					this->table[i] = kv_node<k, v>();
-					this->table[i].value = this->emptyToken;
+					this->table[i] = kv_node<std::string , v>();
+					this->table[i].key = this->emptyToken;
 
 					// update length
 					this->len -= 1;
@@ -464,7 +465,7 @@ public :
 
 	// o(h+1) --> o(h+n)
 	// replace old value by new one it if found 
-	bool replace(k key, v value) {
+	bool replace(std::string key, v new_value) {
 
 		// check if table is empty  
 		if (this->isEmpty()) return false;
@@ -476,7 +477,7 @@ public :
 		if (this->table[index].key == key) {
 
 			// replace old value by new one
-			this->table[index].value = value;
+			this->table[index].value = new_value;
 
 			// true as confrimation
 			return true;
@@ -491,7 +492,7 @@ public :
 				if (this->table[i].key == key) {
 
 					// replace old value by new one
-					this->table[i].value = value;
+					this->table[i].value = new_value;
 
 					// true as confrimation
 					return true;
@@ -515,7 +516,7 @@ public :
 		// loop over all
 		for (int i = 0; i < this->table_size; i += 1) {
 			// in case value NULL that mean EMPTY
-			if (this->table[i].value == this->emptyToken) {
+			if (this->table[i].key == this->emptyToken) {
 				std::cout << "| " << i << "\t\t [EMPTY] \n";
 			}
 			else std::cout << "| " << i << "\t\t [" << this->table[i].key << " | " << this->table[i].value << "] \n";
@@ -530,7 +531,6 @@ public :
 	}
 	
 };
-
 
 
 }

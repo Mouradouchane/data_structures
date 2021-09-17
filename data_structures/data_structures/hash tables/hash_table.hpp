@@ -1,11 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include "key_value_linkedlist.hpp"
 #pragma once
 
 /*
 	that module contain a simple & stupid hash_table with basics function like => get , set , clear ...
-	we using that hash_table later in different good & better hash_tables like => open-addressing , chaining ...
+	we using that hash_table later in different good & better hash_tables like => open-addressing , char *ining ...
 */
 
 // === hash table ~ methods ===========
@@ -40,26 +41,26 @@ using namespace key_value_linkedlist;
 namespace hash_tables {
 
 // simple hash table => "" replacemenet hash table "" there's no keys only values
-template<typename k, typename v> class hash_table {
+template<typename v> class hash_table {
 
 	protected :
 
 		unsigned int table_size = 0;
+		unsigned int min_size = 3;
 		unsigned int len = 0;
-		const unsigned int min_size = 3;
 
-		v emptyToken = NULL;
+		std::string emptyToken = "empty";
 
 		// hash table or array key value nodes
-		kv_node<k,v>* table = NULL;
+		kv_node<std::string,v>* table = NULL;
 
 		// o(n)
 		// simple hash function all what to do is => key_size % table_size
-		int hash(k key) {
+		int hash(std::string key) {
 
 			// hash trick
 			int key_size = 0;
-			for (int i = 0; i < key.size(); i += 1) {
+			for (int i = 0; i < key.size() ; i += 1) {
 				key_size += (int)key[i];
 			}
 
@@ -85,7 +86,7 @@ template<typename k, typename v> class hash_table {
 
 	public:
 		// constructor 
-		hash_table(unsigned int hash_table_size = min_size , v empty_token = NULL){
+		hash_table(unsigned int hash_table_size = min_size){
 
 			// check if table_size is bigger than min size allowed "3"
 			table_size = (hash_table_size < min_size) ? min_size : hash_table_size;
@@ -95,14 +96,11 @@ template<typename k, typename v> class hash_table {
 			table_size = isPrimeNumber(table_size);
 
 			// define hash table with valid size in construction time
-			table = new kv_node<k,v>[table_size];
-
-			// set empty_token
-			emptyToken = empty_token;
+			table = new kv_node<std::string ,v>[table_size];
 
 			// loop over all empty nodes & fill it by "empty token"
 			for (unsigned int i = 0; i <= hash_table_size; i += 1) {
-				table[i].value = emptyToken;
+				table[i].key = emptyToken;
 			}
 			
 		}
@@ -111,24 +109,24 @@ template<typename k, typename v> class hash_table {
 		~hash_table() { }
 
 		// set data by value to hash table
-		void set(k key , v value) {
+		void set(std::string key , v value) {
 
 			// hash key & get index
 			int index = hash(key);
 
 			// check if that index empty or not , only for updating lenght
-			if (table[index].value == emptyToken) {
+			if (table[index].key == emptyToken) {
 				len += 1;
 			}
 
 			// otherwise in case is empty or not 
 			// put data in target index "replacement concept " 
-			table[index] = kv_node<k,v>(key,value);
+			table[index] = kv_node<std::string ,v>(key,value);
 		}
 
 		// o(n)
 		// replace old value with new one & return bool as confirmation
-		bool replace(k target_key, v new_value) {
+		bool replace(std::string target_key, v new_value) {
 			// hash & get index
 			int index = hash(target_key);
 
@@ -145,7 +143,7 @@ template<typename k, typename v> class hash_table {
 		}
 
 		// get value from hash table using key
-		v get(k target_key) {
+		v get(std::string target_key) {
 			// hash & get index
 			int index = hash(target_key);
 
@@ -158,22 +156,22 @@ template<typename k, typename v> class hash_table {
 
 		// o(h+1)
 		// get a key value pair if it found 
-		std::pair<k,v> getPair(k target_key){
+		std::pair<std::string ,v> getPair(std::string  target_key){
 			// hash & get index
 			int index = hash(target_key);
 
 			// check if "target key" is still in table or "deleted | replaced"
 			if (table[index].key == target_key) {
-				// in case still in table return will be a <key , value> pair 
-				return std::pair<k, v>(table[index].key, table[index].value);
+				// in case still in table return will be a <std::string ey , value> pair 
+				return std::pair<std::string , v>(table[index].key, table[index].value);
 			}
 			// else return will be a empty pair
-			else return std::pair<k, v>();
+			else return std::pair<std::string , v>();
 		}
 
 		// o(n)
 		// remove element from table
-		bool remove(k target_key) {
+		bool remove(std::string target_key) {
 
 			// hash & get target index
 			int index = hash(target_key);
@@ -181,8 +179,8 @@ template<typename k, typename v> class hash_table {
 			// check if target is still in table or not 
 			if (table[index].key == target_key) {
 				// just override old node by new one with emptyToken
-				table[index] = kv_node<k, v>();
-				table[index].value = emptyToken;
+				table[index] = kv_node<std::string , v>();
+				table[index].key = emptyToken;
 
 				// update length
 				len -= 1;
@@ -197,7 +195,7 @@ template<typename k, typename v> class hash_table {
 	
 		// o(n)
 		// simple function print values in console only work in that simple hash table
-		virtual void print() {
+		void print() {
 			std::cout << " ==================================\n";
 			std::cout << "|| BASIC HASH - TABLE :           || \n";
 			std::cout << " ==================================\n";
@@ -205,7 +203,7 @@ template<typename k, typename v> class hash_table {
 			// loop over all
 			for (int i = 0; i < table_size; i += 1) {
 				// in case value NULL that mean EMPTY
-				if (table[i].value == emptyToken) {
+				if (table[i].key == emptyToken) {
 					std::cout << "| " << i << "\t\t [EMPTY] \n";
 				}
 				else std::cout << "| " << i << "\t\t [" << table[i].key << " | " << table[i].value << "] \n";
@@ -239,11 +237,11 @@ template<typename k, typename v> class hash_table {
 			delete[] table;
 
 			// make new one
-			table = new kv_node<k, v>[table_size];
+			table = new kv_node<std::string , v>[table_size];
 
 			// loop over all empty nodes & fill it by "empty token"
 			for (unsigned int i = 0; i <= table_size; i += 1) {
-				table[i].value = emptyToken;
+				table[i].key = emptyToken;
 			}
 
 			// reset lenght 
@@ -261,22 +259,21 @@ template<typename k, typename v> class hash_table {
 
 			// fill vector
 			for (int i = 0; i < table_size; i += 1) {
-				if (table[i].value != emptyToken) vals.push_back(table[i].value);	
+				if (table[i].key != emptyToken) vals.push_back(table[i].value);	
 			}
 
 			// return vector
 			return vals;
 		}
 
-
 		// o(n)
-		// looks like values but this return vector with nodes <key,value> pair
-		std::vector<kv_node<k, v>> elements() {
+		// looks like values but this return vector with nodes <std::string ey,value> pair
+		std::vector<kv_node<std::string , v>> elements() {
 
-			std::vector<kv_node<k, v>> nodes;
+			std::vector<kv_node<std::string , v>> nodes;
 
 			for (int i = 0; i < table_size; i += 1) {
-				if (table[i].value != emptyToken) nodes.push_back(table[i]);
+				if (table[i].key != emptyToken) nodes.push_back(table[i]);
 			}
 
 			return nodes;
