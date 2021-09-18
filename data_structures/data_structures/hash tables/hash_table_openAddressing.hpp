@@ -257,8 +257,6 @@ public :
 	}
 
 	// o(n)
-	// simple function print values in console only work in that simple hash table
-	
 	void print() {
 		std::cout << " =====================================\n";
 		std::cout << "|| LP HASH-TABLE :                   ||\n";
@@ -532,11 +530,16 @@ public :
 	
 };
 
+
+	// DP = Double Hashing 
+	// inherit from Linear Probing 
 template<typename v> class DP_hash_table : public LP_hash_table<v> {
 
 	protected :
+		// o(1)
+		// 2nd hash function
 		int hash2(std::string key) {
-			return 0;
+			return this->table_size - (key.size() % this->table_size);
 		}
 
 	public :
@@ -545,6 +548,174 @@ template<typename v> class DP_hash_table : public LP_hash_table<v> {
 
 		// destructor
 		~DP_hash_table() {}
+
+
+		// o(h1+2) --> o(h1+1+n)
+		// set data by "key , value" to hash table
+		// return will be a boolean as confirmation of that  operation "set success or not" :)
+		bool set(std::string key, v value) {
+
+			// check if table is full or empty  
+			if (this->isFull()) return false;
+
+			// 1st hash function & get 1st index
+			int index = this->hash(key);
+
+			// dhi = double hashing index
+			// where result of 1st & 2nd hasing functions store
+			int dhi = index;
+
+			// confrimation
+			bool success = false;
+
+			// in case that key is already in table , return will be false directlly 
+			// avoiding multi-keys problem 
+			if (this->table[dhi].key == key) return false;
+
+			// as first step , check if that hashed index empty or not 
+			if (this->table[dhi].key == this->emptyToken) {
+				success = true;
+				this->len += 1;
+			}
+			// in case not empty !
+			else {
+
+				// "double hasing" concept 
+				 
+				// 2nd hash function & get 2nd index
+				// o(1)
+				int index_2 = hash2(key);
+
+				// looking for empty place :)
+				for (int i = 1; i < this->table_size; i += 1) {
+
+					// double hashing trick
+					dhi = (index + i * index_2) % this->table_size;
+
+					// again inside loop check if that key is already in table or not , for avoiding problems
+					if (this->table[dhi].key == key) return false;
+
+					// in case empty place founded 
+					if (this->table[dhi].key == this->emptyToken) {
+						success = true;
+						this->len += 1;
+
+						// set index to that new empty inedx "i"
+						break;
+					}
+
+				}
+
+			}
+
+			// in case empty place found 
+			if (success) {
+				// operation will be successfully & return will be true 
+				this->table[dhi] = kv_node<std::string, v>(key, value);
+				return success;
+			}
+			// otherwise false 
+			else return false;
+		}
+
+		// o(h1+2) --> o(h+1+n)
+		// get value from hash table using key
+		v get(std::string target_key) {
+
+			// 1st hash function & get 1st index
+			int index = this->hash(target_key);
+
+			// in case "target" in first place o(1)
+			if (this->table[index].key == target_key) return this->table[index].value;
+			// otherwise 
+			else {
+
+				// "double hasing" concept 
+
+				// 2nd hash function & get 2nd index
+				// o(1)
+				int index_2 = hash2(target_key);
+
+				//  dhi = double hashing index
+				int dhi = 0;
+
+				for (int i = 1; i < this->table_size; i += 1) {
+					
+					dhi = (index + i * index_2) % this->table_size;
+					
+					// in case target found 
+					if (this->table[dhi].key == target_key) {
+						return this->table[dhi].value;
+					}
+				}
+
+			}
+			// in case not found return must be null
+			return NULL;
+		}
+
+
+		// o(h1+2) --> o(h+1+n)
+		// get value from hash table using key
+		std::pair<std::string,v> getPair(std::string target_key) {
+
+			// 1st hash function & get 1st index
+			int index = this->hash(target_key);
+
+			// in case "target" in first place o(1)
+			if (this->table[index].key == target_key) {
+				return std::pair<std::string, v>(this->table[index].key , this->table[index].value);
+			}
+			// otherwise 
+			else {
+
+				// "double hasing" concept 
+
+				// 2nd hash function & get 2nd index
+				// o(1)
+				int index_2 = hash2(target_key);
+
+				//  dhi = double hashing index
+				int dhi = 0;
+
+				for (int i = 1; i < this->table_size; i += 1) {
+
+					dhi = (index + i * index_2) % this->table_size;
+
+					// in case target found 
+					if (this->table[dhi].key == target_key) {
+						return std::pair<std::string, v>(this->table[dhi].key, this->table[dhi].value);
+					}
+				}
+
+			}
+			// in case not found return must be null
+			return std::pair<std::string,v>();
+		}
+
+
+		// o(n)
+		void print() {
+			std::cout << " =====================================\n";
+			std::cout << "|| DP HASH-TABLE :                   ||\n";
+			std::cout << " =====================================\n";
+
+			// loop over all
+			for (int i = 0; i < this->table_size; i += 1) {
+				// in case value NULL that mean EMPTY
+				if (this->table[i].key == this->emptyToken) {
+					std::cout << "| " << i << "\t\t [EMPTY] \n";
+				}
+				else std::cout << "| " << i << "\t\t [" << this->table[i].key << " | " << this->table[i].value << "] \n";
+			}
+
+			std::cout << "======================================\n";
+			std::cout << "table length \t" << this->length() << '\n';
+			std::cout << "table size \t" << this->size() << '\n';
+			std::cout << "is empty \t" << this->isEmpty() << '\n';
+			std::cout << "is full \t" << this->isFull() << '\n';
+			std::cout << "======================================\n";
+		}
 
 };
 
