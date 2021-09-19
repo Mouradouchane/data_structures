@@ -44,28 +44,22 @@ int main() {
 
     hasht.print();
 
-    std::pair<std::string,int> gpr = hasht.getPair("rsssd");
-
     /*
     */
-    std::pair<std::string, int> arr[12] = {
-            hasht.getPair("gx") ,
-            hasht.getPair("getl") ,
-            hasht.getPair("rx7")  ,
-            hasht.getPair("ddl")  ,
-            hasht.getPair("grey") ,
-            hasht.getPair("gta")  ,
-            hasht.getPair("yty")  ,
-            hasht.getPair("rzae") ,
-            hasht.getPair("tsqr") ,
-            hasht.getPair("zxy")  ,
-            hasht.getPair("sara") ,
-            hasht.getPair("name")
-    };
+    hasht.replace("gx" , 2021);
+    hasht.replace("getl", 2021);
+    hasht.replace("ddl", 2021);
+    hasht.replace("rx7", 2021);
+    hasht.replace("grey", 2021);
+    hasht.replace("gta" , 2021);
+    hasht.replace("yty" , 2021);
+    hasht.replace("rzae" , 2021);
+    hasht.replace("tsqr" , 2021);
+    hasht.replace("zxy" , 2021);
+    hasht.replace("sara" , 2021);
+    hasht.replace("name" , 2021);
 
-    for (std::pair<std::string, int> pr : arr) {
-        std::cout << pr.first << " : " << pr.second << '\n';
-    }
+    hasht.print();
 
     return 0;
 }

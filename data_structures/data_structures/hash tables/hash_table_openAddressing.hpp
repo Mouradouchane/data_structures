@@ -531,6 +531,7 @@ public :
 };
 
 
+
 	// DP = Double Hashing 
 	// inherit from Linear Probing 
 template<typename v> class DP_hash_table : public LP_hash_table<v> {
@@ -549,10 +550,7 @@ template<typename v> class DP_hash_table : public LP_hash_table<v> {
 		// destructor
 		~DP_hash_table() {}
 
-
 		// o(h1+2) --> o(h1+1+n)
-		// set data by "key , value" to hash table
-		// return will be a boolean as confirmation of that  operation "set success or not" :)
 		bool set(std::string key, v value) {
 
 			// check if table is full or empty  
@@ -619,7 +617,6 @@ template<typename v> class DP_hash_table : public LP_hash_table<v> {
 		}
 
 		// o(h1+2) --> o(h+1+n)
-		// get value from hash table using key
 		v get(std::string target_key) {
 
 			// 1st hash function & get 1st index
@@ -654,9 +651,7 @@ template<typename v> class DP_hash_table : public LP_hash_table<v> {
 			return NULL;
 		}
 
-
 		// o(h1+2) --> o(h+1+n)
-		// get value from hash table using key
 		std::pair<std::string,v> getPair(std::string target_key) {
 
 			// 1st hash function & get 1st index
@@ -693,6 +688,115 @@ template<typename v> class DP_hash_table : public LP_hash_table<v> {
 			return std::pair<std::string,v>();
 		}
 
+		// o(h1+2) --> o(h1+1+n)
+		bool remove(std::string target_key) {
+
+			// check if table is  empty  
+			if (this->isEmpty()) return false;
+
+			// 1st hash function & get 1st index
+			int index = this->hash(target_key);
+
+			// check if target is still in table or not 
+			if (this->table[index].key == target_key) {
+				// just override old node by new one with emptyToken
+				this->table[index] = kv_node<std::string, v>();
+				this->table[index].key = this->emptyToken;
+
+				// update length
+				this->len -= 1;
+
+				// confirmation of remove operation
+				return true;
+			}
+			// otherwise that mean we need to loop over all from index to the end of table
+			else {
+
+				// "double hasing" concept 
+
+				// 2nd hash function & get 2nd index
+				// o(1)
+				int index_2 = hash2(target_key);
+
+				//  dhi = double hashing index
+				int dhi = 0;
+
+				for (int i = 1; i < this->table_size; i += 1) {
+
+					dhi = (index + i * index_2) % this->table_size;
+
+					// in case target found 
+					if (this->table[dhi].key == target_key) {
+
+						// just override old node by new one with emptyToken
+						this->table[dhi] = kv_node<std::string, v>();
+						this->table[dhi].key = this->emptyToken;
+
+						// update length
+						this->len -= 1;
+
+						// confirmation of remove operation
+						return true;
+					}
+				}
+
+			}
+
+			// in case not found 
+			return false;
+		}
+
+		// o(h1+2) --> o(h1+1+n)
+		bool replace(std::string key, v new_value) {
+
+			// check if table is empty  
+			if (this->isEmpty()) return false;
+
+			// 1st hash function & get 1st index
+			int index = this->hash(key);
+
+			// in case that key is found in first try
+			if (this->table[index].key == key) {
+
+				// replace old value by new one
+				this->table[index].value = new_value;
+
+				// true as confrimation
+				return true;
+			}
+			// in case not found !
+			else {
+
+				// "double hasing" concept 
+
+				// 2nd hash function & get 2nd index
+				// o(1)
+				int index_2 = hash2(key);
+
+				//  dhi = double hashing index
+				int dhi = 0;
+
+				for (int i = 1; i < this->table_size; i += 1) {
+
+					dhi = (index + i * index_2) % this->table_size;
+
+					// in case key found
+					if (this->table[dhi].key == key) {
+
+						// replace old value by new one
+						this->table[dhi].value = new_value;
+
+						// true as confrimation
+						return true;
+					}
+
+				}
+
+			}
+
+			// in case not found
+			return false;
+		}
 
 		// o(n)
 		void print() {

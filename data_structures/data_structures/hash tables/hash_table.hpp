@@ -14,6 +14,7 @@
    -- NAME ----------- BEST  --> WORST
 	
 	hash			=> o(h)
+	hash2			=> o(1)
 
 	clear			=> o(n)  
 	elements		=> o(n)	 
