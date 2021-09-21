@@ -109,8 +109,8 @@ template<typename v> class hash_table {
 		// deconstructor
 		~hash_table() { }
 
-		// set data by value to hash table
-		void set(std::string key , v value) {
+		// set data by key , value to hash table
+		bool set(std::string key , v value) {
 
 			// hash key & get index
 			int index = hash(key);
@@ -123,6 +123,8 @@ template<typename v> class hash_table {
 			// otherwise in case is empty or not 
 			// put data in target index "replacement concept " 
 			table[index] = kv_node<std::string ,v>(key,value);
+
+			return true;
 		}
 
 		// o(n)

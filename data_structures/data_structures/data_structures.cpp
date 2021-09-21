@@ -26,24 +26,25 @@ using namespace hash_tables;
 
 int main() {
    
-    C_hash_table<int> chash(25);
+    C_hash_table<int> chash(24);
 
-    DP_hash_table<int> hasht(14);
+    //DP_hash_table<int> dhash(14);
     
-    /*
-    hasht.set("gx", 14);
-    hasht.set("grey",16);
-    hasht.set("rzae",8);
-    hasht.set("tsqr",20);
-    hasht.set("sara",4);
-    hasht.set("name",10);
-    hasht.set("gta",20);
-    hasht.set("yty",30); //
-    hasht.set("zxy",40);
-    hasht.set("getl",7); 
-    hasht.set("rx7",2);  
-    hasht.set("ddl",1); 
+    chash.set("gx", 14);
+    chash.set("grey",16);
+    chash.set("rzae",8);
+    chash.set("tsqr",20);
+    chash.set("sara",4);
+    chash.set("name",10);
+    chash.set("gta",20);
+    chash.set("yty",30); 
+    chash.set("zxy",40);
+    chash.set("getl",7); 
+    chash.set("rx7",2); 
+    chash.set("gcc",1);
 
+ 
+    /*
     hasht.print();
 
     hasht.replace("gx" , 2021);
@@ -61,6 +62,8 @@ int main() {
     hasht.print();
 
     */
+
+    chash.print();
 
     return 0;
 }

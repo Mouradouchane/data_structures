@@ -55,25 +55,33 @@ template<typename k , typename v> class key_value_linked_list {
         kv_node<k, v>* last  = NULL; // tail
 
     public:
-        key_value_linked_list() {}
+         key_value_linked_list() {}
         ~key_value_linked_list() {}
 
-        // o(1)
+        // o(1) --> o(n)
         // push new value direct from the back of linked list (or you can say 'new tail')
-        void push_back(k key , v value) {
+        bool push_back(k key , v value) {
             kv_node<k, v>* newNode = new kv_node<k, v>(key , value);
 
             len += 1;
 
+            // in case empty
             if (first == NULL && last == NULL) {
                 first = newNode;
                 last = newNode;
-                return;
+                return true;
             }
             else {
-                last->next = newNode;
-                last = newNode;
+                // in case not empty , we need to check first if that <key,value> is already in linked list or not
+                // o(n)
+                if ( !search(key) ) {
+                    last->next = newNode;
+                    last = newNode;
+                    return true;
+                }
             }
+
+            return false;
         }
 
         // o(1) ==> o(n)
@@ -242,12 +250,12 @@ template<typename k , typename v> class key_value_linked_list {
         }
 
       
-
         // o(1)
         // return length of linked size :) 
         int length() {
             return len;
         }
+
 
         // o(n)
         // just "test function" who print all values in console
@@ -255,12 +263,17 @@ template<typename k , typename v> class key_value_linked_list {
             kv_node<k,v>* tempNode = first;
 
             while (tempNode != NULL) {
-                std::cout << "|" << tempNode->key << "|" << tempNode->value << "|--> ";
+                std::cout << "[" << tempNode->key << "|" << tempNode->value << "]-->";
                 tempNode = tempNode->next;
             }
-            std::cout << "\n==================================================" << std::endl;
+            std::cout << '\n';
         }
 
+
+        // o(1)
+        bool isEmpty() {
+            return (first == NULL && last == NULL) ? true : false;
+        }
 };
 
 }
