@@ -42,26 +42,23 @@ int main() {
     chash.set("getl",7); 
     chash.set("rx7",2); 
     chash.set("gcc",1);
-
- 
     /*
     hasht.print();
-
-    hasht.replace("gx" , 2021);
-    hasht.replace("getl", 2021);
-    hasht.replace("ddl", 2021);
-    hasht.replace("rx7", 2021);
-    hasht.replace("grey", 2021);
-    hasht.replace("gta" , 2021);
-    hasht.replace("yty" , 2021);
-    hasht.replace("rzae" , 2021);
-    hasht.replace("tsqr" , 2021);
-    hasht.replace("zxy" , 2021);
-    hasht.replace("sara" , 2021);
-    hasht.replace("name" , 2021);
-    hasht.print();
-
     */
+
+    chash.replace("gx" , 2021);
+    chash.replace("getl", 2021);
+    chash.replace("ddlzddaz", 2021);
+    chash.replace("rx7", 2021);
+    chash.replace("grey", 2021);
+    chash.replace("gta" , 2021);
+    chash.replace("yty" , 2021);
+    chash.replace("rzae" , 2021);
+    chash.replace("tsqr" , 2021);
+    chash.replace("zxy" , 2021);
+    chash.replace("sara" , 2021);
+    chash.replace("name" , 2021);
+
 
     chash.print();
 

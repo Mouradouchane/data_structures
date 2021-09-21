@@ -166,6 +166,9 @@ template<typename k , typename v> class key_value_linked_list {
         // if it found replace else don't ==> and return will be "true or false" as confirmation :)
         bool replace(k target_key, v new_value) {
 
+            // in case linked list is empty
+            if (first == NULL) return false;
+
             // temp node for checking we start from "first or head"
             kv_node<k,v>* temp = first;
 
@@ -205,6 +208,9 @@ template<typename k , typename v> class key_value_linked_list {
         // remove take target if it found delete it and return true as confirmation 
         // else return false
         bool remove(k target_key) {
+
+            // in case linked list empty
+            if (first == NULL) return false;
 
             // in case target value in first 
             if (first->key == target_key) {
@@ -272,7 +278,7 @@ template<typename k , typename v> class key_value_linked_list {
 
         // o(1)
         bool isEmpty() {
-            return (first == NULL && last == NULL) ? true : false;
+            return (first == NULL) ? true : false;
         }
 };
 

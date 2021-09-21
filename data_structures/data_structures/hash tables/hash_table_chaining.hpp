@@ -17,7 +17,6 @@
 
 	hash			=> o(1)
 	
-
 	clear			=> o(n)
 	elements		=> o(n)
 
@@ -28,13 +27,11 @@
 	remove			=> o(1)  --> o(n) 
 	replace			=> o(1)  --> o(n) 
 
-	isEmpty			=> o(1)
-	isFull			=> o(1)
-
 	values			=> o(n)
 
 	print			=> o(n) --> o(> n²)
 
+	isEmpty			=> o(1)
 	length			=> o(1)
 	size			=> o(1)
 */
@@ -119,6 +116,7 @@ template<typename v> class C_hash_table{
 			return false;
 		}
 
+
 		// o(1) --> o(n)
 		// get target value using key
 		v get(std::string target_key) {
@@ -134,7 +132,6 @@ template<typename v> class C_hash_table{
 		}
 		
 
-
 		// o(1) --> o(n)
 		// like get but pair with <key,value> :)
 		std::pair<std::string, v> getPair(std::string target_key) {
@@ -148,6 +145,32 @@ template<typename v> class C_hash_table{
 			// get value in that linked list is it exist 
 			return table[index].getPair(target_key);
 
+		}
+
+		// o(1) --> o(n) 
+		// remove <key,value> from specific linked list in table
+		bool remove(std::string target_key) {
+
+			// hash & get index
+			int index = hash(target_key);
+
+			// remove target from linked list & return confirmation of that operation
+			if (table[index].remove(target_key)) {
+				len -= 1;
+				return true;
+			}
+			else return false;
+		}
+
+		// o(1) --> o(n) 
+		// replca <value> by 'new one' in specific linked list in table
+		bool replace(std::string target_key , v new_value){
+
+			// hash & get index
+			int index = hash(target_key);
+
+			// replace & return confirmation of that operation
+			return table[index].replace(target_key , new_value);
 		}
 
 		// o(n) --> o(> n²)
