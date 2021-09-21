@@ -100,7 +100,7 @@ template<typename v> class hash_table {
 			table = new kv_node<std::string ,v>[table_size];
 
 			// loop over all empty nodes & fill it by "empty token"
-			for (unsigned int i = 0; i <= hash_table_size; i += 1) {
+			for (unsigned int i = 0; i < table_size; i += 1) {
 				table[i].key = emptyToken;
 			}
 			

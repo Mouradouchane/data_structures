@@ -17,18 +17,20 @@
 #include "hash tables/hash_table.hpp"
 #include "hash tables/hash_table_openAddressing.hpp"
 #include "hash tables/key_value_linkedlist.hpp"
+#include "hash tables/hash_table_chaining.hpp"
 
 using namespace linkedlist;
 using namespace stacks;
 using namespace queue;
-
 using namespace hash_tables;
-using namespace key_value_linkedlist;
 
 int main() {
    
+    C_hash_table<int> chash(25);
+
     DP_hash_table<int> hasht(14);
     
+    /*
     hasht.set("gx", 14);
     hasht.set("grey",16);
     hasht.set("rzae",8);
@@ -44,8 +46,6 @@ int main() {
 
     hasht.print();
 
-    /*
-    */
     hasht.replace("gx" , 2021);
     hasht.replace("getl", 2021);
     hasht.replace("ddl", 2021);
@@ -58,8 +58,9 @@ int main() {
     hasht.replace("zxy" , 2021);
     hasht.replace("sara" , 2021);
     hasht.replace("name" , 2021);
-
     hasht.print();
+
+    */
 
     return 0;
 }

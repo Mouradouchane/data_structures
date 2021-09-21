@@ -1,6 +1,5 @@
-#include <iostream>
-#include <string>
 #include "hash_table.hpp"
+
 #pragma once
 
 /*
