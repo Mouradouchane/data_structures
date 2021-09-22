@@ -19,6 +19,8 @@
     remove          => o(1) ==> o(n)
     clear           => o(n)
 
+    values          => o(1) ==> o(n)
+
     print         => o(n)
 */
 
@@ -262,6 +264,26 @@ template<typename k , typename v> class key_value_linked_list {
             return len;
         }
 
+        // o(1) ==> o(n)
+        std::vector<v> values() {
+
+            // in case linked list empty return will be an empty vector
+            if (first == NULL) return std::vector<v>();
+
+            // where we sotring values 
+            std::vector<v> vals;
+
+            // temp for loop over all 
+            kv_node<k, v>* temp = first;
+
+            while (temp != NULL) {
+                vals.push_back(temp->value);
+                temp = temp->next;
+            }
+
+            return vals;
+
+        }
 
         // o(n)
         // just "test function" who print all values in console

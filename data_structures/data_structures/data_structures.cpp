@@ -28,8 +28,6 @@ int main() {
    
     C_hash_table<int> chash(24);
 
-    //DP_hash_table<int> dhash(14);
-    
     chash.set("gx", 14);
     chash.set("grey",16);
     chash.set("rzae",8);
@@ -42,9 +40,9 @@ int main() {
     chash.set("getl",7); 
     chash.set("rx7",2); 
     chash.set("gcc",1);
+ 
     /*
     hasht.print();
-    */
 
     chash.replace("gx" , 2021);
     chash.replace("getl", 2021);
@@ -58,7 +56,7 @@ int main() {
     chash.replace("zxy" , 2021);
     chash.replace("sara" , 2021);
     chash.replace("name" , 2021);
-
+    */
 
     chash.print();
 

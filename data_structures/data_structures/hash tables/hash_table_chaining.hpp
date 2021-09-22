@@ -27,7 +27,7 @@
 	remove			=> o(1)  --> o(n) 
 	replace			=> o(1)  --> o(n) 
 
-	values			=> o(n)
+	values			=> o(n)	--> o(> n²)
 
 	print			=> o(n) --> o(> n²)
 
@@ -116,7 +116,6 @@ template<typename v> class C_hash_table{
 			return false;
 		}
 
-
 		// o(1) --> o(n)
 		// get target value using key
 		v get(std::string target_key) {
@@ -131,7 +130,6 @@ template<typename v> class C_hash_table{
 			return table[index].get(target_key);
 		}
 		
-
 		// o(1) --> o(n)
 		// like get but pair with <key,value> :)
 		std::pair<std::string, v> getPair(std::string target_key) {
@@ -171,6 +169,45 @@ template<typename v> class C_hash_table{
 
 			// replace & return confirmation of that operation
 			return table[index].replace(target_key , new_value);
+		}
+
+
+		// o(n) --> o(> n²)/
+		void clear() {
+			
+			// clear old 
+			delete[] table;
+
+			// make new empty one
+			table = new key_value_linked_list<std::string, v>[table_size];
+			
+			// reset length
+			len = 0;
+		}
+		
+		// o(n) --> o(> n²)
+		// return a vector contain all values in that hash table or empty vector
+		std::vector<v> values() {
+
+			// in case table empty			
+			if (isEmpty()) return std::vector<v>();
+
+			std::vector<v> vals;
+
+			// loop over all linked lists in table
+			for (int i = 0 ; i < table_size ; i += 1) {
+
+				// in case that linked list in not empty
+				if ( !table[i].isEmpty() ) {
+					std::vector<v> temp = table[i].values();
+					vals.insert(vals.end(), temp.begin(), temp.end());
+				}
+
+
+			}
+
+			// vector of values :) 
+			return vals;
 		}
 
 		// o(n) --> o(> n²)
