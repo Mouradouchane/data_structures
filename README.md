@@ -7,7 +7,7 @@ repository contain a collection of data structures using c++
 
 > 2 - include **'data structure file'** in your project .
 
-> 3 - optional => use namespace of **'data structure'** or you can use :: access .
+> 3 - optional => use namespace of **'data structure'** or you can use **::** .
 
 > 4 - have a fun :sweat_smile: .
 
@@ -28,21 +28,13 @@ repository contain a collection of data structures using c++
 
 ```
 ### Wiki/Docs : [![](https://img.shields.io/badge/Wiki%2FDocs-Beta-blue)](#)
-- you can use [doc](https://github.com/Mouradouchane/data_structures/wiki) to understand how **'thing's'** work with examples .
+- you can go to [doc](https://github.com/Mouradouchane/data_structures/wiki) to see & understand how **"thing's"** work with examples .
 
 ## list of data structures : 
-* linked lists :
-
-singly | [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
--- | -- | -- 
-doubly | [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
-singly circular | [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
-
-* stack :
-
-static | [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
--- | -- | -- 
-dynamic | [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* linked lists : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* stacks : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* queues : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* hash tables : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
 
 ### contribution :
 if want to contribute/reporte , your welcome 😙 
