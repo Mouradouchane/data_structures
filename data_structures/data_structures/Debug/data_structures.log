@@ -1,17 +1,2 @@
 ﻿  data_structures.cpp
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\hash tables\hash_table_chaining.hpp(220,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\hash tables\hash_table_chaining.hpp(215): message : while compiling class template member function 'void hash_tables::C_hash_table<int>::print(void)'
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(65): message : see reference to function template instantiation 'void hash_tables::C_hash_table<int>::print(void)' being compiled
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(29): message : see reference to class template instantiation 'hash_tables::C_hash_table<int>' being compiled
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\hash tables\hash_table_chaining.hpp(198,23): warning C4018: '<': signed/unsigned mismatch
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\hash tables\hash_table_chaining.hpp(190): message : while compiling class template member function 'std::vector<v,std::allocator<v>> hash_tables::C_hash_table<v>::values(void)'
-          with
-          [
-              v=int
-          ]
-C:\Users\dev\Desktop\DSA\data_structures\data_structures\data_structures\data_structures.cpp(67): message : see reference to function template instantiation 'std::vector<v,std::allocator<v>> hash_tables::C_hash_table<v>::values(void)' being compiled
-          with
-          [
-              v=int
-          ]
   data_structures.vcxproj -> C:\Users\dev\Desktop\DSA\data_structures\data_structures\Debug\data_structures.exe

@@ -32,6 +32,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hash tables", "hash tables"
 		data_structures\hash tables\key_value_linkedlist.hpp = data_structures\hash tables\key_value_linkedlist.hpp
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "trees", "trees", "{C42EA93F-BC89-4693-B590-A44D3EE55546}"
+	ProjectSection(SolutionItems) = preProject
+		data_structures\trees\binary_tree.hpp = data_structures\trees\binary_tree.hpp
+		data_structures\trees\dynamic_tree.hpp = data_structures\trees\dynamic_tree.hpp
+		data_structures\trees\static_tree.hpp = data_structures\trees\static_tree.hpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
