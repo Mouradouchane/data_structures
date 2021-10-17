@@ -26,7 +26,15 @@ using namespace hash_tables;
 
 int main() {
    
+    std::vector<int> r = { 1,4,8 };
+
+    r.insert(r.begin()+2, 6);
   
+    for (int e : r) {
+        std::cout << e << '\n';
+    }
+
+
     return 0;
 }
 
