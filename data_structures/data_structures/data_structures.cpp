@@ -19,21 +19,17 @@
 #include "hash tables/key_value_linkedlist.hpp"
 #include "hash tables/hash_table_chaining.hpp"
 
+#include "trees/dynamic_tree.hpp"
+
 using namespace linkedlist;
 using namespace stacks;
 using namespace queue;
 using namespace hash_tables;
+using namespace trees;
 
 int main() {
    
-    std::vector<int> r = { 1,4,8 };
-
-    r.insert(r.begin()+2, 6);
-  
-    for (int e : r) {
-        std::cout << e << '\n';
-    }
-
+    dynamic_tree<int> dt("rt", 100);
 
     return 0;
 }
