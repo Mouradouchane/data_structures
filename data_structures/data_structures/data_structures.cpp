@@ -29,21 +29,22 @@ using namespace trees;
 
 int main() {
    
-    dynamic_tree<int> dt("rt", 100);
-
-    dt.addNode("rtx", 55);
+    dynamic_tree<int> dt("rot", 100);
+    
+    
     dt.addNode("rtx", 55);
     dt.addNode("gtx", 55);
-  
-    dt.print();
-
+ 
     dt.move_to("rtx");
-    dt.addNode("child of rtx 1", 10);
-    dt.addNode("child of rtx 2", 20);
-    dt.addNode("child of rtx 1", 30);
+    std::cout << dt.getName() << '\n';
 
-    dt.move_to("child of rtx 1");
-    dt.print();
+    dt.addNode("child_1", 10);
+    dt.addNode("child_2", 20);
+
+    dt.move_to("child_1");
+
+    dt.move_to("parent");
+    std::cout << dt.getName() << '\n';
 
     return 0;
 

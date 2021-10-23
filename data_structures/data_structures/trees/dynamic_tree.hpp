@@ -30,7 +30,7 @@ namespace trees {
 	protected:
 		std::string name;
 		t value;
-		tree_node* parent;
+		tree_node<t>* parent;
 		std::vector<tree_node> childs;
 
 	public:
@@ -38,8 +38,12 @@ namespace trees {
 		tree_node() {}
 
 		// constructor
-		tree_node(std::string node_name, t node_value) : name{ node_name }, value{ node_value } {
-		}
+		tree_node(std::string node_name, t node_value , tree_node<t> *parent_node) 
+			: name{ node_name } , 
+			  value{ node_value } ,
+			  parent{ parent_node }
+		{ }
+
 		// destructor 
 		~tree_node() {
 		}
@@ -105,7 +109,7 @@ template<typename v> class dynamic_tree {
 	public:
 		// constructor 
 		dynamic_tree(std::string root_name , v root_value) {
-			root = tree_node<v>(root_name, root_value);
+			root = tree_node<v>( root_name , root_value , NULL );
 			current_position = &root;
 		}
 
@@ -123,11 +127,12 @@ template<typename v> class dynamic_tree {
 				if (node_name == current_position->childs[n].name) return false;
 			}
 
-			// in case no duplicate found 
+			// in case "no duplicate found" 
 
 			// add new node
-			current_position->childs.push_back( tree_node<v>(node_name,value) ) ;
-			// update length
+			tree_node<v> newnode(node_name, value, current_position);
+			current_position->childs.push_back( newnode ) ;
+
 			len += 1;
 			// true as confirmation
 			return true;
@@ -138,13 +143,32 @@ template<typename v> class dynamic_tree {
 		// return bool as a confirmation of that operation if it happend or not :)
 		bool move_to(std::string node_name) {
 
-			// in case you want to go to the root directlly you can
-			if (node_name == "root" || node_name == root.name) {
-				current_position = &root;
-				// true as confirmation 
-				return true;
+			// in case you want to 'GOTO' root
+			if (current_position != &root) {
+				if (node_name == "root" || node_name == root.name){
+
+					// GOTO root direct
+					current_position = &root;
+					// true as confirmation 
+					return true;
+
+				}
 			}
 
+			// in case you want to 'GOTO' parent
+			// you can if you are not in root
+			if (current_position->parent != NULL) {
+				if (node_name == "parent" || node_name == current_position->parent->name) {
+
+					// GOTO parent direct
+					current_position = current_position->parent;
+					// true as confirmation 
+					return true;
+
+				}
+			}
+
+			// in case you want to 'GOTO' child
 			unsigned int n = 0;
 			for (; n < current_position->childs.size();  n += 1) {
 				// in case we found it 
@@ -155,7 +179,7 @@ template<typename v> class dynamic_tree {
 				}
 			}
 
-			// in case that node who you want to move to it is not found 
+			// in case what you want to move to is not found 
 			return false;
 		}
 
@@ -214,8 +238,47 @@ template<typename v> class dynamic_tree {
 
 		}
 	
-		void print() {
+		// o(1)
+		v getValue() {
+			return current_position->value;
+		}
 
+		// o(nodes)
+		// get vector contain all childs names in that "current_position"
+		std::vector<std::string> getChildNames() {
+
+			std::vector<std::string> names;
+
+			for (tree_node<v> node : current_position->childs) {
+				names.push_back(node.name);
+			}
+
+			return names;
+		}
+
+		// o(nodes)
+		// get vector contain all childs values in that "current_position"
+		std::vector<v> getChildValues() {
+
+			std::vector<v> values;
+
+			for (tree_node<v> node : current_position->childs) {
+				values.push_back(node.value);
+			}
+
+			return values;
+		}
+
+		// some debug & testing functions
+		std::string getParentName() {
+			return (current_position->parent == NULL) ? "" : current_position->parent->name;
+		}
+
+		std::string getName() {
+			return current_position->name;
+		}
+
+		void print() {
 			std::cout << current_position->name << " | " << current_position->value << '\n';
 		}
 };
