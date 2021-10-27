@@ -4,6 +4,25 @@
 #include <map>
 #include <string>
 
+class folder {
+
+public:
+    std::string fname = "";
+    float fsize = 0;
+
+    folder() {}
+    folder(std::string foldername, float foldersize) : fname{ foldername }, fsize{ foldersize } {
+    }
+
+    ~folder() { }
+
+    void print_data() {
+        std::cout << "folder data\n";
+        std::cout << "name : " << fname << '\n';
+        std::cout << "size : " << fsize << '\n';
+    }
+};
+
 #include "linkedlists/singly_LinkedList.hpp"
 #include "linkedlists/doubly_LinkedList.hpp"
 #include "linkedlists/circly_singly_LinkedList.hpp"
@@ -29,22 +48,27 @@ using namespace trees;
 
 int main() {
    
-    dynamic_tree<int> dt("rot", 100);
+    dynamic_tree<int> dt("rot", 1);
     
     
-    dt.addNode("rtx", 55);
-    dt.addNode("gtx", 55);
- 
+    dt.addNode("rtx", 2);
+    dt.addNode("gtx", 3);
+
     dt.move_to("rtx");
-    std::cout << dt.getName() << '\n';
 
-    dt.addNode("child_1", 10);
-    dt.addNode("child_2", 20);
+    dt.print();
 
-    dt.move_to("child_1");
+    /*
+        std::cout << dt.getName() << '\n';
 
-    dt.move_to("parent");
-    std::cout << dt.getName() << '\n';
+        dt.addNode("child_1", 10);
+        dt.addNode("child_2", 20);
+
+        dt.move_to("child_1");
+
+        dt.move_to("parent");
+        std::cout << dt.getName() << '\n';
+    */
 
     return 0;
 

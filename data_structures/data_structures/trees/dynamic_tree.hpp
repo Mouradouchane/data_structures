@@ -25,7 +25,7 @@ namespace trees {
 	removeChild		=> o(1) --> o(log n)
 */
 
-	template<typename t> class tree_node {
+template<typename t> class tree_node {
 
 	protected:
 		std::string name;
@@ -87,13 +87,31 @@ namespace trees {
 /*
 	-- NAME ------ BEST --> WORST
 
-	length		=> o(1)
+	addNode			=> o(nodes + 1)
+	setName			=> o(1)
 
-	addNode		=> o(nodes + 1)
-	setName		=> o(1)
-	getValue	=> o(1)
-	move_to		=> o(1) --> o(nodes)
-	search		=> o(h) --> o(h * log n) // h = tree height
+	getName			=> o(1)
+	getParentName	=> o(1)
+
+	getValue		=> o(1)
+	getValueByRef	=> o(1)
+
+	replace			=> o(1)
+	replaceChild    => o(1) --> o(nodes)
+
+	move_to			=> o(1) --> o(nodes)
+	jump_to			=> o(1) --> o(nodes * height)
+	search			=> o(h) --> o(h * log n) // h = tree height
+
+	getChildName	=> o(1) --> o(nodes)
+	getChildNames	=> o(nodes)
+
+	getChildValue	=> o(1) --> o(nodes)
+	getChildValueByRef	=> o(1) --> o(nodes)
+	getChildValues	=> o(nodes)
+
+	sortChilds		=> o(n log n) --> o(n²)
+	child_length	=> o(1)
 */
 
 template<typename v> class dynamic_tree {
@@ -239,8 +257,15 @@ template<typename v> class dynamic_tree {
 		}
 	
 		// o(1)
-		v getValue() {
+		// get value of "current_position node" "by value"
+		v getValueByValue() {
 			return current_position->value;
+		}
+
+		// o(1)
+		// get value of "current_position" 
+		v* getValueByReference() {
+			return &current_position->value;
 		}
 
 		// o(nodes)
@@ -257,8 +282,8 @@ template<typename v> class dynamic_tree {
 		}
 
 		// o(nodes)
-		// get vector contain all childs values in that "current_position"
-		std::vector<v> getChildValues() {
+		// get vector contain all childs values depened on where is "current_position"
+		std::vector<v> getChildByValues() {
 
 			std::vector<v> values;
 
@@ -269,11 +294,13 @@ template<typename v> class dynamic_tree {
 			return values;
 		}
 
+		// o(1)
 		// some debug & testing functions
 		std::string getParentName() {
 			return (current_position->parent == NULL) ? "" : current_position->parent->name;
 		}
 
+		// o(1)
 		std::string getName() {
 			return current_position->name;
 		}
