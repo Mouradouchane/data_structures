@@ -50,26 +50,11 @@ int main() {
    
     dynamic_tree<int> dt("rot", 1);
     
-    
-    dt.addNode("rtx", 2);
-    dt.addNode("gtx", 3);
-
-    dt.move_to("rtx");
-
-    dt.print();
-
-    /*
-        std::cout << dt.getName() << '\n';
-
-        dt.addNode("child_1", 10);
-        dt.addNode("child_2", 20);
-
-        dt.move_to("child_1");
-
-        dt.move_to("parent");
-        std::cout << dt.getName() << '\n';
-    */
-
+    std::cout << dt.current_position->setChild("child1", 22) << '\n';
+    std::cout << dt.current_position->setChild("child2", 33) << '\n';
+    std::cout << dt.current_position->setChild("child3", 44) << '\n';
+    std::cout << dt.current_position->setChild("child1", 44) << '\n';
+  
     return 0;
 
 }
