@@ -48,9 +48,18 @@ using namespace trees;
 
 int main() {
    
-    dynamic_tree<int> dt("rot", 1);
-    
- 
+    dynamic_tree<int> dt("root", 1);
+
+    dt.current_position->insert("new1", 99);
+    dt.current_position->insert("new2", 99);
+    dt.current_position->insert("new1", 44);
+
+    dt.move_to("new1");
+    dt.current_position->insert("node1", 404);
+    dt.current_position->insert("node2", 303);
+    dt.current_position->insert("node1", 504);
+
+    std::cout << dt.move_to("node2") << '\n';
 
     return 0;
 

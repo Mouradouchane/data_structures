@@ -14,27 +14,27 @@ namespace trees {
 	length			=> o(1)
 	isEmpty			=> o(1)
 
-	setChild		=> o(1)	--> o(log n)
+	insert			=> o(1)	--> o(n) ==
+	remove			=> o(1) --> o(log n)
+
+	jump_to			=> o(1) --> o(n * highet) 
+
+	search			=> o(1) --> o(n) ==
+
 	getChild		=> o(1)	--> o(log n)
 	replaceChild	=> o(1) --> o(log n)
 	sortChilds		=> o(n log n) --> o(n²)
-	removeChild		=> o(1) --> o(log n)
 
-	getParentName	=> o(1)
-	go_to			=> o(1) --> o(n)
-	move_to			=> o(1) --> o(n * height)
-
-	search			=> o(log n) --> o(n)
-
-	operator +=		=> shortcut of setChild
+	operator +=		=> shortcut of inser
 	operator -=		=> shortcut of removeChild
+	operator ==>	=> shortcut of move_to
 */
 
 template<typename t> class tree_node {
 
-	protected:
+	private:
 		tree_node<t>* parent;
-		std::vector<tree_node> childs;
+		std::vector<tree_node<t>> children;
 
 	public:
 		std::string name;
@@ -57,9 +57,45 @@ template<typename t> class tree_node {
 		// === here all methods === 
 		// ========================
 	
-	
+		// o(1) --> o(n)
+		// no duplicated allowed in dynamic tree
+		bool insert(std::string new_node_name , t new_node_value) {
 
-		// give access to 'dynamic tree' for dealing with nodes :)
+			// soo first we check if any node is already exist with that name
+			for (tree_node child : children) {
+				// in case we found duplicate , no insert will be & return will be false 
+				if (child.name == new_node_name) return false;
+			}
+
+			// in case no duplicated found
+			//tree_node<t> new_node(new_node_name, new_node_value, this);
+			children.push_back(tree_node<t>(new_node_name, new_node_value, this));
+
+			// confirmation :)
+			return true;
+		}
+
+		// o(1) --> o(n)
+		// index_of_match : useful if you want to access that index in childer vector
+		bool search(std::string target_name , unsigned int &index_of_match = NULL){
+			
+			unsigned int i = 0;
+			for (tree_node<t> child : children) {
+				// in case target founded
+				if (child.name == target_name) { 
+					if (index_of_match != NULL) index_of_match = i;
+					return true;
+				}
+
+				i += 1;
+			}
+
+			// in case target not founded
+			return false;
+
+		}
+
+		// give access to dynamic_tree for making movements in tree 
 		template<typename v> friend class dynamic_tree;
 };
 
@@ -67,8 +103,9 @@ template<typename t> class tree_node {
 
 // === dynamic tree ~ methods =====
 /*
-	-- NAME ------ BEST --> WORST
-
+	-- NAME ------	BEST --> WORST
+	move_to			o(1) --> o(n) ==
+	jump_to			o(n * height) ==
 */
 
 template<typename v> class dynamic_tree {
@@ -79,19 +116,82 @@ template<typename v> class dynamic_tree {
 		tree_node<v> root;
 
 	public:
+
 		// current_position => node for making movement in tree
 		tree_node<v> *current_position;
 
 		// constructor 
 		dynamic_tree(std::string root_name , v root_value) {
-			root = tree_node<v>( root_name , root_value , NULL );
+			root = tree_node<v>( root_name , root_value , NULL ); // null for parent "no parent for root"
 			current_position = &root;
 		}
 
 		// destructor 
 		~dynamic_tree(){  }
 
+
+		// o(1) --> o(n)
+		// node_name : mean node where you want to go could be 'child' or 'parent' or even 'root'
+		bool move_to(std::string node_name) {
+
+			// in case you want to move to the root directlly
+			if (node_name == "root") {
+
+				// if you already in root 
+				if (current_position == &root) return false;
+				
+				// otherwise => jumping to the root & return true
+				current_position = &root;
+				return true;
+			}
+
+			// in case you want to move to the parent directlly
+			if (current_position->parent != NULL && node_name == current_position->parent->name){
+
+				current_position = current_position->parent;
+				return true;
+			}
+
+			// in case your target child node
+			for (unsigned int i = 0; i < current_position->children.size(); i += 1) {
+				// if target found we move to it 
+				if (current_position->children[i].name == node_name) {
+					current_position = &current_position->children[i];
+					return true;
+				}
+			}
+
+			// in case no move happen
+			return false;
+		}
+
+		// o(n* height)
+		// like move_to but this require a path of names for going a long distance
+		// going_down : soo important for deciding the "direction of that path"
+		bool jump_to(std::vector<std::string> full_path , bool going_down = true){
+
+			int index = -1;
+			tree_node<v>* temp;
+
+			// if direction down
+			if (going_down) {
+
+				// first check as first step before we jump
+				if (current_position->search(target, index))
+
+				// second check "nested" before we jump
+				for (std::string target : full_path) {
+
+					if (current_position->search(target, index)) {
+						temp = current_position->children[index];
+					}
+					else return false;
+
+				}
+			}
 		
+
+		}
 };
 
 }
