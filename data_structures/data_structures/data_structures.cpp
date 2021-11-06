@@ -50,11 +50,8 @@ int main() {
    
     dynamic_tree<int> dt("rot", 1);
     
-    std::cout << dt.current_position->setChild("child1", 22) << '\n';
-    std::cout << dt.current_position->setChild("child2", 33) << '\n';
-    std::cout << dt.current_position->setChild("child3", 44) << '\n';
-    std::cout << dt.current_position->setChild("child1", 44) << '\n';
-  
+ 
+
     return 0;
 
 }

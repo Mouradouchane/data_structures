@@ -56,31 +56,8 @@ template<typename t> class tree_node {
 		// ========================
 		// === here all methods === 
 		// ========================
-		
-		unsigned int length() {
-			return childs.size();
-		}
-
-		bool isEmpty() {
-			return (childs.size() > 0) ? false : true;
-		}
-
-		bool setChild(std::string child_name , t child_value) {
-			
-			//check if any child with that name is exist
-			for (tree_node child : childs) {
-				if (child.name == child_name) return false;
-			}
-
-			// add new child
-			tree_node<t> new_child(child_name, child_value, this);
-			childs.push_back(new_child);
-
-
-			return true;
-
-		}
-
+	
+	
 
 		// give access to 'dynamic tree' for dealing with nodes :)
 		template<typename v> friend class dynamic_tree;
