@@ -1,2 +1,3 @@
-﻿  data_structures.cpp
-  data_structures.vcxproj -> C:\Users\dev\Desktop\DSA\data_structures\data_structures\Debug\data_structures.exe
+﻿C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(495,5): warning MSB8003: The WindowsSDKDir property is not defined. Some build tools may not be found.
+  data_structures.cpp
+C:\Program Files\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30037\include\yvals.h(12,10): fatal error C1083: Cannot open include file: 'crtdbg.h': No such file or directory
