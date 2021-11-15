@@ -23,7 +23,7 @@ namespace trees {
 
 	getChild		=> o(1)	--> o(log n)
 	replaceChild	=> o(1) --> o(log n)
-	sortChilds		=> o(n log n) --> o(n²)
+	sortChilds		=> o(n log n) --> o(nï¿½)
 
 	operator +=		=> shortcut of inser
 	operator -=		=> shortcut of removeChild
@@ -170,27 +170,26 @@ template<typename v> class dynamic_tree {
 		// going_down : soo important for deciding the "direction of that path"
 		bool jump_to(std::vector<std::string> full_path , bool going_down = true){
 
-			int index = -1;
-			tree_node<v>* temp;
+			unsigned int index = -1;
 
-			// if direction down
-			if (going_down) {
+			if(going_down){
+				
+			}
+			else{
+				for(unsigned int i = 0 ; i < full_path.size() ; i += 1){
+					
+					current_position.search(path[i], &index);
 
-				// first check as first step before we jump
-				if (current_position->search(target, index))
-
-				// second check "nested" before we jump
-				for (std::string target : full_path) {
-
-					if (current_position->search(target, index)) {
-						temp = current_position->children[index];
+					if(index != -1){
+						current_position = current_position.childs[index];
 					}
 					else return false;
-
+					
+					index = -1;
 				}
 			}
-		
 
+			return false;
 		}
 };
 

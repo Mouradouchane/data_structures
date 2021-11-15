@@ -20,7 +20,7 @@
 
 namespace stacks {
 
-	template<typename t> class static_stack {
+template<typename t> class static_stack {
 	private:
 		int len = 0; 
 		int size = 0;
@@ -70,7 +70,7 @@ namespace stacks {
 
 		// o(1) 
 		// length => elements length not array/stack length
-		void length() {
+		int length() {
 			return len;
 		}
 
@@ -116,6 +116,6 @@ namespace stacks {
 			// in case not found 
 			return false;
 		}
-	};
+};
 
 }

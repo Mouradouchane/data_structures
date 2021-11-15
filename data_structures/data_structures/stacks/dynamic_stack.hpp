@@ -60,7 +60,7 @@ template<typename t> class dynamic_stack {
 		}
 
 		// o(1) length =>  elements length not vector length
-		void length() {
+		int length() {
 			return len;
 		}
 

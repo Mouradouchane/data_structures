@@ -87,7 +87,7 @@ template<typename v> class hash_table {
 
 	public:
 		// constructor 
-		hash_table(unsigned int hash_table_size = min_size){
+		hash_table(unsigned int hash_table_size = 3){
 
 			// check if table_size is bigger than min size allowed "3"
 			table_size = (hash_table_size < min_size) ? min_size : hash_table_size;
