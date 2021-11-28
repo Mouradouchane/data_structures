@@ -132,7 +132,7 @@ template<typename v> class dynamic_tree {
 
 		// o(1) --> o(n)
 		// node_name : mean node where you want to go could be 'child' or 'parent' or even 'root'
-		bool move_to(std::string node_name) {
+		bool move_to(std::string node_name , bool up = false) {
 
 			// in case you want to move to the root directlly
 			if (node_name == "root") {
@@ -145,23 +145,31 @@ template<typename v> class dynamic_tree {
 				return true;
 			}
 
-			// in case you want to move to the parent directlly
-			if (current_position->parent != NULL && node_name == current_position->parent->name){
+			// in case you want to move up to the parent directlly
+			if( up ){
 
-				current_position = current_position->parent;
-				return true;
-			}
-
-			// in case your target child node
-			for (unsigned int i = 0; i < current_position->children.size(); i += 1) {
-				// if target found we move to it 
-				if (current_position->children[i].name == node_name) {
-					current_position = &current_position->children[i];
+				if (current_position->parent != NULL && node_name == current_position->parent->name){
+					current_position = current_position->parent;
 					return true;
 				}
+				// in case target 'not found !'
+				else return false;
+
+			}
+			else {
+
+				// in case your target child node
+				for (unsigned int i = 0; i < current_position->children.size(); i += 1) {
+					// if target found we move to it 
+					if (current_position->children[i].name == node_name) {
+						current_position = &current_position->children[i];
+						return true;
+					}
+				}
+
 			}
 
-			// in case no move happen
+			// in case target 'not found !'
 			return false;
 		}
 
@@ -186,11 +194,12 @@ template<typename v> class dynamic_tree {
 					else return false;
 					
 					index = -1;
-				}
+				}-
 			}
 
 			return false;
 		}
+		
 };
 
 }

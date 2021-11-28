@@ -47,19 +47,14 @@ using namespace hash_tables;
 using namespace trees;
 
 int main() {
-   
-    dynamic_tree<int> dt("root", 1);
+    
+    dynamic_tree<int> dt("rt", 1);
+    dt.current_position->insert("aka", 2);
+    dt.move_to("aka");
+    dt.current_position->insert("rt", 3);
 
-    dt.current_position->insert("new1", 99);
-    dt.current_position->insert("new2", 99);
-    dt.current_position->insert("new1", 44);
-
-    dt.move_to("new1");
-    dt.current_position->insert("node1", 404);
-    dt.current_position->insert("node2", 303);
-    dt.current_position->insert("node1", 504);
-
-    std::cout << dt.move_to("node2") << '\n';
+    dt.move_to("root");
+    std::cout << dt.current_position->value << '\n';
 
     return 0;
 
