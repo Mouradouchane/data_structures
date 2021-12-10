@@ -101,12 +101,13 @@ template<typename t> class tree_node {
 };
 
 
-
 // === dynamic tree ~ methods =====
 /*
 	-- NAME ------	BEST --> WORST
-	move_to			o(1) --> o(n) ==
-	jump_to			o(n * height) ==
+	search_up		o(1)
+	search_down		o(1) --> o(children)
+	move_to			o(1) --> o(children) 
+	jump_to			o(children * path)
 */
 
 template<typename v> class dynamic_tree {
@@ -116,8 +117,8 @@ template<typename v> class dynamic_tree {
 		// main node in tree
 		tree_node<v> root;
 
-		// method for searching on target node
-		// used for jump_to
+		// o(1) : function take a "temp node" & make a simple check if that temp include a parent with specific name
+		// return will be a parent pointer or NULL
 		tree_node<v>* search_up(std::string node_name , tree_node<v>* temp) {
 		    if(temp->parent != NULL && temp->parent->name == node_name) {
                     return temp->parent;
@@ -125,6 +126,7 @@ template<typename v> class dynamic_tree {
 		    else return NULL;
 		}
 
+		// o(1) : like "search_up" function , but this one for looking down
 		tree_node<v>* search_down(std::string node_name , tree_node<v>* temp) {
             for(int i = 0 ; i < temp->children.size() ; i += 1){
 				if(temp->children[i].name == node_name) return &temp->children[i];
@@ -148,7 +150,7 @@ template<typename v> class dynamic_tree {
 		~dynamic_tree(){  }
 
 
-		// o(1) --> o(n)
+		// o(1) --> o(children)
 		// node_name : mean node where you want to go could be 'child' or 'parent' or even 'root'
 		bool move_to(std::string node_name , bool up = false) {
 
@@ -191,28 +193,42 @@ template<typename v> class dynamic_tree {
 			return false;
 		}
 
-		// o(n* height)
-		// like move_to but this require a path of names for going a long distance
-		// going_down : soo important for deciding the "direction of that path"
+		// o(childrens) --> o(childrens * path)
+		// like move_to but this require a hole path of "nodes names"
+		// return will be a boolean as a confirmation of that operation
+		// note !! jump will be happend only if "the hole path" is valid , otherwise nope :)
 		bool jump_to(std::vector<std::string> full_path , bool up = false){
+			
+			// temp only for check & testing if "the hole path" are valid or not
+			// if it valid we make it current_position in the end :)
+			tree_node<v>* temp = current_position;
 
-            tree_node<v>* temp = current_position;
+			// boolean up it's mean that "hole path" in parents direction "up"
 			if(up){
 
+				// we starting looking up by using a private function "search_up"
 				for(std::string path : full_path){
 					temp = search_up(path , temp);
+					// in case not found "that's mean invalid path"
 					if(temp == NULL) return false;
 				}
 
 			}
+			// "up == false" mean that "hole path" in childs direction "down"
 			else{
+
+				// we starting looking down by using a private function "search_down"
 				for(std::string path : full_path){
 					temp = search_down(path , temp);
+					// in case not found "that's mean invalid path"
 					if(temp == NULL) return false;
 				}
+
 			}
 
+			// in case "the hole path" is valid we should make temp the new current_position 
 			current_position = temp;
+			// and return true as a confirmation of that operation
 			return true;
 		}
 

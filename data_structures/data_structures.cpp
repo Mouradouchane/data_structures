@@ -68,7 +68,7 @@ int main() {
     std::cout << "jumping... " << dt.jump_to( path ) << '\n';
     std::cout << dt.current_position->name << " " << dt.current_position->value << '\n';
 
-    std::cout << "jumping... " << dt.jump_to({"rt","aka"} , true) << '\n';
+    std::cout << "jumping... " << dt.jump_to({"rt","aka","vgs"} , true) << '\n';
     std::cout << dt.current_position->name << " " << dt.current_position->value << '\n';
 
     return 0;
