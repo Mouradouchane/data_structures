@@ -118,51 +118,19 @@ template<typename v> class dynamic_tree {
 
 		// method for searching on target node
 		// used for jump_to
-		bool search_for_node(std::string node_name , tree_node<v> &temp_position , bool up = false) {
+		tree_node<v>* search_up(std::string node_name , tree_node<v>* temp) {
+		    if(temp->parent != NULL && temp->parent->name == node_name) {
+                    return temp->parent;
+		    }
+		    else return NULL;
+		}
 
-			// in case you want root directlly
-			if (node_name == "root") {
+		tree_node<v>* search_down(std::string node_name , tree_node<v>* temp) {
+            for(int i = 0 ; i < temp->children.size() ; i += 1){
+				if(temp->children[i].name == node_name) return &temp->children[i];
+		    }
 
-				// if current_position already in root
-				if (temp_position == root){
-					return false;
-				}
-
-				// otherwise
-				temp_position = root;
-				return true;
-
-			}
-
-			// in case you want to search up
-			if( up ){
-
-				if (temp_position.parent != NULL && temp_position.parent->name == node_name){
-					temp_position = temp_position->parent;
-					return true;
-				}
-				// in case target 'not found !'
-				else {
-					return false;
-				}
-
-			}
-			// in cas you want to search down
-			else {
-
-				// in case you searching for child node
-				for (unsigned int i = 0; i < temp_position.children.size(); i += 1) {
-					// if target found
-					if (temp_position.children[i].name == node_name) {
-						temp_position = temp_position.children[i];
-						return true;
-					}
-				}
-
-			}
-
-			// in case target 'not found !'
-			return false;
+		    return NULL;
 		}
 
 	public:
@@ -227,17 +195,24 @@ template<typename v> class dynamic_tree {
 		// like move_to but this require a path of names for going a long distance
 		// going_down : soo important for deciding the "direction of that path"
 		bool jump_to(std::vector<std::string> full_path , bool up = false){
-            /*
-			tree_node<v> *temp_position = current_position;
 
-			for(std::string node_name : full_path){
+            tree_node<v>* temp = current_position;
+			if(up){
 
-				if(!search_for_node(node_name , *temp_position , up)) return false;
+				for(std::string path : full_path){
+					temp = search_up(path , temp);
+					if(temp == NULL) return false;
+				}
 
 			}
+			else{
+				for(std::string path : full_path){
+					temp = search_down(path , temp);
+					if(temp == NULL) return false;
+				}
+			}
 
-			current_position = temp_position;
-            */
+			current_position = temp;
 			return true;
 		}
 

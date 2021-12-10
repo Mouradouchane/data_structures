@@ -53,19 +53,23 @@ int main() {
     dt.current_position->insert("aka", 2);
     dt.move_to("aka");
     dt.current_position->insert("rt", 3);
+
     dt.move_to("rt");
     dt.current_position->insert("gtt", 4);
     dt.move_to("gtt");
     dt.current_position->insert("dll", 5);
 
     dt.move_to("root");
+
     std::vector<std::string> path = {"aka","rt","gtt"};
 
-    std::cout << "start... !" << '\n';
+    std::cout << "start... " << '\n';
 
-    std::cout << "jumping is ... !" << dt.jump_to( path ) << '\n';
+    std::cout << "jumping... " << dt.jump_to( path ) << '\n';
     std::cout << dt.current_position->name << " " << dt.current_position->value << '\n';
 
+    std::cout << "jumping... " << dt.jump_to({"rt","aka"} , true) << '\n';
+    std::cout << dt.current_position->name << " " << dt.current_position->value << '\n';
 
     return 0;
 
