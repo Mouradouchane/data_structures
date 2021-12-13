@@ -40,6 +40,7 @@ public:
 #include "hash tables/hash_table_chaining.hpp"
 
 #include "trees/dynamic_tree.hpp"
+#include "trees/binary_tree.hpp"
 
 using namespace linkedlist;
 using namespace stacks;
@@ -49,27 +50,14 @@ using namespace trees;
 
 int main() {
 
-    dynamic_tree<int> dt("rot", 1);
-    dt.current_position->insert("aka", 2);
-    dt.move_to("aka");
-    dt.current_position->insert("rt", 3);
+    binary_node<int> root(1);
+    root.left  = new binary_node<int>(2);
+    root.right = new binary_node<int>(3);
 
-    dt.move_to("rt");
-    dt.current_position->insert("gtt", 4);
-    dt.move_to("gtt");
-    dt.current_position->insert("dll", 5);
+    root.left->left->value = 44;
 
-    dt.move_to("root");
-
-    std::vector<std::string> path = {"aka","rt","gtt"};
-
-    std::cout << "start... " << '\n';
-
-    std::cout << "jumping... " << dt.jump_to( path ) << '\n';
-    std::cout << dt.current_position->name << " " << dt.current_position->value << '\n';
-
-    std::cout << "jumping... " << dt.jump_to({"rt","aka","vgs"} , true) << '\n';
-    std::cout << dt.current_position->name << " " << dt.current_position->value << '\n';
+    std::cout << root.value <<" "<< root.left->value <<" "<<  root.right->value << '\n';
+    std::cout << root.left->left->value << '\n';
 
     return 0;
 
