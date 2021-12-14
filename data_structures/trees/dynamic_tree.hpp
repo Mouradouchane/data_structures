@@ -22,12 +22,12 @@ namespace trees {
 	search			=> o(1) --> o(n) ==
 
 	getChild		=> o(1)	--> o(log n)
-	replaceChild	=> o(1) --> o(log n)
+	replaceChild		=> o(1) --> o(log n)
 	sortChilds		=> o(n log n) --> o(n�)
 
 	operator +=		=> shortcut of insert
 	operator -=		=> shortcut of removeChild
-	operator ==>	=> shortcut of move_to
+	operator ==>		=> shortcut of move_to
 */
 
 template<typename t> class tree_node {
