@@ -1,237 +1,325 @@
+/*
+    dynamic tree node
+
+	-- NAME ---------- BEST --> WORST
+
+	length		    => o(1)
+
+	insert			=> o(1)	--> o(n log n)
+
+	search			=> o(1) --> o(log n)
+	sort            => o(n log n) --> o(n²)
+
+	get        		=> o(1) --> o(log n)
+	replace   		=> o(1) --> o(log n)
+
+	remove			=> o(1) --> o(all children)
+	removeChild		=> o(1) --> o(all children)
+
+    operator <      => o(1) --> o(n)
+    operator >      => o(1) --> o(n)
+
+	operator +=		=> shortcut of insert
+	operator -=		=> shortcut of removeChild
+*/
+
+
+/*
+    dynamic tree 
+    
+    -- NAME ------	BEST --> WORST
+    search_up		o(1)
+    search_down		o(1) --> o(children)
+
+    move_to			o(1) --> o(children) 
+    travel_to	    o(path) --> o(children * path)
+
+    remove          o(1) --> o(1 + children)
+*/
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
 #include <string>
 
 #pragma once
-
-namespace trees {
-
-// === node ~ methods =====
 /*
-	-- NAME ---------- BEST --> WORST
-
-	length			=> o(1)
-	isEmpty			=> o(1)
-
-	insert			=> o(1)	--> o(n) ==
-	remove			=> o(1) --> o(log n)
-
-	jump_to			=> o(1) --> o(n * highet)
-
-	search			=> o(1) --> o(n) ==
-
-	getChild		=> o(1)	--> o(log n)
-	replaceChild		=> o(1) --> o(log n)
-	sortChilds		=> o(n log n) --> o(n�)
-
-	operator +=		=> shortcut of insert
-	operator -=		=> shortcut of removeChild
-	operator ==>		=> shortcut of move_to
+#ifndef DYNAMIC_TREE_H
+#define DYNAMIC_TREE_H
 */
+namespace cpstl {
 
-template<typename t> class tree_node {
+    // node class for dynamic tree  
+    template<typename t> class DynamicTree_Node {
 
-	private:
-		tree_node<t>* parent;
-		std::vector<tree_node<t>> children;
+        private:
+            // node parent node 
+            DynamicTree_Node<t>* parent;
+            // children of that node 
+            std::vector<DynamicTree_Node<t>> children;
 
-	public:
-		std::string name;
-		t value;
+        public:
+            // node name
+            std::string name;
+            // node value
+            t value;
 
+            // default constructor
+            DynamicTree_Node() {}
 
-		// default constructor
-		tree_node() {}
+            // second constructor
+            DynamicTree_Node(std::string node_name, t node_value , DynamicTree_Node<t> *parent_node)
+                : name    { node_name }  ,
+                  value   { node_value } ,
+                  parent  { parent_node }
+            { }
 
-		// second constructor
-		tree_node(std::string node_name, t node_value , tree_node<t> *parent_node)
-			: name  { node_name } ,
-			  value  { node_value } ,
-			  parent{ parent_node }
-		{ }
+            // destructor
+            ~DynamicTree_Node() { }
 
-		// destructor
-		~tree_node() { }
+            /* 
+             ========================
+             ===     methods      ===
+             ========================
+            */
 
-		// ========================
-		// === here all methods ===
-		// ========================
+            // o(1) --> o(children)
+            // no duplicated allowed in dynamic tree
+            bool insert(std::string new_node_name , t new_node_value) {
 
-		// o(1) --> o(n)
-		// no duplicated allowed in dynamic tree
-		bool insert(std::string new_node_name , t new_node_value) {
+                // first we check if any node is already exist with the same name
+                for (DynamicTree_Node<t> &child : children) {
+                    // in case duplicate found , no insert will be & return will be false
+                    if (child.name == new_node_name) return false;
+                }
 
-			// soo first we check if any node is already exist with that name
-			for (tree_node child : children) {
-				// in case we found duplicate , no insert will be & return will be false
-				if (child.name == new_node_name) return false;
-			}
+                // in case no duplicated found
 
-			// in case no duplicated found
-			//tree_node<t> new_node(new_node_name, new_node_value, this);
-			children.push_back(tree_node<t>(new_node_name, new_node_value, this));
+                // insert new childern 
+                children.push_back(DynamicTree_Node<t>(new_node_name, new_node_value, this));
+                // return true as confirmation
+                return true;
+            }
 
-			// confirmation :)
-			return true;
-		}
+            // o(1) --> o(children)
+            // search => between all children's
+            // target_index : useful if you want to get index of that target
+            bool search(std::string &target_name , unsigned int &target_index = NULL){
 
-		// o(1) --> o(n)
-		// index_of_match : useful if you want to access that index in childer vector
-		bool search(std::string target_name , unsigned int &index_of_match = NULL){
+                unsigned int i = 0;
 
-			unsigned int i = 0;
-			for (tree_node<t> child : children) {
-				// in case target founded
-				if (child.name == target_name) {
-					if (index_of_match != 0 ) index_of_match = i;
-					return true;
+                for (DynamicTree_Node<t> &child : children) {
+                    // in case target founded
+                    if (child.name == target_name) {
+                        // in case you want index of that target
+                        if (target_index != NULL ) target_index = i;
+                        // confirmation 
+                        return true;
+                    }
+
+                    i += 1;
+                }
+
+                // in case target not founded
+                return false;
+
+            }
+
+            // get length of children in this node
+            unsigned int length(){
+                return this->children.size();
+            }
+
+            // sort children
+            // o(n log n) --> o(n²)
+            void sort(bool reverse = false){
+
+                if(reverse){
+                    std::sort(this->children.begin() , this->children.end() , 
+                        // comparison function
+                        [](DynamicTree_Node<t> a , DynamicTree_Node<t> b){
+                            return (a > b);
+                        }
+                    );
+                }
+                else{
+                    std::sort(this->children.begin() , this->children.end() , 
+                        // comparison function
+                        [](DynamicTree_Node<t> a , DynamicTree_Node<t> b){
+                            return (a < b);
+                        }
+                    );
+                }
+
+            }
+
+			// testing function
+			void print(){
+                std::cout << "==================================" << '\n'; 
+				for(DynamicTree_Node<t> &child : this->children){
+					std::cout << child.name << " " << child.value << '\n'; 
 				}
-
-				i += 1;
+                std::cout << "==================================" << '\n'; 
 			}
 
-			// in case target not founded
-			return false;
+            // < comparison operator between tow nodes
+            bool operator < (DynamicTree_Node<t> &another_node){
+                return ( this->name.compare(another_node.name) < 0 ) ? true : false;
+            } 
 
-		}
+            // > comparison operator between tow nodes
+            bool operator > (DynamicTree_Node<t> &another_node){
+                return ( this->name.compare(another_node.name) > 0 ) ? true : false;
+            }
 
-		// give access to dynamic_tree for making movements in tree
-		template<typename v> friend class dynamic_tree;
-};
+            // giving a access for making some processes like move_to , travel_to ... 
+            template<typename v> friend class DynamicTree;
+    };
 
-
-// === dynamic tree ~ methods =====
-/*
-	-- NAME ------	BEST --> WORST
-	search_up		o(1)
-	search_down		o(1) --> o(children)
-	move_to			o(1) --> o(children) 
-	jump_to			o(children * path)
-*/
-
-template<typename v> class dynamic_tree {
-
-	private:
-
-		// main node in tree
-		tree_node<v> root;
-
-		// o(1) : function take a "temp node" & make a simple check if that temp include a parent with specific name
-		// return will be a parent pointer or NULL
-		tree_node<v>* search_up(std::string node_name , tree_node<v>* temp) {
-		    if(temp->parent != NULL && temp->parent->name == node_name) {
-                    return temp->parent;
-		    }
-		    else return NULL;
-		}
-
-		// o(1) : like "search_up" function , but this one for looking down
-		tree_node<v>* search_down(std::string node_name , tree_node<v>* temp) {
-            for(int i = 0 ; i < temp->children.size() ; i += 1){
-				if(temp->children[i].name == node_name) return &temp->children[i];
-		    }
-
-		    return NULL;
-		}
-
-	public:
-
-		// current_position => node for making movement in tree
-		tree_node<v> *current_position;
-
-		// constructor
-		dynamic_tree(std::string root_name , v root_value) {
-			root = tree_node<v>( root_name , root_value , NULL ); // null for parent "no parent for root"
-			current_position = &root;
-		}
-
-		// destructor
-		~dynamic_tree(){  }
+ 
 
 
-		// o(1) --> o(children)
-		// node_name : mean node where you want to go could be 'child' or 'parent' or even 'root'
-		bool move_to(std::string node_name , bool up = false) {
+    // DynamicTree class 
+    template<typename v> class DynamicTree {
 
-			// in case you want to move to the root directlly
-			if (node_name == "root") {
+        private:
 
-				// if you already in root
-				if (current_position == &root) return false;
+            // main node in DynamicTree
+            DynamicTree_Node<v> root;
 
-				// otherwise => jumping to the root & return true
-				current_position = &root;
-				return true;
-			}
+            /* 
+                **** some private function **** 
+                used in "travel_to" function
+            */
 
-			// in case you want to move up to the parent directlly
-			if( up ){
+            // o(1) : function take a "temp node" & make a simple check if that temp include a parent with specific name
+            // return will be a parent pointer or NULL
+            DynamicTree_Node<v>* search_up(std::string &node_name , DynamicTree_Node<v>* temp) {
+                
+                if(temp->parent != NULL && temp->parent->name == node_name) {
+                        return temp->parent;
+                }
+                else return NULL;
 
-				if (current_position->parent != NULL && node_name == current_position->parent->name){
-					current_position = current_position->parent;
-					return true;
-				}
-				// in case target 'not found !'
-				else return false;
+            }
 
-			}
-			else {
+            // o(1) --> o(children) : like "search_up" function , but this one for looking down between children
+            DynamicTree_Node<v>* search_down(std::string &node_name , DynamicTree_Node<v>* temp) {
+                
+                for(int i = 0 ; i < temp->children.size() ; i += 1){
+                    if(temp->children[i].name == node_name) 
+                            return &temp->children[i];
+                }
 
-				// in case your target child node
-				for (unsigned int i = 0; i < current_position->children.size(); i += 1) {
-					// if target found we move to it
-					if (current_position->children[i].name == node_name) {
-						current_position = &current_position->children[i];
-						return true;
-					}
-				}
+                return NULL;
 
-			}
+            }
 
-			// in case target 'not found !'
-			return false;
-		}
+        public:
 
-		// o(childrens) --> o(childrens * path)
-		// like move_to but this require a hole path of "nodes names"
-		// return will be a boolean as a confirmation of that operation
-		// note !! jump will be happend only if "the hole path" is valid , otherwise nope :)
-		bool jump_to(std::vector<std::string> full_path , bool up = false){
-			
-			// temp only for check & testing if "the hole path" are valid or not
-			// if it valid we make it current_position in the end :)
-			tree_node<v>* temp = current_position;
+            // current_node => it's a node represent you position in tree
+            // "important !" for many operation like search , movement , ...
+            DynamicTree_Node<v> *current_node;
 
-			// boolean up it's mean that "hole path" in parents direction "up"
-			if(up){
+            // constructor
+            DynamicTree(std::string root_name , v root_value) {
+                // parent of root must be null
+                root = DynamicTree_Node<v>( root_name , root_value , NULL ); 
+                current_node = &root;
+            }
 
-				// we starting looking up by using a private function "search_up"
-				for(std::string path : full_path){
-					temp = search_up(path , temp);
-					// in case not found "that's mean invalid path"
-					if(temp == NULL) return false;
-				}
+            // destructor
+            ~DynamicTree(){  }
 
-			}
-			// "up == false" mean that "hole path" in childs direction "down"
-			else{
+            // o(1) --> o(children)
+            // node_name : mean node where you want to go could be 'child' or 'parent' depend on "boolean up" 
+            // also you can jump to the 'root' directly if you want
+            bool move_to(std::string &node_name , bool up = false) {
 
-				// we starting looking down by using a private function "search_down"
-				for(std::string path : full_path){
-					temp = search_down(path , temp);
-					// in case not found "that's mean invalid path"
-					if(temp == NULL) return false;
-				}
+                // in case you want to jump to the root directly
+                if (node_name == "root") {
 
-			}
+                    // if you already in root
+                    if (current_node == &root) return false;
 
-			// in case "the hole path" is valid we should make temp the new current_position 
-			current_position = temp;
-			// and return true as a confirmation of that operation
-			return true;
-		}
+                    // otherwise => jumping to the root & return true
+                    current_node = &root;
+                    return true;
+                }
 
-};
+                // in case you want to move up to the parent
+                if( up ){
+
+                    if (current_node->parent != NULL && node_name == current_node->parent->name){
+                        current_node = current_node->parent;
+                        return true;
+                    }
+                    // in case target 'not found !'
+                    else return false;
+
+                }
+                // in case you want to move down to child
+                else {
+
+                    // loop over all & check
+                    for (unsigned int i = 0; i < current_node->children.size(); i += 1) {
+                        // if target found we move to it
+                        if (current_node->children[i].name == node_name) {
+                            current_node = &current_node->children[i];
+                            return true;
+                        }
+                    }
+
+                }
+
+                // in case target 'not found'
+                return false;
+            }
+
+            // o(path) --> o(childrens * path)
+            // like move_to but this require a hole path of "names"
+            // return will be a true if travel_to succeed to travel between all that nodes
+            // note !! travel will be happen only if "the whole path" is valid , otherwise nothing will be happen
+            bool travel_to(std::vector<std::string> &full_path , bool up = false){
+                
+                // temp only for check & testing if "the hole path" are valid or not
+                // if it valid we make it current_position in the end "as last step" 
+                DynamicTree_Node<v>* temp = current_node;
+
+                // boolean up it's mean that "the hole path" in parents direction "up"
+                if(up){
+
+                    // we start looking up by using a private function "search_up"
+                    for(std::string path : full_path){
+                        temp = search_up(path , temp);
+                        // in case not found "that's mean invalid path"
+                        if(temp == NULL) return false;
+                    }
+
+                }
+                // "up == false" mean that "the hole path" in children direction "down"
+                else{
+
+                    // we start looking down by using a private function "search_down"
+                    for(std::string path : full_path){
+                        temp = search_down(path , temp);
+                        // in case not found "that's mean invalid path"
+                        if(temp == NULL) return false;
+                    }
+
+                }
+
+                // in case "the hole path" is valid 
+                // last step => travel from "current_position" to "the temp node"
+                current_node = temp;
+                // and confirmation 
+                return true;
+            }
+
+    };
+
 
 }
+
+
+//#endif

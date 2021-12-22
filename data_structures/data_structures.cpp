@@ -47,18 +47,21 @@ using namespace stacks;
 using namespace queue;
 using namespace hash_tables;
 using namespace trees;
+using namespace cpstl;
 
 int main() {
+    
+    DynamicTree<int> dt("root",1);
+    dt.current_node->insert("a3",1);
+    dt.current_node->insert("a5",2);
+    dt.current_node->insert("g2",3);
+    dt.current_node->insert("b2",4);
+    dt.current_node->insert("ab2",5);
 
-    binary_node<int> root(1);
-    root.left  = new binary_node<int>(2);
-    root.right = new binary_node<int>(3);
-
-    root.left->left->value = 44;
-
-    std::cout << root.value <<" "<< root.left->value <<" "<<  root.right->value << '\n';
-    std::cout << root.left->left->value << '\n';
+    dt.current_node->sort();
+    dt.current_node->print();
+    dt.current_node->sort(true);
+    dt.current_node->print();
 
     return 0;
-
 }
