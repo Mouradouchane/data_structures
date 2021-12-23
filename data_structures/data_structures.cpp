@@ -49,6 +49,15 @@ using namespace hash_tables;
 using namespace trees;
 using namespace cpstl;
 
+void test(DynamicTree_Node<int> node , int index){
+    if(index != -1){
+    std::cout << "(" << node.children[index].name <<":"<< node.children[index].value << ")" <<  " " << index << '\n';
+    }
+    else {
+        std::cout << "not found !\n";
+    }
+}
+
 int main() {
     
     DynamicTree<int> dt("root",1);
@@ -58,10 +67,25 @@ int main() {
     dt.current_node->insert("b2",4);
     dt.current_node->insert("ab2",5);
 
+    int idx1 = 0 , idx2 = 0 , idx3 = 0 , idx4 = 0;
+
+    dt.current_node->print();
+
+    dt.current_node->search("g2", idx1);
+    dt.current_node->search("ab2", idx2);
+    dt.current_node->search("b2", idx3);
+    dt.current_node->search("a3", idx4);
+    
+    test(*dt.current_node,idx1);
+    test(*dt.current_node,idx2);
+    test(*dt.current_node,idx3);
+    test(*dt.current_node,idx4);
+
+    /*
+    dt.current_node->print();
     dt.current_node->sort();
     dt.current_node->print();
-    dt.current_node->sort(true);
-    dt.current_node->print();
+    */
 
     return 0;
 }

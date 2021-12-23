@@ -43,10 +43,10 @@
 #include <string>
 
 #pragma once
-/*
+
 #ifndef DYNAMIC_TREE_H
 #define DYNAMIC_TREE_H
-*/
+
 namespace cpstl {
 
     // node class for dynamic tree  
@@ -55,10 +55,11 @@ namespace cpstl {
         private:
             // node parent node 
             DynamicTree_Node<t>* parent;
-            // children of that node 
-            std::vector<DynamicTree_Node<t>> children;
 
         public:
+            // children of that node 
+            std::vector<DynamicTree_Node<t>> children;
+            
             // node name
             std::string name;
             // node value
@@ -95,39 +96,49 @@ namespace cpstl {
 
                 // in case no duplicated found
 
-                // insert new childern 
+                // insert new child & sort all children 
                 children.push_back(DynamicTree_Node<t>(new_node_name, new_node_value, this));
-                // return true as confirmation
+                this->sort();
+
+                // confirmation
                 return true;
             }
 
-            // o(1) --> o(children)
-            // search => between all children's
-            // target_index : useful if you want to get index of that target
-            bool search(std::string &target_name , unsigned int &target_index = NULL){
+            // o(1) --> o(n log n)
+            // search => "bineay search" between children
+            // target_index : useful if you want to get index of that target in case not found you get -1
+            bool search(std::string target_name , int &target_index = NULL){
 
-                unsigned int i = 0;
+                int min = 0;
+                int max = this->children.size() - 1;
+                int mid = ( min + max ) / 2;
 
-                for (DynamicTree_Node<t> &child : children) {
-                    // in case target founded
-                    if (child.name == target_name) {
-                        // in case you want index of that target
-                        if (target_index != NULL ) target_index = i;
-                        // confirmation 
+                while( min <= max ){
+
+                    //std::cout << min << " " << mid  << " " << max << '\n';
+                   
+                    if(this->children[mid].name == target_name){
+                        if(&target_index != NULL) {
+                            target_index = mid;
+                        }
                         return true;
                     }
 
-                    i += 1;
+                    if(this->children[mid].name.compare(target_name) > 0){
+                        max = (mid - 1);
+                    }
+
+                    if(this->children[mid].name.compare(target_name) < 0){
+                        min = (mid + 1);
+                    }
+
+                    mid = ( min + max ) / 2 ;
                 }
 
-                // in case target not founded
+                if(&target_index != NULL) {
+                    target_index = -1;
+                }
                 return false;
-
-            }
-
-            // get length of children in this node
-            unsigned int length(){
-                return this->children.size();
             }
 
             // sort children
@@ -153,14 +164,32 @@ namespace cpstl {
 
             }
 
+            // o(1) --> o(n log n)
+            // get a copy of child node
+            // note ! : that copy without any children or any connection to the origin tree
+            DynamicTree_Node<t> get(int child_index){
+                DynamicTree_Node<t> copy_of_child;
+
+                copy_of_child.name  = this->children[child_index].name;
+                copy_of_child.value = this->children[child_index].value;
+
+                return copy_of_child;
+            }
+
 			// testing function
 			void print(){
                 std::cout << "==================================" << '\n'; 
 				for(DynamicTree_Node<t> &child : this->children){
-					std::cout << child.name << " " << child.value << '\n'; 
+					std::cout << child.name << "=" << child.value << " "; 
 				}
-                std::cout << "==================================" << '\n'; 
+                std::cout << "\n==================================\n"; 
 			}
+
+            // get length of children in this node
+            unsigned int length(){
+                return this->children.size();
+            }
+
 
             // < comparison operator between tow nodes
             bool operator < (DynamicTree_Node<t> &another_node){
@@ -321,5 +350,4 @@ namespace cpstl {
 
 }
 
-
-//#endif
+#endif
