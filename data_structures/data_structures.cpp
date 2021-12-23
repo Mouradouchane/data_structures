@@ -49,7 +49,7 @@ using namespace hash_tables;
 using namespace trees;
 using namespace cpstl;
 
-void test(DynamicTree_Node<int> node , int index){
+void test(DT_Node<int> node , int index){
     if(index != -1){
     std::cout << "(" << node.children[index].name <<":"<< node.children[index].value << ")" <<  " " << index << '\n';
     }
@@ -62,8 +62,9 @@ int main() {
     
     DynamicTree<int> dt("root",1);
     dt.current_node->insert("a3",1);
-    dt.current_node->insert("a5",2);
+    if(!dt.current_node->insert("a3",2)) std::cout << "duplicated captured\n";
     dt.current_node->insert("g2",3);
+    if(!dt.current_node->insert("g2",2)) std::cout << "duplicated captured\n";
     dt.current_node->insert("b2",4);
     dt.current_node->insert("ab2",5);
 
