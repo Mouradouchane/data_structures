@@ -5,8 +5,7 @@
 
 	length		    => o(1)
 
-	insert			=> o(log n + 1)	--> o( (n log n) + (log n) + 1)
-
+	insert			=> o( (n log n) + (log n) + 1 )
 	search			=> o(1) --> o(log n)
 	sort            => o(n log n) --> o(n²)
 
@@ -15,12 +14,11 @@
 
 	remove			=> o(nodes * log n)
     removeChild     => o(log n) --> o(nodes * log n)
+    removeChildren  =>
 
-    operator <      => o(1) --> o(n)
-    operator >      => o(1) --> o(n)
+    operator <      => o(1) 
+    operator >      => o(1)
 
-	operator +=		=> shortcut of insert
-	operator -=		=> shortcut of removeChild
 */
 
 
@@ -29,12 +27,13 @@
     
     -- NAME ------	BEST --> WORST
     search_up		o(1)
-    search_down		o(1) --> o(children)
+    search_down		o(1) --> o(log n)
 
-    move_to			o(1) --> o(children) 
-    travel_to	    o(path) --> o(children * path)
+    go_to			o(1) --> o(log n) 
+    go_to_root      o(1)
+    go_back         o(1)
+    travel_to	    o(log n) --> o(log n * path)
 
-    remove          o(1) --> o(1 + children)
 */
 
 #include <iostream>
@@ -49,7 +48,9 @@
 
 namespace cpstl {
 
-    // Dynamic Tree Nodes class
+    // ================================
+    // === Dynamic Tree Nodes class ===
+    // ================================
     template<typename t> class DT_Node {
 
         private:
@@ -79,14 +80,7 @@ namespace cpstl {
             // destructor
             ~DT_Node() { }
 
-
-            /* 
-             =============================
-             ===     Nodes methods     ===
-             =============================
-            */
-
-            // o(log n + 1)	--> o( (n log n) + (log n) + 1)
+            // o( (n log n) + (log n) + 1 )
             // duplicate names are not allowed here in dynamic tree
             bool insert(std::string new_node_name , t new_node_value) {
 
@@ -196,7 +190,7 @@ namespace cpstl {
             }
 
             // o(log n) --> o(nodes * log n)
-            // remove child with specific name 
+            // remove child with specific name with his all children
             bool removeChild(std::string target_node_name){
 
                 // search for target index
@@ -205,38 +199,25 @@ namespace cpstl {
 
                 // call recursive remove of this child node
                 if(index != -1){
-                    children[index].remove();
+                    children[index].removeChildren();
+                    children.erase(children.begin() + index);
                     return true;
                 } 
 
                 return false;
             }
 
-
             // like removeChild function but this for all children 
             void removeChildren(){
                 
+                // nested recursive removeChildren => remove all children of children
                 for(DT_Node<t> &child : this->children){
                     child.removeChildren();
                 }
 
-                //this->children.erase(std::remove(this->children.begin(),this->children.end()));
+                // last step remove children by setup a new empty vector 
                 this->children = std::vector<DT_Node<t>>();
             }
-
-
-            // remove this node with all it's children
-            void remove(){
-
-                // recursive remove call
-                for(DT_Node<t> &child : this->children){
-                    child.removeChildren();
-                }
-
-                // delete it's self in the end
-                delete this;
-            }
-
 
 			// testing function
 			void print(){
@@ -262,14 +243,15 @@ namespace cpstl {
                 return ( this->name.compare(another_node.name) > 0 ) ? true : false;
             }
 
-            // giving a access for making some processes like move_to , travel_to ... 
+            // giving a access for making some processes like go_to , travel_to ... 
             template<typename v> friend class DynamicTree;
     };
 
  
 
-
-    // DynamicTree class 
+    // =========================
+    // === DynamicTree class ===
+    // =========================
     template<typename v> class DynamicTree {
 
         private:
@@ -282,27 +264,32 @@ namespace cpstl {
                 used in "travel_to" function
             */
 
-            // o(1) : function take a "temp node" & make a simple check if that temp include a parent with specific name
-            // return will be a parent pointer or NULL
-            DT_Node<v>* search_up(std::string &node_name , DT_Node<v>* temp) {
+            // o(1) 
+            // function take a "temp node" & make a simple check if that temp include a parent with specific name
+            // return will be a "parent pointer" or NULL
+            DT_Node<v>* search_up(std::string &parent_name , DT_Node<v>* temp) {
                 
-                if(temp->parent != NULL && temp->parent->name == node_name) {
+                if(temp->parent != NULL && temp->parent->name == parent_name) {
                         return temp->parent;
                 }
                 else return NULL;
 
             }
 
-            // o(1) --> o(children) : like "search_up" function , but this one for looking down between children
+            // o(1) --> o(log n) 
+            // like "search_up" function , but this one for looking "down" between children
             DT_Node<v>* search_down(std::string &node_name , DT_Node<v>* temp) {
                 
-                for(int i = 0 ; i < temp->children.size() ; i += 1){
-                    if(temp->children[i].name == node_name) 
-                            return &temp->children[i];
+                // o(log n)
+                // search for target 
+                int index = -1;
+                temp->search(node_name , index);
+                
+                if(index != -1){
+                    return &temp->children[index];
                 }
 
                 return NULL;
-
             }
 
         public:
@@ -321,94 +308,107 @@ namespace cpstl {
             // destructor
             ~DynamicTree(){  }
 
-            // o(1) --> o(children)
-            // node_name : mean node where you want to go could be 'child' or 'parent' depend on "boolean up" 
-            // also you can jump to the 'root' directly if you want
-            bool move_to(const std::string &node_name , bool up = false) {
+            // o(1) --> o(log n)
+            // target_child_name => mean node where you want to go
+            bool go_to(const std::string &target_child_name) {
 
-                // in case you want to jump to the root directly
-                if (node_name == "root") {
+                // search for target index
+                int index = -1;
+                this->current_node->search(target_child_name,index);
 
-                    // if you already in root
-                    if (current_node == &root) return false;
+                // in case target found
+                if(index != -1){
+                    this->current_node = &(this->current_node->children[index]);
 
-                    // otherwise => jumping to the root & return true
-                    current_node = &root;
                     return true;
-                }
-
-                // in case you want to move up to the parent
-                if( up ){
-
-                    if (current_node->parent != NULL && node_name == current_node->parent->name){
-                        current_node = current_node->parent;
-                        return true;
-                    }
-                    // in case target 'not found !'
-                    else return false;
-
-                }
-                // in case you want to move down to child
-                else {
-
-                    // loop over all & check
-                    for (unsigned int i = 0; i < current_node->children.size(); i += 1) {
-                        // if target found we move to it
-                        if (current_node->children[i].name == node_name) {
-                            current_node = &current_node->children[i];
-                            return true;
-                        }
-                    }
-
                 }
 
                 // in case target 'not found'
                 return false;
             }
 
-            // o(path) --> o(childrens * path)
-            // like move_to but this require a hole path of "names"
-            // return will be a true if travel_to succeed to travel between all that nodes
-            // note !! travel will be happen only if "the whole path" is valid , otherwise nothing will be happen
-            bool travel_to(std::vector<std::string> &full_path , bool up = false){
+            // o(1)
+            // go from this current_node to parent node
+            bool go_back(){
+
+                // if parent not NULL
+                if(this->current_node->parent != NULL){
+                    // move to parent
+                    this->current_node = this->current_node->parent;
+
+                    return true;
+                }
+                // else 
+                return false;
+            }
+
+            // o(1)
+            // go to the root directly 
+            bool go_to_root(){
                 
-                // temp only for check & testing if "the hole path" are valid or not
-                // if it valid we make it current_position in the end "as last step" 
+                // if parent of current node is NULL that mean current node already in root
+                if(this->current_node->parent == NULL) return false;
+                
+                // else
+                this->current_node = &this->root;
+                return true;
+            }
+
+            // o(path) --> o(log n * path)
+            /* 
+                like go_to but this require a hole path of "names" in one direction
+                note !! travel will happend only if "the whole path of names" is valid 
+                otherwise nothing will be happen & return will be false
+            */
+            bool travel_to(const std::vector<std::string> &path_of_names , bool up = false){
+                
+                // temp only for "check & test" if "path_of_names" are valid or not
+                // if "path_of_names" is valid we make it the new current_position "as last step" 
+                // else nothing will be happen
                 DT_Node<v>* temp = current_node;
 
-                // boolean up it's mean that "the hole path" in parents direction "up"
+                // up true => mean that "path_of_names" in parents direction "up"
                 if(up){
 
+                    // o(path)
                     // we start looking up by using a private function "search_up"
-                    for(std::string path : full_path){
+                    for(std::string path : path_of_names){
+
+                        // o(log n)
                         temp = search_up(path , temp);
+
                         // in case not found "that's mean invalid path"
                         if(temp == NULL) return false;
                     }
 
                 }
-                // "up == false" mean that "the hole path" in children direction "down"
+                // "up == false" mean that "path_of_names" in children direction "down"
                 else{
 
+                    // o(path)
                     // we start looking down by using a private function "search_down"
-                    for(std::string path : full_path){
+                    for(std::string path : path_of_names){
+
+                        // o(log n)
                         temp = search_down(path , temp);
+
                         // in case not found "that's mean invalid path"
                         if(temp == NULL) return false;
                     }
 
                 }
 
-                // in case "the hole path" is valid 
-                // last step => travel from "current_position" to "the temp node"
+                // in case "path_of_names" is valid 
+                // last step => travel/jump from "current_position" to "temp node"
                 current_node = temp;
+
                 // and confirmation 
                 return true;
             }
 
-    };
+    }; // end of Dynamic Tree Class
 
 
-}
+} // end of namespace
 
 #endif

@@ -61,26 +61,40 @@ void test(DT_Node<int> node , int index){
 int main() {
 
     DynamicTree<int> dt("root",1);
-    dt.current_node->insert("a3",1);
-    dt.current_node->insert("a2",2);
-    dt.move_to("a3");
-    dt.current_node->insert("g2",3);
-    dt.current_node->insert("g4",4);
-    dt.move_to("g2");
-    dt.current_node->insert("ab4",4);
-    dt.current_node->insert("ab5",5);
+    if(!dt.current_node->insert("a3",1)) std::cout << "insert error !!! \n";
+    if(!dt.current_node->insert("a2",2)) std::cout << "insert error !!! \n";
+    dt.go_to("a3");
+    if(!dt.current_node->insert("g2",3)) std::cout << "insert error !!! \n";
+    if(!dt.current_node->insert("g4",4)) std::cout << "insert error !!! \n";
+    dt.go_to("g2");
+    if(!dt.current_node->insert("ab4",4)) std::cout << "insert error !!! \n";
+    if(!dt.current_node->insert("ab5",5)) std::cout << "insert error !!! \n";
 
     /*
-    dt.move_to("ab4");
+    dt.go_to("ab4");
     DT_Node<int>* p = dt.current_node;
-    dt.move_to("g2",true);
+    dt.go_to("g2",true);
     */
+
+    //dt.current_node->removeChildren();
+ 
+    if(dt.go_to_root()) std::cout << "moved to root sucessed !\n";
+
+    std::vector<std::string> path = {"a3","g4"};
+
+    if(dt.go_to( "a3" )) std::cout << "travle sucessed !\n";
+    else  std::cout << "travle unsucessed !\n";
+    
+    std::cout << dt.current_node->name << " " << dt.current_node->value << "\n";
+
     dt.current_node->removeChildren();
 
-    if(dt.move_to("ab4")) std::cout << "moved sucessed !\n";
-    else  std::cout << "moved unsucessed !\n";
+    if(dt.go_to_root()) std::cout << "moved to root sucessed !\n";
 
-    std::cout << dt.current_node->name << "\n";
+    if(dt.travel_to( path )) std::cout << "travle sucessed !\n";
+    else  std::cout << "travle unsucessed !\n";
+    
+    std::cout << dt.current_node->name << " " << dt.current_node->value << "\n";
 
     return 0;
 }
