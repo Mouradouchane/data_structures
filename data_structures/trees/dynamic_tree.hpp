@@ -172,16 +172,25 @@ namespace cpstl {
 
             }
 
-            // o(1) --> o(n log n)
+            // o(1) --> o(log n)
             // get a copy of specific child , this copy not connected to the original tree
-            DT_Node<t> getCopy(int child_index){
+            // in case target not found return will be a empty node
+            DT_Node<t> getCopy(std::string target_node_name){
                 
+                int index = -1;
+
+                // search for target
+                this->search(target_node_name,index);
+
                 // temp copy
                 DT_Node<t> copy_of_child;
 
-                // set name & value & return it
-                copy_of_child.name  = this->children[child_index].name;
-                copy_of_child.value = this->children[child_index].value;
+                // in case target found
+                if(index != -1){
+                    // set name & value using index
+                    copy_of_child.name  = this->children[index].name;
+                    copy_of_child.value = this->children[index].value;
+                }
 
                 return copy_of_child;
             }
@@ -191,13 +200,28 @@ namespace cpstl {
             bool removeChild(std::string target_node_name){
 
                 // search for target index
-                int index = 0;
+                int index = -1;
                 search(target_node_name , index);
 
-                // call recursive remove of this child nodes
-                // make sure that all
-                if(index != -1) children[index].remove();
+                // call recursive remove of this child node
+                if(index != -1){
+                    children[index].remove();
+                    return true;
+                } 
 
+                return false;
+            }
+
+
+            // like removeChild function but this for all children 
+            void removeChildren(){
+                
+                for(DT_Node<t> &child : this->children){
+                    child.removeChildren();
+                }
+
+                //this->children.erase(std::remove(this->children.begin(),this->children.end()));
+                this->children = std::vector<DT_Node<t>>();
             }
 
 
@@ -206,12 +230,13 @@ namespace cpstl {
 
                 // recursive remove call
                 for(DT_Node<t> &child : this->children){
-                    child.remove();
+                    child.removeChildren();
                 }
 
                 // delete it's self in the end
                 delete this;
             }
+
 
 			// testing function
 			void print(){
@@ -299,7 +324,7 @@ namespace cpstl {
             // o(1) --> o(children)
             // node_name : mean node where you want to go could be 'child' or 'parent' depend on "boolean up" 
             // also you can jump to the 'root' directly if you want
-            bool move_to(std::string &node_name , bool up = false) {
+            bool move_to(const std::string &node_name , bool up = false) {
 
                 // in case you want to jump to the root directly
                 if (node_name == "root") {

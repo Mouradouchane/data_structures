@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1638996467 source:c:\users\dev\desktop\dsa\data_structures\data_structures.cpp
+1640327977 source:c:\users\dev\desktop\dsa\data_structures\data_structures.cpp
 	<iostream>
 	<vector>
 	<algorithm>
@@ -17,6 +17,7 @@
 	"hash tables/key_value_linkedlist.hpp"
 	"hash tables/hash_table_chaining.hpp"
 	"trees/dynamic_tree.hpp"
+	"trees/binary_tree.hpp"
 
 1628745097 c:\users\dev\desktop\dsa\data_structures\linkedlists\singly_linkedlist.hpp
 	<vector>
@@ -60,9 +61,11 @@
 	<string>
 	"key_value_linkedlist.hpp"
 
-1638992283 c:\users\dev\desktop\dsa\data_structures\trees\dynamic_tree.hpp
+1640325571 c:\users\dev\desktop\dsa\data_structures\trees\dynamic_tree.hpp
 	<iostream>
 	<algorithm>
 	<vector>
 	<string>
+
+1639418694 c:\users\dev\desktop\dsa\data_structures\trees\binary_tree.hpp
 

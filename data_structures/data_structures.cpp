@@ -59,34 +59,28 @@ void test(DT_Node<int> node , int index){
 }
 
 int main() {
-    
+
     DynamicTree<int> dt("root",1);
     dt.current_node->insert("a3",1);
-    if(!dt.current_node->insert("a3",2)) std::cout << "duplicated captured\n";
+    dt.current_node->insert("a2",2);
+    dt.move_to("a3");
     dt.current_node->insert("g2",3);
-    if(!dt.current_node->insert("g2",2)) std::cout << "duplicated captured\n";
-    dt.current_node->insert("b2",4);
-    dt.current_node->insert("ab2",5);
-
-    int idx1 = 0 , idx2 = 0 , idx3 = 0 , idx4 = 0;
-
-    dt.current_node->print();
-
-    dt.current_node->search("g2", idx1);
-    dt.current_node->search("ab2", idx2);
-    dt.current_node->search("b2", idx3);
-    dt.current_node->search("a3", idx4);
-    
-    test(*dt.current_node,idx1);
-    test(*dt.current_node,idx2);
-    test(*dt.current_node,idx3);
-    test(*dt.current_node,idx4);
+    dt.current_node->insert("g4",4);
+    dt.move_to("g2");
+    dt.current_node->insert("ab4",4);
+    dt.current_node->insert("ab5",5);
 
     /*
-    dt.current_node->print();
-    dt.current_node->sort();
-    dt.current_node->print();
+    dt.move_to("ab4");
+    DT_Node<int>* p = dt.current_node;
+    dt.move_to("g2",true);
     */
+    dt.current_node->removeChildren();
+
+    if(dt.move_to("ab4")) std::cout << "moved sucessed !\n";
+    else  std::cout << "moved unsucessed !\n";
+
+    std::cout << dt.current_node->name << "\n";
 
     return 0;
 }
