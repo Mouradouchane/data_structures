@@ -2,7 +2,9 @@
 
 namespace trees{
     
-    // === binary node class
+    // =================================
+    // ======= Binary tree Class =======
+    // =================================
     template<typename v> class binary_node{
         public:
             binary_node * left; // left node
