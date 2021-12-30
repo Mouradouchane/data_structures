@@ -1,10 +1,11 @@
+	// c++ STD 
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <map>
 #include <string>
 
-
+	// DSA 
 #include "linkedlists/singly_LinkedList.hpp"
 #include "linkedlists/doubly_LinkedList.hpp"
 #include "linkedlists/circly_singly_LinkedList.hpp"
@@ -23,6 +24,7 @@
 #include "trees/dynamic_tree.hpp"
 #include "trees/binary_tree.hpp"
 
+	// using namespaces only for testing 
 using namespace linkedlist;
 using namespace stacks;
 using namespace queue;
@@ -35,17 +37,9 @@ using namespace trees;
 
 int main() {
 
-    DynamicTree<int> dt("root",1);
-    if(!dt.current_node->insert("a2",2)) std::cout << "insert error !!! \n";
-    if(!dt.current_node->insert("a3",1)) std::cout << "insert error !!! \n";
-    dt.go_to("a2");
-    if(!dt.current_node->insert("a4",2)) std::cout << "insert error !!! \n";
-    if(!dt.current_node->insert("a5",2)) std::cout << "insert error !!! \n";
+	BinaryTree<int> bt(1);
 
-    dt.current_node->removeChildren();
-    dt.go_to("a5");
-    std::cout << '[' << dt.current_node->name << ']' << '\n';
+	std::cout << "worked\n";
 
-    std::cout << "press anything to exit : "; std::cin.get();
-    return 0;
+    	return 0;
 }

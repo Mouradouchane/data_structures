@@ -1,25 +1,44 @@
+#include <vector>
+
 #pragma once
 
 namespace trees{
     
-    // =================================
-    // ======= Binary tree Class =======
-    // =================================
-    template<typename v> class binary_node{
+    // =======================================
+    // ======= Binary tree Nodes Class =======
+    // =======================================
+    template<typename type> class BT_Node{
+	  private:
+		unsigned int parent;  // parent     "index"
+            unsigned int left  ;  // left node  "index"
+           	unsigned int right ;  // right node "index"
         public:
-            binary_node * left; // left node
-            binary_node * right; // right node
-            v value; // node value
+            type value;              // node value
 
             // default constructor
-            binary_node(){ }
-            // second constructor
-            binary_node(v value):value(value){ }
+            BT_Node(type node_value){ 
+			value = node_value;
+		}
 
             // destructor
-            ~binary_node(){ }
-
-           
+            ~BT_Node(){ }
+ 
     };
+
+
+	template<typename t> class BinaryTree{
+	
+		private:
+			// all nodes in should be here in this vector
+			std::vector<t> nodes;
+	
+		public:
+			BinaryTree(t root_value){
+				nodes[0] = root_value;
+
+			}
+
+			~BinaryTree(){ }
+	};
 
 };
