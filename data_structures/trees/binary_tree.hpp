@@ -70,25 +70,26 @@ namespace trees{
 				return this->len;
 			}
 
-			bool insert(t new_value){}
+			bool insert(t const &new_value){}
 
-			bool search_up(t target){}
-
+			bool search_up(t const &target){}
 			bool search_down(t const &target){}
 
 			bool remove(t const &target){}
-
 			bool remove(unsigned int const index){}
 
 			bool move_up(){}
 
 			bool move_down(t const &target){}
-
 			bool move_down(unsigned int const &index){}
 
-			bool travle_up(){}
+			bool travle_up(std::vector<t> &full_path){}
+			bool travle_down(std::vector<t> &full_path){}
 
-			bool travle_down(){}
+			BinaryTree<t> get_sub_tree(unsigned int const &index){}
+
+			bool is_perfect(){}
+
 	};
 
 
