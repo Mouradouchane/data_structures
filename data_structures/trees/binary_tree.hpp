@@ -37,6 +37,9 @@ namespace trees{
 			unsigned int size = 0;
 			bool fixed_size = false;
 
+			// important number represent the index of current position in tree
+			unsigned int current_index = 1;
+
 			// all nodes in should be here in this vector
 			std::vector<t> nodes;
 	
@@ -63,14 +66,54 @@ namespace trees{
 			~BinaryTree(){ }
 
 			/*
-				=== methods ===
+				=== Binary Tree Methods ===
 			*/
 
+			// o(1)
+			// how many nodes in that tree
 			unsigned int length(){
 				return this->len;
 			}
 
-			bool insert(t const &new_value){}
+			// o(1)
+			// push new value to this binary tree , "index will be detected automaticlly"
+			bool insert(t const &new_value){
+				// calc index's of left/rigth child's of that parent 
+				unsigned int left  = this->current_index * 2;
+				unsigned int right = left + 1;
+
+				
+			}
+
+			// o(1)
+			// add new value to specific target in this binary tree
+			bool insert_at(unsigned int const &target_index , t const new_value){
+
+				// calc index's of left/rigth child's of that parent 
+				unsigned int left  = target_index * 2;
+				unsigned int right = left + 1;
+
+				// NOTE : insert will happen only if "left or right" node empty 
+
+				// in case bot left & right aren't empty
+				if(this->nodes[left] != NULL && this->nodes[right] != NULL) return false;
+				
+				else{	// check which one is empty & insert 
+					
+					if(this->nodes[left] == NULL){
+						this->nodes.insert(nodes.begin() + left , new_value);
+						return true;
+					} 
+
+					if(this->nodes[right] == NULL){
+						this->nodes.insert(nodes.begin() + right , new_value);
+						return true;
+					}
+
+				}	
+
+				return false;
+			}
 
 			bool search_up(t const &target){}
 			bool search_down(t const &target){}
