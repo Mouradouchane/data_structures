@@ -1,8 +1,9 @@
 ## about :
-repository contain a collection of data structures using c++
+repository contain a collection of data structures for c++
+
+**note !** : each type of data structures in **'folder'** and in each folder there's a different versions of that type:
 
 ### usage & implementation :
-**note** : each data structure in **'unique file'** all what you need to do is :
 > 1 - copy it **'file.hpp'** .
 
 > 2 - include it **'file.hpp'** .
