@@ -16,13 +16,12 @@ repository contain a collection of data structures using c++
   // include doubly linked list header file  
   #include "linkedlists/doubly_LinkedList.hpp"
   
-  // using linked list name space [optional !] 
-  using namespace linkedlist;
-   
   int main(){
-    // create a doubly linked list [optional !] 
-    doubly_LinkeList linked_ints<int>;  
-
+    // create a doubly linked list
+    linkedlist::doubly_LinkeList linked_ints<int>;  
+  
+    // do something with it ...
+  
     return 0;
   }
 
@@ -37,5 +36,5 @@ repository contain a collection of data structures using c++
 * hash tables : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
 
 ### contribution :
-if want to contribute/reporte , your welcome 😙 
+if want to contribute/reporte , you welcome 😙 
 please before you make anything , discuss stuff with me or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄
