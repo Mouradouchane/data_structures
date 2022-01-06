@@ -1,7 +1,7 @@
 ## about :
 repository contain a collection of data structures using c++
 
-## usage & implementation :
+### usage & implementation :
 **note** : each data structure in **'unique file'** all what you need to do is :
 > 1 - copy it **'file.hpp'** .
 
@@ -18,7 +18,7 @@ repository contain a collection of data structures using c++
   
   int main(){
     // create a doubly linked list
-    linkedlist::doubly_LinkeList linked_ints<int>;  
+    linkedlist::doubly_LinkeList numbers<int>;  
   
     // do something with it ...
   
@@ -27,13 +27,14 @@ repository contain a collection of data structures using c++
 
 ```
 ### Wiki/Docs : [![](https://img.shields.io/badge/Wiki%2FDocs-Beta-blue)](#)
-- you can go to [doc](https://github.com/Mouradouchane/data_structures/wiki) to see & understand how **"thing's"** work with examples .
+- for more information you can see [docs](https://github.com/Mouradouchane/data_structures/wiki) with examples .
 
 ## list of data structures : 
-* linked lists : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
-* stacks : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
-* queues : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
-* hash tables : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* linked list's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* stack's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* queue's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* hash table's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
+* tree's : [![status](https://img.shields.io/badge/status-demo-red)](#)  [![status](https://img.shields.io/badge/manual%20testing-not%20ready-yellow)](#)
 
 ### contribution :
 if want to contribute/reporte , you welcome 😙 
