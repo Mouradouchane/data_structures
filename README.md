@@ -3,11 +3,11 @@ repository contain a collection of data structures using c++
 
 ## usage & implementation :
 **note** : each data structure in **'unique file'** all what you need to do is :
-> 1 - copy **'data structure file'** to your project folder .
+> 1 - copy it **'file.hpp'** .
 
-> 2 - include **'data structure file'** in your project .
+> 2 - include it **'file.hpp'** .
 
-> 3 - optional => use namespace of **'data structure'** or you can use **::** .
+> 3 - using it .
 
 > 4 - have a fun :sweat_smile: .
 
