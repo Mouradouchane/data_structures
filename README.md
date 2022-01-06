@@ -11,7 +11,7 @@ repository contain a collection of data structures using c++
 
 > 4 - have a fun :sweat_smile: .
 
-### usage example :
+### example :
 ```c++
   // include doubly linked list header file  
   #include "linkedlists/doubly_LinkedList.hpp"
