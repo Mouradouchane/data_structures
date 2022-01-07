@@ -10,18 +10,21 @@ namespace trees{
     template<typename t> class BT_Node{
 	  	
 		private:
-			// index's
-			unsigned int parent = NULL;	
+			t parent = NULL;	
 			// children 
-            unsigned int left;  	
-           	unsigned int right;
+            t left;  	
+           	t right;
 
         public:
             t value;
 
             // default constructor
-            BT_Node(t node_value):value(node_value){ 
-				//value = node_value;
+            BT_Node(t node_value ,t lnode_value ,t rnode_value)
+				:value(node_value),
+				left(lnode_value),
+				right(rnode_value)
+			{ 
+				
 			}
 
 			// destructor
@@ -33,12 +36,14 @@ namespace trees{
 	template<typename t> class BinaryTree{
 	
 		private:
-			unsigned int len = 0;
-			unsigned int size = 0;
+			unsigned int len = 0 , size = 0;
 			bool fixed_size = false;
 
 			// important number represent the index of current position in tree
 			unsigned int current_index = 1;
+
+			// comapre function for searching inserting ...
+			bool(*comp_func)(t &a , t &b);
 
 			// all nodes in should be here in this vector
 			std::vector<t> nodes;
@@ -49,17 +54,20 @@ namespace trees{
 			*/
 
 			// for 'dynamic' size 
-			BinaryTree(t root_value){
-				// insert root & update length  
-				nodes.push_back(root_value);
-				len += 1;
+			BinaryTree( bool(*compare_function)(t &a , t &b) )
+		
+					:comp_func(compare_function)
+			{
+				std::cout << "init's successed ! \n";
 			}
 
-			// for 'static'  size 
-			BinaryTree(t root_value , unsigned int tree_size):fixed_size(true),size(tree_size){
-				// insert root & update length  
-				nodes.push_back(root_value);
-				len += 1;
+			// for 'static' size 
+			BinaryTree(unsigned int const tree_size , bool(*compare_function)(t &a , t &b) )
+				:fixed_size(true),
+				 size(tree_size),
+				 comp_func(compare_function)
+			{
+				std::cout << "init's successed ! \n";
 			}
 
 			// destructor
