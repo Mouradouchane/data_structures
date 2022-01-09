@@ -21,21 +21,15 @@ bool comp (int const &x , int const &y){
 int main() {
 	unsigned int size = 20;
 
-	BinaryTree<int> byt( comp );
+	BinaryTree<int> byt( 10 , comp );
 
-	std::vector<int> x;
-
-	//if(x == 4) std::cout << "working !\n";
-
-	/*
 	byt.insert(4);
 	byt.insert(2);
 	byt.insert(1);
 	byt.insert(4);
 	byt.insert(6);
 
-	if(lmb(5,5)) std::cout << "true !!\n";
-	*/
+	byt.print();
 
 	return 0;
 }
