@@ -73,7 +73,32 @@ namespace trees{
 
 			// all nodes in should be here in this vector
 			t * nodes;
-	
+
+			// o(height)
+			// search for target in tree 
+			bool SEARCH(t const &target , int &index , int start_point = 0){
+
+				// search from root to the end of tree
+				for(unsigned int i = start_point ; i < this->max_size ; ){
+					
+					// check
+					if(this->nodes[i] == target){
+						index = i;
+						return true;
+					} 
+					
+					// where should go next
+					if( this->comp_func( target , this->nodes[i]) ){
+						i = ((i+1) * 2) - 1;
+					}
+					else i = ((i+1) * 2);
+
+				}
+
+				index = -1;
+				return false;
+			}
+
 		public:
 			/*
 				=== constructor ===
@@ -172,21 +197,26 @@ namespace trees{
 				
 			}
 
+			
 			// o(height)
+			// search function using SEARCH function 
+			
+			// 1
 			bool search(t const &target){
-
-				for(unsigned int i = 0 ; i < this->max_size ; ){
-
-					if(this->nodes[i] == target) return true;
-					
-					if( this->comp_func( target , this->nodes[i]) ){
-						i = ((i+1) * 2) - 1;
-					}
-					else i = ((i+1) * 2);
-
-				}
-
-				return false;
+				int fake_index = 0;
+				return this->SEARCH(target , fake_index);
+			}
+			// 2
+			bool search(t const &target , int &index){
+				return this->SEARCH(target , index);
+			}
+			// like search function but start from diffrent point in tree
+			bool search_from(unsigned int const &start_point , t const &target){
+				int fake_index = 0;
+				return this->SEARCH(target , fake_index , start_point);
+			}
+			bool search_from(unsigned int const &start_point , t const &target , int &index){
+				return this->SEARCH(target , index , start_point);
 			}
 	/*
 			

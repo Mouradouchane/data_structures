@@ -37,11 +37,11 @@ int main() {
 
 	byt.print();
 
-	if( byt.search(5) ) std::cout << "5 target found\n";
-	if( byt.search(2) ) std::cout << "2 target found\n";
-	if( byt.search(0) ) std::cout << "0 target found\n";
-	if( byt.search(9) ) std::cout << "9 target found\n";
-	if( byt.search(7) ) std::cout << "7 target found\n";
+	int x , y , z;
+	if( byt.search_from(1,3,x) ) std::cout << "found at "<< x << "\n";
+	if( byt.search_from(2,7,y) )  std::cout << "found at "<< y << "\n";
+	if( byt.search_from(0,-1,z) )  std::cout << "found at "<< z << "\n";
+
 
 	return 0;
 }
