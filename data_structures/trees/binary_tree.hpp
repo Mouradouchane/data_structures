@@ -45,7 +45,7 @@ namespace trees{
 			bool(*comp_func)(t const &a , t const &b);
 
 			// all nodes in should be here in this vector
-			t* nodes;
+			t * nodes;
 	
 		public:
 			/*
@@ -58,7 +58,10 @@ namespace trees{
 				this->max_size = (tree_size < 1 ? 1 : tree_size);
 				this->nodes = new t[this->max_size]; 
 
-				std::cout << "init's successed ! \n";
+				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
+					this->nodes[i] = NULL;
+				}
+
 			}
 
 			//  === destructor ===
@@ -80,10 +83,9 @@ namespace trees{
 
 			// function for manual testing :)
 			void print(){
-				unsigned int i = 1;
 				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
-					std::cout << "NODE "<< i << ":: " << this->nodes[i] << '\n';
-					i += 1; 
+					std::cout <<'[' << this->nodes[i] << ']';
+					std::cout << '\n';
 				}
 			}
 
@@ -103,26 +105,35 @@ namespace trees{
 						// "no insert !"
 						// in case : value already in tree 'no duplicated allowed'
 						// in case : index out of reserved space
-						if(this->nodes[i] == new_value || i > this->max_size) return false;
+						if( this->nodes[i] == new_value || i > this->max_size ) return false;
 
-						// insert => if we found empty place
-						if(this->nodes[i] == NULL){
+						// insert => if this node empty
+						if( this->nodes[i] == NULL ){
 							this->nodes[i] = new_value;
 							return true;
 						}
 
-						// if last index was not empty , then we travel to next one
-						// "calculate next direction" left or right
-						if(this->comp_func(this->nodes[i] , new_value) ){
-							// left
-							i = (i+1) * 2;
-						}
-						else{
-							// right
-							i = ((i+1) * 2) + 1;
+						// calc direction
+						bool dir = this->comp_func( new_value , this->nodes[i] );
+
+						// check left node if empty
+						unsigned int left = ((i+1) * 2) - 1;
+
+						if(this->nodes[left] == NULL && dir){
+							this->nodes[left] = new_value;
+							return true;
 						}
 
-					}
+						// check right node if empty
+						unsigned int right = left + 1;
+
+						if(this->nodes[right] == NULL && !dir){
+							this->nodes[right] = new_value;
+							return true;
+						}
+
+						i = ( dir ) ? left : right;
+ 					}
 				}
 
 				// else mean tree 'fixed size' & full of nodes , or that new value already exist  

@@ -22,7 +22,9 @@ int main() {
 	unsigned int size = 20;
 
 	BinaryTree<int> byt( 10 , comp );
-
+	
+	/*
+	*/
 	byt.insert(4);
 	byt.insert(2);
 	byt.insert(1);
