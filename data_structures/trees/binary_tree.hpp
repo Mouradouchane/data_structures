@@ -1,6 +1,31 @@
-#include <array>
 
 #pragma once
+
+/*
+	Binary Tree
+		
+	-- NAME ---------- BEST --> WORST
+
+	length
+
+	insert				O(1)
+	search				O(height)
+	search_from			O(height)
+
+
+	remove
+
+	move_up
+	move_down
+
+	travle_up
+	travle_down	
+
+	get_sub_tree
+
+	is_perfect
+	
+*/
 
 namespace trees{
     
@@ -32,6 +57,8 @@ namespace trees{
  
     };
 
+
+	
 
 	template<typename t> class BinaryTree{
 	
@@ -80,7 +107,8 @@ namespace trees{
 			unsigned int length(){
 				return this->len;
 			}
-
+			
+			// O(height)
 			// function for manual testing :)
 			void print(){
 				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
@@ -110,6 +138,7 @@ namespace trees{
 						// insert => if this node empty
 						if( this->nodes[i] == NULL ){
 							this->nodes[i] = new_value;
+							this->len += 1;
 							return true;
 						}
 
@@ -121,6 +150,7 @@ namespace trees{
 
 						if(this->nodes[left] == NULL && dir){
 							this->nodes[left] = new_value;
+							this->len += 1;
 							return true;
 						}
 
@@ -129,6 +159,7 @@ namespace trees{
 
 						if(this->nodes[right] == NULL && !dir){
 							this->nodes[right] = new_value;
+							this->len += 1;
 							return true;
 						}
 
@@ -141,15 +172,24 @@ namespace trees{
 				
 			}
 
-			// o(1)
-			// add new value to specific target in this binary tree
-			bool insert_at(unsigned int const &target_index , t const new_value){
+			// o(height)
+			bool search(t const &target){
+
+				for(unsigned int i = 0 ; i < this->max_size ; ){
+
+					if(this->nodes[i] == target) return true;
+					
+					if( this->comp_func( target , this->nodes[i]) ){
+						i = ((i+1) * 2) - 1;
+					}
+					else i = ((i+1) * 2);
+
+				}
 
 				return false;
 			}
 	/*
-			bool search_up(t const &target){}
-			bool search_down(t const &target){}
+			
 
 			bool remove(t const &target){}
 			bool remove(unsigned int const index){}

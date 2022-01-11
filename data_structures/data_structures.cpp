@@ -30,8 +30,18 @@ int main() {
 	byt.insert(1);
 	byt.insert(4);
 	byt.insert(6);
+	byt.insert(5);
+	byt.insert(3);
+	byt.insert(7);
+	byt.insert(-1);
 
 	byt.print();
+
+	if( byt.search(5) ) std::cout << "5 target found\n";
+	if( byt.search(2) ) std::cout << "2 target found\n";
+	if( byt.search(0) ) std::cout << "0 target found\n";
+	if( byt.search(9) ) std::cout << "9 target found\n";
+	if( byt.search(7) ) std::cout << "7 target found\n";
 
 	return 0;
 }
