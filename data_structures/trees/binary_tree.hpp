@@ -136,10 +136,15 @@ namespace trees{
 			// O(height)
 			// function for manual testing :)
 			void print(){
-				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
-					std::cout <<'[' << this->nodes[i] << ']';
-					std::cout << '\n';
+				int ln = 1;
+				for(unsigned int i = 1 ; i < this->max_size ; i += 1){
+					std::cout <<'[' << this->nodes[i-1] << ']';
+					if(i == ln ){
+						ln = ln * 2 + 1;
+						std::cout << '\n';
+					} 
 				}
+				std::cout << '\n';
 			}
 
 			// o(height)

@@ -21,7 +21,7 @@ bool comp (int const &x , int const &y){
 int main() {
 	unsigned int size = 20;
 
-	BinaryTree<int> byt( 10 , comp );
+	BinaryTree<int> byt( 16 , comp );
 	
 	/*
 	*/
@@ -34,14 +34,9 @@ int main() {
 	byt.insert(3);
 	byt.insert(7);
 	byt.insert(-1);
+	byt.insert(10);
 
 	byt.print();
-
-	int x , y , z;
-	if( byt.search_from(1,3,x) ) std::cout << "found at "<< x << "\n";
-	if( byt.search_from(2,7,y) )  std::cout << "found at "<< y << "\n";
-	if( byt.search_from(0,-1,z) )  std::cout << "found at "<< z << "\n";
-
 
 	return 0;
 }
