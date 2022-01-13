@@ -38,20 +38,12 @@ int main() {
 
 	byt.print();
 
-	byt.go_right();
 	byt.go_left();
 	byt.go_right();
 	
-	byt.go_back();
-	std::cout << byt.get() << '\n';
-
-	byt.go_back();
-	std::cout << byt.get() << '\n';
-
-	byt.go_back();
-	std::cout << byt.get() << '\n';
-
+	std::cout << byt.get() << " " << byt.get_index() << '\n';
 
 	return 0;
 }
+
 

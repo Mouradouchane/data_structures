@@ -15,10 +15,12 @@
 	remove				O(height)
 
 	get					O(1)
+	get_index			O(1)
 
 	go_back				O(1)
 	go_left				O(1)
 	go_right			O(1)
+	go_to				O(1)
 
 	travle_up			O(height)
 	travle_down			O(height)
@@ -209,6 +211,11 @@ namespace trees{
 				else return NULL;
 			}
 
+			// O(1)
+			unsigned int get_index(){
+				return this->current_node;
+			}
+
 			// o(1)
 			bool go_left(){
 				// going left only if not out of tree space
@@ -240,6 +247,21 @@ namespace trees{
 				return false;
 			}
 
+			// O(1)
+			// go/jump to position in tree
+			bool go_to(unsigned int const &index = 1){
+
+				// check if index out of tree
+				if(index > 0 && index <= this->max_size){
+					// go
+					this->current_node = index-1;
+					return true;
+				}
+				return false;
+			}
+
+			
+
 			// O(n)
 			// loop over all nodes in tree & check if theres gaps or not
 			bool is_perfect(){
@@ -249,7 +271,7 @@ namespace trees{
 				return true;
 			}
 
-
+		
 	/*
 			
 
