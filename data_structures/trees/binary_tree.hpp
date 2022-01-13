@@ -15,7 +15,6 @@
 	remove				O(height)
 
 	get					O(1)
-	set					O(1)
 
 	go_back				O(1)
 	go_left				O(1)
@@ -211,17 +210,6 @@ namespace trees{
 			}
 
 			// o(1)
-			// set/replace value of current node 
-			bool set(t const &new_value){
-				if(this->current_node <= this->max_size){
-					// set new value
-					this->nodes[this->current_node-1] = new_value;
-					return true;
-				}
-				return false;
-			}
-
-			// o(1)
 			bool go_left(){
 				// going left only if not out of tree space
 				if(this->current_node < this->max_size){
@@ -245,7 +233,7 @@ namespace trees{
 			// o(1)
 			bool go_back(){
 				// going right only if not out of tree space
-				if(this->current_node > 0){
+				if(this->current_node > 1){
 					this->current_node /= 2;  
 					return true;  
 				}
@@ -256,7 +244,7 @@ namespace trees{
 			// loop over all nodes in tree & check if theres gaps or not
 			bool is_perfect(){
 				for(unsigned int i = 0 ; i < (this->max_size - 1); i += 1){
-					if(this->nodes[i] == NULL && this->nodes[i+1] != NULL) return false
+					if(this->nodes[i] == NULL && this->nodes[i+1] != NULL) return false;
 				}
 				return true;
 			}
