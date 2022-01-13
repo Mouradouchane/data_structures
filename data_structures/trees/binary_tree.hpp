@@ -12,18 +12,21 @@
 	search				O(height)
 	search_from			O(height)
 
+	remove				O(height)
 
-	remove
+	get					O(1)
+	set					O(1)
 
-	move_up
-	move_down
+	go_back				O(1)
+	go_left				O(1)
+	go_right			O(1)
 
-	travle_up
-	travle_down	
+	travle_up			O(height)
+	travle_down			O(height)
 
 	get_sub_tree
 
-	is_perfect
+	is_perfect			O(n)
 	
 */
 
@@ -32,47 +35,21 @@ namespace trees{
     // =======================================
     // ======= Binary tree Nodes Class =======
     // =======================================
-    template<typename t> class BT_Node{
-	  	
-		private:
-			t parent = NULL;	
-			// children 
-            t left;  	
-           	t right;
-
-        public:
-            t value;
-
-            // default constructor
-            BT_Node(t node_value ,t lnode_value ,t rnode_value)
-				:value(node_value),
-				left(lnode_value),
-				right(rnode_value)
-			{ 
-				
-			}
-
-			// destructor
-			~BT_Node(){ }
- 
-    };
-
-
-	
 
 	template<typename t> class BinaryTree{
 	
 		private:
 			unsigned int len = 0 , max_size = 0;
 
-			// important number represent the index of current position in tree
-			unsigned int current_index = 1;
-
 			// comapre function for searching , inserting , ...
 			bool(*comp_func)(t const &a , t const &b);
 
 			// all nodes in should be here in this vector
 			t * nodes;
+			// by def in root
+
+			// important number represent the index of current position in tree
+			unsigned int current_node = 1;
 
 			// o(height)
 			// search for target in tree 
@@ -205,7 +182,6 @@ namespace trees{
 			
 			// o(height)
 			// search function using SEARCH function 
-			
 			// 1
 			bool search(t const &target){
 				int fake_index = 0;
@@ -215,31 +191,87 @@ namespace trees{
 			bool search(t const &target , int &index){
 				return this->SEARCH(target , index);
 			}
-			// like search function but start from diffrent point in tree
+			// 3 like search function but start from diffrent point in tree
 			bool search_from(unsigned int const &start_point , t const &target){
 				int fake_index = 0;
 				return this->SEARCH(target , fake_index , start_point);
 			}
+			// 4
 			bool search_from(unsigned int const &start_point , t const &target , int &index){
 				return this->SEARCH(target , index , start_point);
 			}
+
+			// o(1)
+			// get value of current node 
+			t get(){
+				if(this->current_node > 0 && this->current_node <= this->max_size){
+					return this->nodes[this->current_node-1];
+				}
+				else return NULL;
+			}
+
+			// o(1)
+			// set/replace value of current node 
+			bool set(t const &new_value){
+				if(this->current_node <= this->max_size){
+					// set new value
+					this->nodes[this->current_node-1] = new_value;
+					return true;
+				}
+				return false;
+			}
+
+			// o(1)
+			bool go_left(){
+				// going left only if not out of tree space
+				if(this->current_node < this->max_size){
+					this->current_node *= 2;  
+					return true;  
+				}
+				return false;
+			}
+
+			// o(1)
+			bool go_right(){
+				// going right only if not out of tree space
+				if(this->current_node < this->max_size){
+					this->current_node *= 2;  
+					this->current_node += 1;  
+					return true;  
+				}
+				return false;
+			}
+
+			// o(1)
+			bool go_back(){
+				// going right only if not out of tree space
+				if(this->current_node > 0){
+					this->current_node /= 2;  
+					return true;  
+				}
+				return false;
+			}
+
+			// O(n)
+			// loop over all nodes in tree & check if theres gaps or not
+			bool is_perfect(){
+				for(unsigned int i = 0 ; i < (this->max_size - 1); i += 1){
+					if(this->nodes[i] == NULL && this->nodes[i+1] != NULL) return false
+				}
+				return true;
+			}
+
+
 	/*
 			
 
 			bool remove(t const &target){}
 			bool remove(unsigned int const index){}
 
-			bool move_up(){}
-
-			bool move_down(t const &target){}
-			bool move_down(unsigned int const &index){}
-
 			bool travle_up(std::vector<t> &full_path){}
 			bool travle_down(std::vector<t> &full_path){}
 
 			BinaryTree<t> get_sub_tree(unsigned int const &index){}
-
-			bool is_perfect(){}
 	*/
 	};
 
