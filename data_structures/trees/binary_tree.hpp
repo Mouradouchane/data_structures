@@ -20,7 +20,7 @@
 	go_back				O(1)
 	go_left				O(1)
 	go_right			O(1)
-	go_to				O(1)
+	jump_to				O(1)
 
 	travle_up			O(height)
 	travle_down			O(height)
@@ -56,23 +56,25 @@ namespace trees{
 			// search for target in tree 
 			bool SEARCH(t const &target , int &index , int start_point = 0){
 
-				// search from root to the end of tree
-				for(unsigned int i = start_point ; i < this->max_size ; ){
-					
-					// check
-					if(this->nodes[i] == target){
-						index = i;
-						return true;
-					} 
-					
-					// where should go next
-					if( this->comp_func( target , this->nodes[i]) ){
-						i = ((i+1) * 2) - 1;
+				// check if start point out of range
+				if(start_point > 0 && start_point <= this->max_size){
+					// search from root to the end of tree
+					for(unsigned int i = (start_point-1) ; i < this->max_size ; ){
+						
+						// check
+						if(this->nodes[i] == target){
+							index = i;
+							return true;
+						} 
+						
+						// where should go next
+						if( this->comp_func( target , this->nodes[i]) ){
+							 i = ((i+1) * 2) - 1;
+						}
+						else i = ((i+1) * 2);
+
 					}
-					else i = ((i+1) * 2);
-
 				}
-
 				index = -1;
 				return false;
 			}
@@ -85,8 +87,8 @@ namespace trees{
 				:comp_func(compare_function)
 			{
 				// locate a new array at "heap"
-				this->max_size = (tree_size < 1 ? 1 : tree_size);
-				this->nodes = new t[this->max_size]; 
+				this->max_size = (tree_size < 0 ? 1 : tree_size);
+				this->nodes = new t[this->max_size];
 
 				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
 					this->nodes[i] = NULL;
@@ -115,9 +117,9 @@ namespace trees{
 			// function for manual testing :)
 			void print(){
 				int ln = 1;
-				for(unsigned int i = 1 ; i < this->max_size ; i += 1){
-					std::cout <<'[' << this->nodes[i-1] << ']';
-					if(i == ln ){
+				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
+					std::cout <<'[' << this->nodes[i] << ']';
+					if(i+1 == ln ){
 						ln = ln * 2 + 1;
 						std::cout << '\n';
 					} 
@@ -155,7 +157,7 @@ namespace trees{
 
 						// check left node if empty
 						unsigned int left = ((i+1) * 2) - 1;
-
+						
 						if(this->nodes[left] == NULL && dir){
 							this->nodes[left] = new_value;
 							this->len += 1;
@@ -249,12 +251,12 @@ namespace trees{
 
 			// O(1)
 			// go/jump to position in tree
-			bool go_to(unsigned int const &index = 1){
+			bool jump_to(unsigned int const &index = 1){
 
 				// check if index out of tree
 				if(index > 0 && index <= this->max_size){
 					// go
-					this->current_node = index-1;
+					this->current_node = index;
 					return true;
 				}
 				return false;
@@ -273,8 +275,7 @@ namespace trees{
 
 		
 	/*
-			
-
+		
 			bool remove(t const &target){}
 			bool remove(unsigned int const index){}
 
