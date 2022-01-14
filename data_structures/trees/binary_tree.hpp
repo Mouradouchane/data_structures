@@ -54,7 +54,7 @@ namespace trees{
 
 			// o(height)
 			// search for target in tree 
-			bool SEARCH(t const &target , int &index , int start_point = 0){
+			bool SEARCH(t const &target , int &index , int start_point = 1){
 
 				// check if start point out of range
 				if(start_point > 0 && start_point <= this->max_size){
@@ -63,7 +63,7 @@ namespace trees{
 						
 						// check
 						if(this->nodes[i] == target){
-							index = i;
+							index = i+1;
 							return true;
 						} 
 						
@@ -76,6 +76,24 @@ namespace trees{
 					}
 				}
 				index = -1;
+				return false;
+			}
+
+			bool recursive_clear(unsigned int const &index){
+				if(index < this->max_size){
+
+					// clear target 
+					this->nodes[index] = NULL;
+
+					// recursive !!
+
+					// clear all left children
+					recursive_clear( ((index + 1) * 2) - 1);
+					// clear all right children
+					recursive_clear( (index + 1) * 2 );
+
+					return true;
+				}
 				return false;
 			}
 
@@ -157,7 +175,7 @@ namespace trees{
 
 						// check left node if empty
 						unsigned int left = ((i+1) * 2) - 1;
-						
+
 						if(this->nodes[left] == NULL && dir){
 							this->nodes[left] = new_value;
 							this->len += 1;
@@ -273,11 +291,29 @@ namespace trees{
 				return true;
 			}
 
-		
+			// O(height)
+			bool clear_node(t const &target){
+				// first step search of target
+				unsigned int temp_index = -1;
+				bool try_to_found_it = this->SEARCH(target ,temp_index);
+
+				// if target found
+				if(try_to_found_it && temp_index > -1 && temp_index < this->max_size){
+					this->temp_index = NULL;
+					while(true){
+						
+					}
+					return true;
+				} 
+				// if target not found
+				return false;
+			}
+
+			// O(height)
+			bool clear_node(unsigned int const &target_index){
+
+			}
 	/*
-		
-			bool remove(t const &target){}
-			bool remove(unsigned int const index){}
 
 			bool travle_up(std::vector<t> &full_path){}
 			bool travle_down(std::vector<t> &full_path){}
