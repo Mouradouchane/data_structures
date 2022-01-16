@@ -36,15 +36,9 @@ int main() {
 	byt.insert(10);
 	//byt.insert(10);
 
+	byt.clear_node(2);
+
 	byt.print();
-
-	if(byt.jump_to(0)) std::cout <<  "jump successed : " << byt.get() << '\n';
-	if(byt.jump_to(8)) std::cout <<  "jump successed : " << byt.get() << '\n';
-	if(byt.jump_to(15)) std::cout << "15 jump successed : " << byt.get() << '\n';
-	if(byt.jump_to(16)) std::cout << "16 jump successed : " << byt.get() << '\n';
-	if(byt.jump_to(1)) std::cout <<  "jump successed : " << byt.get() << '\n';
-
-
 
 	return 0;
 }

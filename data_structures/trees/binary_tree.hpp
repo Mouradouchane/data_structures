@@ -54,7 +54,7 @@ namespace trees{
 
 			// o(height)
 			// search for target in tree 
-			bool SEARCH(t const &target , int &index , int start_point = 1){
+			bool SEARCH(t const &target , unsigned int &index , int start_point = 1){
 
 				// check if start point out of range
 				if(start_point > 0 && start_point <= this->max_size){
@@ -79,7 +79,7 @@ namespace trees{
 				return false;
 			}
 
-			bool recursive_clear(unsigned int const &index){
+			void RECURSIVE_CLEAR(unsigned int const &index){
 				if(index < this->max_size){
 
 					// clear target 
@@ -88,13 +88,12 @@ namespace trees{
 					// recursive !!
 
 					// clear all left children
-					recursive_clear( ((index + 1) * 2) - 1);
+					RECURSIVE_CLEAR( ((index + 1) * 2) - 1);
 					// clear all right children
-					recursive_clear( (index + 1) * 2 );
+					RECURSIVE_CLEAR( (index + 1) * 2 );
 
-					return true;
+					return;
 				}
-				return false;
 			}
 
 		public:
@@ -292,26 +291,24 @@ namespace trees{
 			}
 
 			// O(height)
-			bool clear_node(t const &target){
+			void clear_node(t const &target){
 				// first step search of target
-				unsigned int temp_index = -1;
-				bool try_to_found_it = this->SEARCH(target ,temp_index);
+				unsigned int index = -1;
+				bool try_to_found_it = this->SEARCH(target , index);
 
 				// if target found
-				if(try_to_found_it && temp_index > -1 && temp_index < this->max_size){
-					this->temp_index = NULL;
-					while(true){
-						
-					}
-					return true;
+				if(index > 0 && index <= this->max_size){
+					// clear it , and all it's children
+					this->RECURSIVE_CLEAR(index-1);
 				} 
-				// if target not found
-				return false;
 			}
 
 			// O(height)
-			bool clear_node(unsigned int const &target_index){
-
+			void clear_node(unsigned int const &target_index){
+				if(target_index > 0 && target_index <= this->max_size){
+					// clear it , and all it's children
+					this->RECURSIVE_CLEAR(target_index-1);
+				} 
 			}
 	/*
 
