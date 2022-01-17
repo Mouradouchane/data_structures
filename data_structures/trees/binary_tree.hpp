@@ -8,7 +8,7 @@
 
 	length
 
-	insert				O(1)
+	insert				O(height)
 	search				O(height)
 	search_from			O(height)
 
@@ -54,7 +54,7 @@ namespace trees{
 
 			// o(height)
 			// search for target in tree 
-			bool SEARCH(t const &target , unsigned int &index , int start_point = 1){
+			bool SEARCH(t const &target , int &idx , int start_point = 1){
 
 				// check if start point out of range
 				if(start_point > 0 && start_point <= this->max_size){
@@ -63,7 +63,7 @@ namespace trees{
 						
 						// check
 						if(this->nodes[i] == target){
-							index = i+1;
+							idx = i+1;
 							return true;
 						} 
 						
@@ -75,7 +75,7 @@ namespace trees{
 
 					}
 				}
-				index = -1;
+				idx = -1;
 				return false;
 			}
 
@@ -268,7 +268,7 @@ namespace trees{
 
 			// O(1)
 			// go/jump to position in tree
-			bool jump_to(unsigned int const &index = 1){
+			bool jump_to(unsigned int const index = 1){
 
 				// check if index out of tree
 				if(index > 0 && index <= this->max_size){
@@ -282,7 +282,7 @@ namespace trees{
 			
 
 			// O(n)
-			// loop over all nodes in tree & check if theres gaps or not
+			// check if there is gaps or not
 			bool is_perfect(){
 				for(unsigned int i = 0 ; i < (this->max_size - 1); i += 1){
 					if(this->nodes[i] == NULL && this->nodes[i+1] != NULL) return false;
@@ -291,6 +291,7 @@ namespace trees{
 			}
 
 			// O(height)
+			// clear target node  and all it's children
 			void clear_node(t const &target){
 				// first step search of target
 				unsigned int index = -1;
@@ -302,7 +303,6 @@ namespace trees{
 					this->RECURSIVE_CLEAR(index-1);
 				} 
 			}
-
 			// O(height)
 			void clear_node(unsigned int const &target_index){
 				if(target_index > 0 && target_index <= this->max_size){
@@ -310,6 +310,36 @@ namespace trees{
 					this->RECURSIVE_CLEAR(target_index-1);
 				} 
 			}
+
+			bool travel_down(std::vector<t> const &full_path){
+			
+				// you can't travle from current node to it's self
+				if(full_path[0] != this->nodes[this->current_node-1]){
+
+					int index = this->current_node;
+
+					for(unsigned int i = 0;index <= this->max_size; ){
+
+						// check
+						if(this->nodes[index] != full_path[i]) return false;
+
+						// where should go next
+						i += 1;
+						if( this->comp_func( full_path[i] , this->nodes[index]) ){
+							index = ((index+1) * 2) - 1;
+						}
+						else index = ((index+1) * 2);
+
+					}
+
+					this->current_node = index;
+					return true;
+				}
+				return false;
+			}
+
+				
+		
 	/*
 
 			bool travle_up(std::vector<t> &full_path){}

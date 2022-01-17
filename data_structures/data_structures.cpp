@@ -34,11 +34,12 @@ int main() {
 	byt.insert(7);
 	byt.insert(-1);
 	byt.insert(10);
-	//byt.insert(10);
-
-	byt.clear_node(2);
 
 	byt.print();
+
+	if(byt.travel_down({2,1})) std::cout << "travel successed !\n" << byt.get() << " \n";
+	else std::cout << "travel unsuccessed !!!!!\n";
+	std::cout << '[' << byt.get_index() << ':' << byt.get() << ']' << '\n';
 
 	return 0;
 }
