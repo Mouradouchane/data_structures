@@ -25,10 +25,10 @@
 	travle_up			O(height)
 	travle_down			O(height)
 
-	get_sub_tree
+	get_sub_tree		O(height)
 
 	is_perfect			O(n)
-	
+	is_leaf_node		O(1)
 */
 
 namespace trees{
@@ -316,30 +316,34 @@ namespace trees{
 				// you can't travle from current node to it's self
 				if(full_path[0] != this->nodes[this->current_node-1]){
 
-					int index = this->current_node;
+					int index = this->current_node - 1;
 
-					for(unsigned int i = 0;index <= this->max_size; ){
-
-						// check
-						if(this->nodes[index] != full_path[i]) return false;
-
-						// where should go next
-						i += 1;
+					for(unsigned int i = 0; i < full_path.size(); i += 1){
+						
 						if( this->comp_func( full_path[i] , this->nodes[index]) ){
 							index = ((index+1) * 2) - 1;
 						}
 						else index = ((index+1) * 2);
 
+						// check
+						if(this->nodes[index] != full_path[i] || this->nodes[index] == NULL) return false;
+
 					}
 
-					this->current_node = index;
+					this->current_node = index + 1;
 					return true;
 				}
 				return false;
 			}
 
 				
-		
+			bool is_leaf_node(){
+				// calc left & right nodes
+				unsigned int left  = (this->current_node * 2) - 1;
+				unsigned int right = (this->current_node * 2);
+				// if left & right NULL that's mean this current node is a leaf node
+				return	(this->nodes[left] == NULL && this->nodes[right] == NULL) ? true : false;
+			}
 	/*
 
 			bool travle_up(std::vector<t> &full_path){}

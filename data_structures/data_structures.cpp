@@ -37,9 +37,12 @@ int main() {
 
 	byt.print();
 
-	if(byt.travel_down({2,1})) std::cout << "travel successed !\n" << byt.get() << " \n";
+	//byt.go_left();
+
+	if(byt.travel_down({2,3})) std::cout << "travel successed !\n" << byt.get() << " \n";
 	else std::cout << "travel unsuccessed !!!!!\n";
 	std::cout << '[' << byt.get_index() << ':' << byt.get() << ']' << '\n';
+
 
 	return 0;
 }
