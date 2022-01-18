@@ -342,7 +342,7 @@ namespace trees{
 				unsigned int left  = (this->current_node * 2) - 1;
 				unsigned int right = (this->current_node * 2);
 				// if left & right NULL that's mean this current node is a leaf node
-				return	(this->nodes[left] == NULL && this->nodes[right] == NULL) ? true : false;
+				return	(this->nodes[left] == NULL && this->nodes[right] == NULL || left >= this->max_size && right >= this->max_size) ? true : false;
 			}
 	/*
 

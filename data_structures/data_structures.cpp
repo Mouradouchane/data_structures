@@ -39,10 +39,9 @@ int main() {
 
 	//byt.go_left();
 
-	if(byt.travel_down({2,3})) std::cout << "travel successed !\n" << byt.get() << " \n";
+	if(byt.go_left()) std::cout << "travel successed !\n" << byt.get() << " \n";
 	else std::cout << "travel unsuccessed !!!!!\n";
-	std::cout << '[' << byt.get_index() << ':' << byt.get() << ']' << '\n';
-
+	std::cout << byt.is_leaf_node() << '\n';
 
 	return 0;
 }
