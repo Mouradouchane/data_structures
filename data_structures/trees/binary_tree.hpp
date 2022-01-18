@@ -82,14 +82,17 @@ namespace trees{
 			void RECURSIVE_CLEAR(unsigned int const &index){
 				if(index < this->max_size){
 
-					// clear target 
-					this->nodes[index] = NULL;
+					// clear target & update lenght
+					if(this->nodes[index] != NULL){
+						this->nodes[index] = NULL;
+						this->len -= 1;
+					}
 
-					// recursive !!
+					// recursive clear in both direction !!
 
-					// clear all left children
+					// left
 					RECURSIVE_CLEAR( ((index + 1) * 2) - 1);
-					// clear all right children
+					// right
 					RECURSIVE_CLEAR( (index + 1) * 2 );
 
 					return;
@@ -292,10 +295,9 @@ namespace trees{
 
 			// O(height)
 			// clear target node  and all it's children
-			void clear_node(t const &target){
+			void clear_nodes(){
 				// first step search of target
-				unsigned int index = -1;
-				bool try_to_found_it = this->SEARCH(target , index);
+				int index = this->current_node;
 
 				// if target found
 				if(index > 0 && index <= this->max_size){
@@ -304,7 +306,7 @@ namespace trees{
 				} 
 			}
 			// O(height)
-			void clear_node(unsigned int const &target_index){
+			void CLEAR_NODES(unsigned int const &target_index){
 				if(target_index > 0 && target_index <= this->max_size){
 					// clear it , and all it's children
 					this->RECURSIVE_CLEAR(target_index-1);

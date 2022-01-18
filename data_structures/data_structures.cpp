@@ -36,12 +36,13 @@ int main() {
 	byt.insert(10);
 
 	byt.print();
+	std::cout << byt.length() << '\n';
 
-	//byt.go_left();
+	byt.travel_down({6,5});
+	byt.clear_nodes();
 
-	if(byt.go_left()) std::cout << "travel successed !\n" << byt.get() << " \n";
-	else std::cout << "travel unsuccessed !!!!!\n";
-	std::cout << byt.is_leaf_node() << '\n';
+	byt.print();
+	std::cout << byt.length() << '\n';
 
 	return 0;
 }
