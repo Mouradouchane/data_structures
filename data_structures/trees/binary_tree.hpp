@@ -1,3 +1,4 @@
+#include <vector>
 
 #pragma once
 
@@ -313,6 +314,9 @@ namespace trees{
 				} 
 			}
 
+			// O(height)
+			// travel from current node to x node
+			// note ! : travel only will happen if  
 			bool travel_down(std::vector<t> const &full_path){
 			
 				// you can't travle from current node to it's self
@@ -338,7 +342,27 @@ namespace trees{
 				return false;
 			}
 
-				
+			// O(height)
+			bool travel_up(std::vector<t> const &full_path){
+
+				// you can't travle from current node to it's self
+				if(full_path[0] != this->nodes[this->current_node-1]){
+
+					int index = (this->current_node / 2) - 1;
+
+					for(unsigned int i = 0; i < full_path.size(); i += 1 , index = (index / 2) - 1){
+
+						if(this->nodes[index] != full_path[i] || this->nodes[index] == NULL) return false;
+ 						
+					}
+
+					this->current_node = index + 1;
+					return true;
+				}
+				return false;
+			
+			}	
+			
 			bool is_leaf_node(){
 				// calc left & right nodes
 				unsigned int left  = (this->current_node * 2) - 1;
