@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\hash tables">
+      <UniqueIdentifier>{b64d7235-dbd8-4178-a337-261cba7ef1bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\linkedlists">
+      <UniqueIdentifier>{ba10cf7a-7086-40e4-afe6-c25283269af3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\queues">
+      <UniqueIdentifier>{e5d253d2-bff3-4d96-9b8e-88e6080d14a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\stacks">
+      <UniqueIdentifier>{55e123d5-cf4b-43f8-94b9-e1123edb88c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\trees">
+      <UniqueIdentifier>{9bcf374f-0b54-41e4-af9a-eaace617bb81}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hash tables\hash_table.hpp">
+      <Filter>Resource Files\hash tables</Filter>
+    </ClInclude>
+    <ClInclude Include="hash tables\hash_table_chaining.hpp">
+      <Filter>Resource Files\hash tables</Filter>
+    </ClInclude>
+    <ClInclude Include="hash tables\hash_table_openAddressing.hpp">
+      <Filter>Resource Files\hash tables</Filter>
+    </ClInclude>
+    <ClInclude Include="hash tables\key_value_linkedlist.hpp">
+      <Filter>Resource Files\hash tables</Filter>
+    </ClInclude>
+    <ClInclude Include="linkedlists\singly_LinkedList.hpp">
+      <Filter>Resource Files\linkedlists</Filter>
+    </ClInclude>
+    <ClInclude Include="linkedlists\circly_singly_LinkedList.hpp">
+      <Filter>Resource Files\linkedlists</Filter>
+    </ClInclude>
+    <ClInclude Include="linkedlists\doubly_LinkedList.hpp">
+      <Filter>Resource Files\linkedlists</Filter>
+    </ClInclude>
+    <ClInclude Include="queues\dynamic_queue.hpp">
+      <Filter>Resource Files\queues</Filter>
+    </ClInclude>
+    <ClInclude Include="queues\static_queue.hpp">
+      <Filter>Resource Files\queues</Filter>
+    </ClInclude>
+    <ClInclude Include="stacks\dynamic_stack.hpp">
+      <Filter>Resource Files\stacks</Filter>
+    </ClInclude>
+    <ClInclude Include="stacks\static_stack.hpp">
+      <Filter>Resource Files\stacks</Filter>
+    </ClInclude>
+    <ClInclude Include="trees\binary_tree.hpp">
+      <Filter>Resource Files\trees</Filter>
+    </ClInclude>
+    <ClInclude Include="trees\dynamic_tree.hpp">
+      <Filter>Resource Files\trees</Filter>
+    </ClInclude>
+    <ClInclude Include="trees\static_tree.hpp">
+      <Filter>Resource Files\trees</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="data_structures.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

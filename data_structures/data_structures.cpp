@@ -1,4 +1,4 @@
-	// c++ STD 
+// c++ STD 
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -10,19 +10,19 @@
 
 using namespace trees;
 
-	/*
-		===> just cpp file for testing 
-	*/
+/*
+	===> just cpp file for testing
+*/
 
-bool comp (int const &x , int const &y){
+bool comp(int const& x, int const& y) {
 	return x < y;
 };
 
 int main() {
 	unsigned int size = 20;
 
-	BinaryTree<int> byt( 15 , comp );
-	
+	BinaryTree<int> byt(15, comp);
+
 	/*
 	*/
 	byt.insert(4);
@@ -35,16 +35,14 @@ int main() {
 	byt.insert(-1);
 	byt.insert(10);
 
-	byt.travel_down({6,7,10});
+	byt.travel_down({ 6,7,10 });
 
 	byt.print();
 
-	if(byt.travel_up({7,6})) std::cout << "travle up successed";
+	if (byt.travel_up({ 7,6 })) std::cout << "travle up successed";
 	else std::cout << "travel up unsuccessed !!!!!!!";
 
 	std::cout << " " << '[' << byt.get_index() << ':' << byt.get() << "]\n";
 
 	return 0;
 }
-
-
