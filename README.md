@@ -1,16 +1,18 @@
-﻿## about :
-repository contain a collection of data structures for c++
+## data structures :
+repository contain a collection of data structures for **C++**
 
-**note !** : each type of data structures in **'folder'** and in each folder there's a different versions of that type:
+**note !** : each data structures in it's own **'folder'** and each folder contain different versions of that type :
 
 ### usage & implementation :
-> 1 - copy it **'file.hpp'** .
+> 0 - pick up any **data_structure** ;
 
-> 2 - include it **'file.hpp'** .
+> 1 - copy **'file.hpp'** ;
 
-> 3 - using it .
+> 2 - include **'file.hpp'** ;
 
-> 4 - have a fun :sweat_smile: .
+> 3 - take a look in [docs](https://github.com/Mouradouchane/data_structures/wiki) while you using it ;
+
+> 4 - have a fun :sweat_smile: ;
 
 ### example :
 ```c++
@@ -27,8 +29,8 @@ repository contain a collection of data structures for c++
   }
 
 ```
-### Wiki/Docs : [![](https://img.shields.io/badge/Wiki%2FDocs-Beta-blue)](#)
-- for more information you can see [docs](https://github.com/Mouradouchane/data_structures/wiki) with examples .
+### wiki/docs : [![](https://img.shields.io/badge/Wiki%2FDocs-Beta-blue)](#)
+- for more information you can see [docs](https://github.com/Mouradouchane/data_structures/wiki) .
 
 ## list of data structures : 
 * linked list's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
@@ -38,5 +40,5 @@ repository contain a collection of data structures for c++
 * tree's : [![status](https://img.shields.io/badge/status-demo-red)](#)  [![status](https://img.shields.io/badge/manual%20testing-not%20ready-yellow)](#)
 
 ### contribution :
-if want to contribute/reporte , you welcome 😙 
-please before you make anything , discuss stuff with me or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄
+if want to contribute/reporte , you're welcome😙 
+please before you made anything , text me with first or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄
