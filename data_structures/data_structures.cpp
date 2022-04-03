@@ -7,6 +7,7 @@
 
 #include "trees/dynamic_tree.hpp"
 #include "trees/binary_tree.hpp"
+#include "trees/n_binary_tree.hpp"
 
 using namespace trees;
 
@@ -19,30 +20,21 @@ bool comp(int const& x, int const& y) {
 };
 
 int main() {
-	unsigned int size = 20;
+	
+	n_binary_tree<int> nb(111, comp);
 
-	BinaryTree<int> byt(15, comp);
+	nb.insert(5);
+	nb.insert(2);
+	nb.insert(7);
+	nb.insert(2);
+	nb.insert(8);
+	nb.insert(10);
+	nb.insert(5);
+	nb.insert(3);
+	
+	nb.print();
 
-	/*
-	*/
-	byt.insert(4);
-	byt.insert(2);
-	byt.insert(1);
-	byt.insert(6);
-	byt.insert(5);
-	byt.insert(3);
-	byt.insert(7);
-	byt.insert(-1);
-	byt.insert(10);
-
-	byt.travel_down({ 6,7,10 });
-
-	byt.print();
-
-	if (byt.travel_up({ 7,6 })) std::cout << "travle up successed";
-	else std::cout << "travel up unsuccessed !!!!!!!";
-
-	std::cout << " " << '[' << byt.get_index() << ':' << byt.get() << "]\n";
+	std::cout << "print passed !\n";
 
 	return 0;
 }

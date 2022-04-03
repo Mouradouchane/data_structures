@@ -1,6 +1,7 @@
 ﻿  data_structures.cpp
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-  All 91 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
+  7 of 20 functions (35.0%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
   data_structures.vcxproj -> C:\Users\devc\Desktop\c++\data_structures\Release\data_structures.exe

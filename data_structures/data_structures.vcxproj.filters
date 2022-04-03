@@ -69,7 +69,7 @@
     <ClInclude Include="trees\dynamic_tree.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
-    <ClInclude Include="trees\static_tree.hpp">
+    <ClInclude Include="trees\n_binary_tree.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,5 +77,10 @@
     <ClCompile Include="data_structures.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
