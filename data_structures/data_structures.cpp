@@ -36,7 +36,12 @@ int main() {
 	nb.insert(4);
 	nb.insert(1);
 
-	if(nb.remove(4)) std::cout << "target 4 found and deleted \n";
+	nb.print();
+
+	bool r = nb.remove(4);
+	if(r) std::cout << "target 4 found and deleted ====================== \n";
+
+	nb.print();
 
 	std::cout << "print passed !\n";
 

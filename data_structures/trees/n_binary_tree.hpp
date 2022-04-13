@@ -136,7 +136,7 @@ namespace trees {
 				return this->len;
 			}
 
-			bool remove(V const& target_node_value) {
+			bool remove(V target_node_value) {
 			
 				node<V>* temp = root;
 

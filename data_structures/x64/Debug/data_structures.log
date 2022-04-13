@@ -1,5 +1,0 @@
-﻿  data_structures.cpp
-C:\Users\devc\Desktop\c++\data_structures\data_structures\trees\n_binary_tree.hpp(53,6): error C2143: syntax error: missing ';' before '*'
-C:\Users\devc\Desktop\c++\data_structures\data_structures\trees\n_binary_tree.hpp(63): message : see reference to class template instantiation 'trees::n_binary_tree<V>' being compiled
-C:\Users\devc\Desktop\c++\data_structures\data_structures\trees\n_binary_tree.hpp(53,6): error C2059: syntax error: '*'
-C:\Users\devc\Desktop\c++\data_structures\data_structures\trees\n_binary_tree.hpp(52,1): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
