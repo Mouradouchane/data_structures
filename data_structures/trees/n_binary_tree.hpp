@@ -28,21 +28,25 @@ namespace trees {
 			// node destructor
 			~node() {
 
-				this->left->~node();
-				this->right->~node();
+				if(this->left  != NULL) this->left->~node();
+				if(this->right != NULL) this->right->~node();
 
-				delete this->left;
-				delete this->right;
 			}
 
-			void print() {
+			void print( unsigned int spaces = 1 ) {
 
-				std::cout << "--> " << this->value;
+				spaces += 1;
 
-				if (this->left  != NULL) this->left->print();
-				if (this->right != NULL) this->right->print();
+				if (this->right != NULL) this->right->print(spaces);
+
+				for (unsigned int i = 1; i <= spaces; i += 1) {
+					std::cout << '\t';
+				}
+				std::cout << "[" <<this->value << "]\n";
 				
-				std::cout << std::endl;
+
+				if (this->left != NULL) this->left->print(spaces);
+
 			}
 
 			template<typename T> friend class n_binary_tree;
@@ -52,6 +56,7 @@ namespace trees {
 
 		private:
 			node<V>* root;
+			unsigned int len = 0;
 
 			bool (*comp_function)(V const &node_a, V const &node_b);
 
@@ -76,7 +81,10 @@ namespace trees {
 
 			// destructor
 			~n_binary_tree() {
-				
+				/*
+				delete this->root;
+				delete this->current_node;
+				*/
 			}
 
 			// o( log n )
@@ -89,8 +97,11 @@ namespace trees {
 					if (temp->value == new_node_value) return false;
 
 					if (temp->value == NULL) {
+
 						temp->value = new_node_value;
+						this->len += 1;
 						return true;
+
 					}
 					else {
 						if ( this->comp_function(new_node_value , temp->value) ) {
@@ -98,6 +109,7 @@ namespace trees {
 							if (temp->left == NULL) {
 
 								temp->left = new node<V>(new_node_value , temp);
+								this->len += 1;
 								return true;
 
 							}
@@ -108,6 +120,7 @@ namespace trees {
 							if (temp->right == NULL) {
 
 								temp->right = new node<V>(new_node_value, temp);
+								this->len += 1;
 								return true;
 
 							}
@@ -115,6 +128,36 @@ namespace trees {
 						}
 					}
 				}
+
+				return false;
+			}
+
+			unsigned int length() {
+				return this->len;
+			}
+
+			bool remove(V const& target_node_value) {
+			
+				node<V>* temp = root;
+
+				while( temp != NULL ){
+
+					if (temp->value == target_node_value) {
+						temp->~node();
+						delete temp;
+						return true;
+					}
+					else {
+
+						if (this->comp_function(target_node_value, temp->value)) {
+							temp = temp->left;
+						}
+						else temp = temp->right;
+					}
+
+				}
+
+				delete temp;
 
 				return false;
 			}

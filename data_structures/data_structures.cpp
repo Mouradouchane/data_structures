@@ -21,18 +21,22 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	n_binary_tree<int> nb(111, comp);
-
+	n_binary_tree<int> nb(8, comp);
 	nb.insert(5);
 	nb.insert(2);
 	nb.insert(7);
-	nb.insert(2);
+	nb.insert(20);
 	nb.insert(8);
 	nb.insert(10);
-	nb.insert(5);
+	nb.insert(15);
 	nb.insert(3);
-	
-	nb.print();
+	nb.insert(13);
+	nb.insert(6);
+	nb.insert(9);
+	nb.insert(4);
+	nb.insert(1);
+
+	if(nb.remove(4)) std::cout << "target 4 found and deleted \n";
 
 	std::cout << "print passed !\n";
 
