@@ -38,7 +38,7 @@ namespace trees{
     // ======= Binary tree Nodes Class =======
     // =======================================
 
-	template<typename t> class BinaryTree{
+	template<typename t> class binary_tree{
 	
 		private:
 			unsigned int len = 0 , max_size = 0;
@@ -55,7 +55,7 @@ namespace trees{
 
 			// o(height)
 			// search for target in tree 
-			bool SEARCH(t const &target , int &idx , int start_point = 1){
+			bool SEARCH(t const &target , unsigned int &idx , unsigned int start_point = 1){
 
 				// check if start point out of range
 				if(start_point > 0 && start_point <= this->max_size){
@@ -80,35 +80,39 @@ namespace trees{
 				return false;
 			}
 
-			void RECURSIVE_CLEAR(unsigned int const &index){
+			bool RECURSIVE_CLEAR(unsigned int const &index){
+				
 				if(index < this->max_size){
 
 					// clear target & update lenght
-					if(this->nodes[index] != NULL){
+					if (this->nodes[index] != NULL) {
+
 						this->nodes[index] = NULL;
 						this->len -= 1;
+						
+						// recursive clear in both direction !!
+
+						// left
+						RECURSIVE_CLEAR(((index + 1) * 2) - 1);
+						// right
+						RECURSIVE_CLEAR((index + 1) * 2);
+
+						return true;
 					}
-
-					// recursive clear in both direction !!
-
-					// left
-					RECURSIVE_CLEAR( ((index + 1) * 2) - 1);
-					// right
-					RECURSIVE_CLEAR( (index + 1) * 2 );
-
-					return;
+					else return false;
 				}
+
+				return false;
 			}
 
 		public:
-			/*
-				=== constructor ===
-			*/
-			BinaryTree(unsigned int const tree_size , bool(*compare_function)(t const &a , t const &b) )
+
+			// constructor 1
+			binary_tree(unsigned int const tree_size , bool(*compare_function)( t const &a , t const &b) )
 				:comp_func(compare_function)
 			{
 				// locate a new array at "heap"
-				this->max_size = (tree_size < 0 ? 1 : tree_size);
+				this->max_size = (tree_size < 2 ? 2 : tree_size);
 				this->nodes = new t[this->max_size];
 
 				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
@@ -117,15 +121,29 @@ namespace trees{
 
 			}
 
+			// constructor 2
+			binary_tree(t nodes[] , unsigned int const tree_size, bool(*compare_function)(t const& a, t const& b))
+				:comp_func(compare_function)
+			{
+				// locate a new array at "heap"
+				this->max_size = (tree_size < 2 ? 2 : tree_size);
+				this->nodes = new t[this->max_size];
+
+				for (unsigned int i = 0; i < this->max_size; i += 1) {
+					this->nodes[i] = NULL;
+				}
+
+			}
+
 			//  === destructor ===
-			~BinaryTree(){ 
+			~binary_tree(){ 
 				// make sure that allocated array at the "heap" will be deleted
 				delete[] this->nodes; 
 			}
 
 
 			/*
-				=== Binary Tree Methods ===
+				=== binary tree methods ===
 			*/
 
 			// o(1)
@@ -203,7 +221,6 @@ namespace trees{
 				
 			}
 
-			
 			// o(height)
 			// search function using SEARCH function 
 			// 1
@@ -212,7 +229,7 @@ namespace trees{
 				return this->SEARCH(target , fake_index);
 			}
 			// 2
-			bool search(t const &target , int &index){
+			bool search(t const &target , unsigned int &index){
 				return this->SEARCH(target , index);
 			}
 			// 3 like search function but start from diffrent point in tree
@@ -221,7 +238,7 @@ namespace trees{
 				return this->SEARCH(target , fake_index , start_point);
 			}
 			// 4
-			bool search_from(unsigned int const &start_point , t const &target , int &index){
+			bool search_from(unsigned int const &start_point , t const &target , unsigned int &index){
 				return this->SEARCH(target , index , start_point);
 			}
 
@@ -232,6 +249,16 @@ namespace trees{
 					return this->nodes[this->current_node-1];
 				}
 				else return NULL;
+			}
+			// o(1)
+			// get value of specific node
+			t get(unsigned int const& target_node_index = 0) {
+				
+				// if index out of range
+				if (target_node_index > max_size) return NULL;
+
+				// else return node value
+				return this->nodes[target_node_index];
 			}
 
 			// O(1)
@@ -272,7 +299,7 @@ namespace trees{
 
 			// O(1)
 			// go/jump to position in tree
-			bool jump_to(unsigned int const index = 1){
+			bool jump_to(unsigned int const &index = 1){
 
 				// check if index out of tree
 				if(index > 0 && index <= this->max_size){
@@ -284,9 +311,8 @@ namespace trees{
 			}
 
 			
-
 			// O(n)
-			// check if there is gaps or not
+			// check if tree contain gaps or not
 			bool is_perfect(){
 				for(unsigned int i = 0 ; i < (this->max_size - 1); i += 1){
 					if(this->nodes[i] == NULL && this->nodes[i+1] != NULL) return false;
@@ -294,25 +320,21 @@ namespace trees{
 				return true;
 			}
 
-			// O(height)
-			// clear target node  and all it's children
-			void clear_nodes(){
-				// first step search of target
-				int index = this->current_node;
+			// O(current_node -> height)
+			// delete/clear target node and all it's children
+			bool remove(unsigned int const &target_node_index = NULL){
 
-				// if target found
-				if(index > 0 && index <= this->max_size){
-					// clear it , and all it's children
-					this->RECURSIVE_CLEAR(index-1);
-				} 
+				// if target_node_index not NULL and in range 
+				if (target_node_index != NULL && target_node_index <= this->max_size) {
+					// clear from that target_node_index
+					return this->RECURSIVE_CLEAR(target_node_index - 1);
+				}
+
+				// else clear using current_node index
+				return this->RECURSIVE_CLEAR(this->current_node - 1);
+				
 			}
-			// O(height)
-			void CLEAR_NODES(unsigned int const &target_index){
-				if(target_index > 0 && target_index <= this->max_size){
-					// clear it , and all it's children
-					this->RECURSIVE_CLEAR(target_index-1);
-				} 
-			}
+
 
 			// O(height)
 			// travel from current node to x node
@@ -370,13 +392,14 @@ namespace trees{
 				// if left & right NULL that's mean this current node is a leaf node
 				return	(this->nodes[left] == NULL && this->nodes[right] == NULL || left >= this->max_size && right >= this->max_size) ? true : false;
 			}
-	/*
-
-			bool travle_up(std::vector<t> &full_path){}
-			bool travle_down(std::vector<t> &full_path){}
-
-			BinaryTree<t> get_sub_tree(unsigned int const &index){}
-	*/
+	
+			// o( node -> height )
+			// cut = mean you want to cut that target and all it's nodes
+			binary_tree<t> get_sub_tree(unsigned int const &target_node_index , bool const &cut = false){
+			
+			
+			}
+	
 	};
 
 

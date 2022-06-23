@@ -72,6 +72,9 @@
     <ClInclude Include="trees\n_binary_tree.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
+    <ClInclude Include="trees\avl_tree.hpp">
+      <Filter>Resource Files\trees</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="data_structures.cpp">

@@ -2,34 +2,34 @@
 
 namespace trees {
 
-	template<typename T> class node {
+	template<typename T> class b_node {
 		
 		private:
 
-			node<T>* parent;
-			node<T>* left;
-			node<T>* right;
+			b_node<T>* parent;
+			b_node<T>* left;
+			b_node<T>* right;
 
 		public:
 			// node value
 			T value;
 
 			// node constructor 1
-			node(T node_value) :value{ node_value } { 
+			b_node(T node_value) :value{ node_value } { 
 			}
 
 			// node constructor 1
-			node(T node_value, node<T>* node_parent = NULL) :value{ node_value }, parent{ node_parent } {
+			b_node(T node_value, b_node<T>* node_parent = NULL) :value{ node_value }, parent{ node_parent } {
 			}
 
 			// node constructor 3
-			node(){ }
+			b_node(){ }
 
 			// node destructor
-			~node() {
+			~b_node() {
 
-				if(this->left  != NULL) this->left->~node();
-				if(this->right != NULL) this->right->~node();
+				if(this->left  != NULL) this->left->~b_node();
+				if(this->right != NULL) this->right->~b_node();
 
 			}
 
@@ -55,19 +55,19 @@ namespace trees {
 	template<typename V> class n_binary_tree {
 
 		private:
-			node<V>* root;
+			b_node<V>* root;
 			unsigned int len = 0;
 
 			bool (*comp_function)(V const &node_a, V const &node_b);
 
 		public:
-			node<V>* current_node;
+			b_node<V>* current_node;
 
 			// constructor 1
 			n_binary_tree( V root_value  , bool(*comp)(V const &node_a, V const &node_b) )
 				:comp_function{ comp }
 			{
-				root = new node<V>(root_value,NULL);
+				root = new b_node<V>(root_value,NULL);
 				current_node = root;
 			}
 
@@ -75,7 +75,7 @@ namespace trees {
 			n_binary_tree(bool(*comp)(V const& node_a, V const& node_b))
 				:comp_function{ comp }
 			{
-				root = new node<V>();
+				root = new b_node<V>();
 				current_node = root;
 			}
 
@@ -88,9 +88,9 @@ namespace trees {
 			}
 
 			// o( log n )
-			bool insert(V new_node_value) {
+			bool insert(V const new_node_value) {
 
-				node<V>* temp = this->root;
+				b_node<V>* temp = this->root;
 
 				while (temp != NULL) {
 
@@ -108,7 +108,7 @@ namespace trees {
 							
 							if (temp->left == NULL) {
 
-								temp->left = new node<V>(new_node_value , temp);
+								temp->left = new b_node<V>(new_node_value , temp);
 								this->len += 1;
 								return true;
 
@@ -119,7 +119,7 @@ namespace trees {
 
 							if (temp->right == NULL) {
 
-								temp->right = new node<V>(new_node_value, temp);
+								temp->right = new b_node<V>(new_node_value, temp);
 								this->len += 1;
 								return true;
 
@@ -132,20 +132,24 @@ namespace trees {
 				return false;
 			}
 
+			// o( 1 )
 			unsigned int length() {
 				return this->len;
 			}
 
-			bool remove(V target_node_value) {
+			// o( log n )
+			bool remove(V const &target_node_value) {
 			
-				node<V>* temp = root;
+				b_node<V>* temp = root;
 
 				while( temp != NULL ){
 
 					if (temp->value == target_node_value) {
-						temp->~node();
+
+						temp->~b_node(); // delete this node & all it's children recursivly
 						delete temp;
 						return true;
+
 					}
 					else {
 
@@ -162,6 +166,30 @@ namespace trees {
 				return false;
 			}
 
+			bool search(V const &target_node_value) {
+				
+				return false;
+			}
+
+			bool travel_up() {
+				
+				return false;
+			}
+
+			bool travle_up() {
+
+				return false;
+			}
+
+			bool travle_down() {
+
+				return false;
+			}
+
+
+
+			// o( n ) 
+			// print function just for testing 
 			void print() {
 
 				this->root->print();

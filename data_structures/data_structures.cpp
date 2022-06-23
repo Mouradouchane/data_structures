@@ -8,12 +8,10 @@
 #include "trees/dynamic_tree.hpp"
 #include "trees/binary_tree.hpp"
 #include "trees/n_binary_tree.hpp"
+#include "trees/avl_tree.hpp"
 
 using namespace trees;
 
-/*
-	===> just cpp file for testing
-*/
 
 bool comp(int const& x, int const& y) {
 	return x < y;
@@ -21,7 +19,7 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	n_binary_tree<int> nb(8, comp);
+	binary_tree<int> nb( 32 , comp);
 	nb.insert(5);
 	nb.insert(2);
 	nb.insert(7);
@@ -38,7 +36,10 @@ int main() {
 
 	nb.print();
 
-	bool r = nb.remove(4);
+	unsigned int idx;
+	nb.search(4, idx);
+
+	bool r = nb.remove( idx );
 	if(r) std::cout << "target 4 found and deleted ====================== \n";
 
 	nb.print();
