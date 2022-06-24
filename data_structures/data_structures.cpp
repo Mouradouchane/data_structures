@@ -19,12 +19,14 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	binary_tree<int> nb( 32 , comp);
+	binary_tree<int> nb( 9 , comp);
 	nb.insert(5);
-	nb.insert(2);
-	nb.insert(7);
-	nb.insert(20);
+	nb.insert(3);
 	nb.insert(8);
+	nb.insert(9);
+	nb.insert(2);
+	nb.insert(1);
+	/*
 	nb.insert(10);
 	nb.insert(15);
 	nb.insert(3);
@@ -33,18 +35,13 @@ int main() {
 	nb.insert(9);
 	nb.insert(4);
 	nb.insert(1);
+	*/
+
+	unsigned int height = nb.height();
 
 	nb.print();
 
-	unsigned int idx;
-	nb.search(4, idx);
-
-	bool r = nb.remove( idx );
-	if(r) std::cout << "target 4 found and deleted ====================== \n";
-
-	nb.print();
-
-	std::cout << "print passed !\n";
+	std::cout << "========== "  << height << '\n';
 
 	return 0;
 }

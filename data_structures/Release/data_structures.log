@@ -1,7 +1,7 @@
 ﻿  data_structures.cpp
   Generating code
-  3 of 21 functions (14.3%) were compiled, the rest were copied from previous compilation.
-    2 functions were new in current compilation
-    6 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
+  2 of 20 functions (10.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   data_structures.vcxproj -> C:\Users\devc\Desktop\cpp\data_structures\Release\data_structures.exe
