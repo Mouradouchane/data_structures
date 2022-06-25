@@ -47,7 +47,6 @@ namespace trees{
 		private:
 
 			unsigned int len = 0 , max_size = 0;
-			unsigned int max_height = 0, current_max_height = 0;
 
 			// comapre function for searching , inserting , ...
 			bool(*comp_func)(t const &a , t const &b);
@@ -110,7 +109,39 @@ namespace trees{
 				return false;
 			}
 
+			// O(n)
+			// calc the maximum height at some position , by default starting will be at the root
+			unsigned int CALC_MAX_HEIGHT(unsigned int node_index = 1) {
 
+				// left & right child's index's
+				unsigned int left = 0;
+				unsigned int right = 0;
+
+				if (node_index <= this->max_size && node_index != NULL && this->nodes[node_index - 1] != NULL) {
+
+					left  = this->nodes[this->get_left_index(node_index)  - 1] == NULL ? 0 : this->CALC_MAX_HEIGHT(this->get_left_index(node_index));
+					right = this->nodes[this->get_right_index(node_index) - 1] == NULL ? 0 : this->CALC_MAX_HEIGHT(this->get_right_index(node_index));
+
+					return (left > right ? left : right) + 1;
+				}
+				else return 0;
+			}
+
+			void CALC_SIZE_OF_NODES( unsigned int const &target_node_index = 1 , unsigned int &size = 0) {
+		
+				if (target_node_index != NULL && target_node_index <= this->max_size && this->nodes[ target_node_index - 1] != NULL) {
+
+					size += 1;
+					
+					unsigned int left  = this->get_left_index(target_node_index);
+					unsigned int right = this->get_right_index(target_node_index);
+
+					if( this->nodes[left  - 1] != NULL ) this->CALC_SIZE_OF_NODES(left , size);
+					if( this->nodes[right - 1] != NULL ) this->CALC_SIZE_OF_NODES(right , size);
+
+				}
+
+			}
 
 		public:
 
@@ -119,7 +150,7 @@ namespace trees{
 				:comp_func(compare_function)
 			{
 				// locate a new array at "heap"
-				this->max_size = (tree_size < 2 ? 2 : tree_size);
+				this->max_size = (tree_size < 3 ? 3 : tree_size);
 				this->nodes = new t[this->max_size];
 
 				for(unsigned int i = 0 ; i < this->max_size ; i += 1){
@@ -165,24 +196,12 @@ namespace trees{
 				return this->max_size;
 			}
 
-			// O(n)
-			// calc the maximum height at some position , by default starting will be at the root
-			int height(unsigned int node_index = 1 ){
+			// O(nodes)
+			// calc the maximum height recursivly using CALC_MAX_HEIGHT function
+			unsigned int max_height(unsigned int const node_index = 1 ){
 			
-				// if no specific point to start from
-		
-				// start from root
-				int left  = 0;
-				int right = 0;
-
-				if (node_index <= this->max_size && node_index != NULL && this->nodes[node_index - 1] != NULL){
-
-					left  = this->nodes[get_left_index(node_index)  - 1] == NULL ? -1 : this->height(this->get_left_index(node_index) ) ;
-					right = this->nodes[get_right_index(node_index) - 1] == NULL ? -1 : this->height(this->get_right_index(node_index) ) ;
-
-					return (left > right ? left : right) + 1;
-				}
-				else return 0;
+				// height must be total nodes in path - 1
+				return this->CALC_MAX_HEIGHT(node_index) - 1;
 			}
 
 			// O(height)
@@ -261,10 +280,7 @@ namespace trees{
 				int fake_index = 0;
 				return this->SEARCH(target , fake_index);
 			}
-			// 2
-			bool search(t const &target , unsigned int &index){
-				return this->SEARCH(target , index);
-			}
+
 			// 3 like search function but start from diffrent point in tree
 			bool search_from(unsigned int const &start_point , t const &target){
 				int fake_index = 0;
@@ -297,6 +313,15 @@ namespace trees{
 			// O(1)
 			unsigned int get_index(){
 				return this->current_node;
+			}
+
+			unsigned int get_index_of(t const& target) {
+
+				unsigned int index = NULL;
+				this->SEARCH(target, index);
+
+				return index;
+
 			}
 
 			// o(1)
@@ -364,7 +389,7 @@ namespace trees{
 				return false;
 			}
 
-			
+
 			// O(n)
 			// check if tree contain gaps or not
 			bool is_perfect(){
@@ -447,7 +472,18 @@ namespace trees{
 				return	(this->nodes[left] == NULL && this->nodes[right] == NULL || left >= this->max_size && right >= this->max_size) ? true : false;
 			}
 	
-			// o( node -> height )
+			// O( nodes )
+			// calc nodes count 
+			unsigned int size_at(unsigned int const &target_node_index = 1) {
+				
+				unsigned int size = 0;
+				this->CALC_SIZE_OF_NODES(target_node_index , size);
+
+				return size ;
+
+			}
+
+			// o( nodes -> height )
 			// cut = mean you want to cut that target and all it's nodes
 			binary_tree<t> get_sub_tree(bool const &cut = false , unsigned int const& target_node_index = NULL ){
 			

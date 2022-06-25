@@ -19,29 +19,29 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	binary_tree<int> nb( 9 , comp);
+	binary_tree<int> nb( 16 , comp );
 	nb.insert(5);
 	nb.insert(3);
 	nb.insert(8);
 	nb.insert(9);
 	nb.insert(2);
 	nb.insert(1);
-	/*
+	nb.insert(7);
 	nb.insert(10);
-	nb.insert(15);
 	nb.insert(3);
+	/*
 	nb.insert(13);
 	nb.insert(6);
 	nb.insert(9);
-	nb.insert(4);
-	nb.insert(1);
+	nb.insert(-1);
+	nb.insert(-4);
 	*/
 
-	unsigned int height = nb.height();
+	unsigned int size = nb.size_at( nb.get_index_of(5) );
 
 	nb.print();
 
-	std::cout << "========== "  << height << '\n';
+	std::cout << "========== "  << size << '\n';
 
 	return 0;
 }
