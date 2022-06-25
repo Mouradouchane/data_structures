@@ -37,11 +37,15 @@ int main() {
 	nb.insert(-4);
 	*/
 
-	unsigned int size = nb.size_at( nb.get_index_of(5) );
+	unsigned int size = nb.size_at( nb.get_index_of(3) );
+
+	binary_tree<int> sub = nb.get_sub_tree( true , nb.get_index_of(8) );
+
+	sub.print();
+
+	std::cout << "==========" << '\n';
 
 	nb.print();
-
-	std::cout << "========== "  << size << '\n';
 
 	return 0;
 }

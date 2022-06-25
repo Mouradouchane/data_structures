@@ -1,4 +1,5 @@
 #include <vector>
+#include <stdexcept>
 
 #pragma once
 
@@ -127,6 +128,7 @@ namespace trees{
 				else return 0;
 			}
 
+
 			void CALC_SIZE_OF_NODES( unsigned int const &target_node_index = 1 , unsigned int &size = 0) {
 		
 				if (target_node_index != NULL && target_node_index <= this->max_size && this->nodes[ target_node_index - 1] != NULL) {
@@ -138,6 +140,25 @@ namespace trees{
 
 					if( this->nodes[left  - 1] != NULL ) this->CALC_SIZE_OF_NODES(left , size);
 					if( this->nodes[right - 1] != NULL ) this->CALC_SIZE_OF_NODES(right , size);
+
+				}
+
+			}
+
+
+			void GET_SUB_TREE(bool const &cut , t* sub_tree , unsigned int const target_node_index = 1 , unsigned int i = 1) {
+
+				if (target_node_index >= 1 && target_node_index <= this->max_size && this->nodes[target_node_index - 1] != NULL) {
+					
+					sub_tree[i - 1] = this->nodes[target_node_index - 1];
+
+					if (cut) this->nodes[target_node_index - 1] = NULL;
+
+					unsigned int left  = this->get_left_index(target_node_index);
+					unsigned int right = this->get_right_index(target_node_index);
+
+					this->GET_SUB_TREE(cut , sub_tree, left, i * 2);
+					this->GET_SUB_TREE(cut , sub_tree, right, (i * 2) + 1);
 
 				}
 
@@ -163,16 +184,13 @@ namespace trees{
 			binary_tree(t nodes[] , unsigned int const tree_size, bool(*compare_function)(t const& a, t const& b))
 				:comp_func(compare_function)
 			{
-				/*
-				// locate a new array at "heap"
-				this->max_size = (tree_size < 2 ? 2 : tree_size);
-				this->nodes = new t[this->max_size];
+				this->max_size = (tree_size < 3 ? 3 : tree_size);
+				this->nodes = nodes;
 
-				for (unsigned int i = 0; i < this->max_size; i += 1) {
-					this->nodes[i] = NULL;
-				}
-				*/
 			}
+
+			// def constructor
+			binary_tree() { }
 
 			//  == destructor ==
 			~binary_tree(){ 
@@ -483,11 +501,27 @@ namespace trees{
 
 			}
 
-			// o( nodes -> height )
+			// o( nodes * 2 )
 			// cut = mean you want to cut that target and all it's nodes
-			binary_tree<t> get_sub_tree(bool const &cut = false , unsigned int const& target_node_index = NULL ){
-			
+			binary_tree<t> get_sub_tree(bool const &cut = false , unsigned int const target_node_index = NULL ){
 				
+				if (target_node_index >= 1 && target_node_index <= this->max_size ) {
+					
+					// calc nodes size + allocated array for nodes
+					unsigned int nodes_size = this->size_at(target_node_index);
+					t* sub_tree_nodes = new t[nodes_size];
+
+					// get nodes in sub_tree_nodes
+					this->GET_SUB_TREE(cut , sub_tree_nodes, target_node_index);
+
+					binary_tree<t> sub_tree(sub_tree_nodes, nodes_size, this->comp_func);
+
+					sub_tree_nodes = nullptr;
+					delete sub_tree_nodes;
+
+					return sub_tree;
+				}
+				else return binary_tree<t>();
 			}
 	
 	};
