@@ -146,7 +146,7 @@ namespace trees{
 			}
 
 
-			void GET_SUB_TREE(bool const &cut , t* sub_tree , unsigned int const target_node_index = 1 , unsigned int i = 1) {
+			void GET_SUB_TREE(bool const &cut , t sub_tree[] , unsigned int const target_node_index = 1 , unsigned int i = 1) {
 
 				if (target_node_index >= 1 && target_node_index <= this->max_size && this->nodes[target_node_index - 1] != NULL) {
 					
@@ -503,25 +503,27 @@ namespace trees{
 
 			// o( nodes * 2 )
 			// cut = mean you want to cut that target and all it's nodes
-			binary_tree<t> get_sub_tree(bool const &cut = false , unsigned int const target_node_index = NULL ){
+			binary_tree<t>* get_sub_tree(bool const &cut = false , unsigned int const &target_node_index = 1 ){
 				
-				if (target_node_index >= 1 && target_node_index <= this->max_size ) {
-					
+				if (target_node_index >= 1 && target_node_index <= this->max_size) {
+
 					// calc nodes size + allocated array for nodes
 					unsigned int nodes_size = this->size_at(target_node_index);
-					t* sub_tree_nodes = new t[nodes_size];
+					t *sub_tree_nodes = new t[nodes_size];
 
 					// get nodes in sub_tree_nodes
 					this->GET_SUB_TREE(cut , sub_tree_nodes, target_node_index);
 
-					binary_tree<t> sub_tree(sub_tree_nodes, nodes_size, this->comp_func);
+					binary_tree<t>* sub_tree = new binary_tree<t>(sub_tree_nodes , nodes_size, this->comp_func );
 
-					sub_tree_nodes = nullptr;
 					delete sub_tree_nodes;
 
 					return sub_tree;
 				}
-				else return binary_tree<t>();
+				else {
+					//binary_tree<t> *empty();
+					return nullptr;
+				}
 			}
 	
 	};
