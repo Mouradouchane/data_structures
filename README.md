@@ -1,4 +1,4 @@
-## data structures :
+﻿## data structures :
 repository contain a collection of data structures for **C++**
 
 **note !** : each data structures in it's own **'folder'** and each folder contain different versions of that type :
@@ -41,4 +41,4 @@ repository contain a collection of data structures for **C++**
 
 ### contribution :
 if want to contribute/reporte , you're welcome😙 
-please before you made anything , text me with first or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄
+please before you made anything , text me first or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄
