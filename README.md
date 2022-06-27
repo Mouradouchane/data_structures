@@ -41,4 +41,4 @@ repository contain a collection of data structures for **C++**
 
 ### contribution :
 if want to contribute/reporte , you're welcome😙 
-please before you do anything , text me first or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄
+please before you do anything , text me first or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄 
