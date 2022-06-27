@@ -146,7 +146,7 @@ namespace trees{
 			}
 
 
-			void GET_SUB_TREE(bool const &cut , t sub_tree[] , unsigned int const target_node_index = 1 , unsigned int i = 1) {
+			void GET_SUB_TREE(bool const &cut , t* sub_tree , unsigned int const target_node_index = 1 , unsigned int i = 1) {
 
 				if (target_node_index >= 1 && target_node_index <= this->max_size && this->nodes[target_node_index - 1] != NULL) {
 					
@@ -497,7 +497,7 @@ namespace trees{
 				unsigned int size = 0;
 				this->CALC_SIZE_OF_NODES(target_node_index , size);
 
-				return size ;
+				return size < 3 ? 3 : size;
 
 			}
 
@@ -516,6 +516,7 @@ namespace trees{
 
 					binary_tree<t>* sub_tree = new binary_tree<t>(sub_tree_nodes , nodes_size, this->comp_func );
 
+					sub_tree_nodes = nullptr;
 					delete sub_tree_nodes;
 
 					return sub_tree;
