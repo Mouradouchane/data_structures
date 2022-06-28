@@ -19,7 +19,7 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	binary_tree<int> nb( 8 , comp );
+	binary_tree_arr<int> nb( 8 , comp );
 	nb.insert(8);
 	nb.insert(3);
 	nb.insert(5);
@@ -40,8 +40,8 @@ int main() {
 
 	nb.print();
 
-	std::cout << "full	: " << nb.is_full() << '\n';
-	std::cout << "perfect	: " << nb.is_perfect() << '\n';
+	std::cout << "is 1 leaf : " << nb.is_leaf_node(nb.get_index_of(1)) << '\n';
+	std::cout << "is 5 leaf : " << nb.is_leaf_node( nb.get_index_of(10) ) << '\n';
 
 	return 0;
 }
