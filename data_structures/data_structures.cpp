@@ -19,17 +19,17 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	binary_tree<int> nb( 9 , comp );
+	binary_tree<int> nb( 8 , comp );
 	nb.insert(8);
 	nb.insert(3);
 	nb.insert(5);
 	nb.insert(2);
 	nb.insert(10);
-	nb.insert(9);
 	nb.insert(13);
-	nb.insert(1);
 	nb.insert(7);
+	nb.insert(1);
 	/*
+	nb.insert(9);
 	nb.insert(3);
 	nb.insert(6);
 	nb.insert(9);
@@ -37,15 +37,11 @@ int main() {
 	nb.insert(-4);
 	*/
 
-	unsigned int size = nb.size_at( nb.get_index_of(10) );
-
-	binary_tree<int>* sub = nb.get_sub_tree( false , nb.get_index_of(1) );
 
 	nb.print();
 
-	std::cout << "===============================" << '\n';
-
-	sub->print();
+	std::cout << "full	: " << nb.is_full() << '\n';
+	std::cout << "perfect	: " << nb.is_perfect() << '\n';
 
 	return 0;
 }

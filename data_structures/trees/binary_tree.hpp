@@ -10,18 +10,21 @@
 
 	length				O(1)
 	size				O(1)
-	height				O(n)
+	size_at				O(n) --> O(nodes)
+	max_height			O(n) --> O(nodes)
 
-	insert				O(height) O(n)
-	remove				O(height) O(n)
+	insert				O(height) --> O(n)
+	remove				O(height) --> O(n)
 
-	search				O(height) O(n)
-	search_from			O(height) O(n)
+	search				O(height) --> O(n)
+	search_from			O(height) --> O(n)
 
 	get					O(1)
 	get_index			O(1)
 	get_left_index		O(1)
 	get_right_index		O(1)
+	get_sub_tree		O(nodes * 2) -->  O(n * 2) toor
+
 
 	go_back				O(1)
 	go_left				O(1)
@@ -31,9 +34,8 @@
 	travle_up			O(path)
 	travle_down			O(path)
 
-	get_sub_tree		O(sub_tree)
-
 	is_perfect			O(n)
+	is_full				O(1)
 	is_leaf_node		O(1)
 */
 
@@ -210,8 +212,17 @@ namespace trees{
 			}
 			
 			// o(1)
+			// size of this tree
 			unsigned int size() {
 				return this->max_size;
+			}
+
+			// O(1)
+			// check if this tree is full of nodes or not
+			bool is_full() {
+
+				// count of nodes must be equal to tree size to consider this tree as full tree
+				return (this->len < this->max_size) ? false : true;
 			}
 
 			// O(nodes)
