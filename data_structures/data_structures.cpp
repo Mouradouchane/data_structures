@@ -6,8 +6,8 @@
 #include <string>
 
 #include "trees/dynamic_tree.hpp"
-#include "trees/binary_tree.hpp"
-#include "trees/n_binary_tree.hpp"
+#include "trees/binary_tree_arr.hpp"
+#include "trees/binary_tree_nodes.hpp"
 #include "trees/avl_tree.hpp"
 
 using namespace trees;
@@ -19,7 +19,7 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	binary_tree_arr<int> nb( 8 , comp );
+	binary_tree_nodes<int> nb( comp );
 	nb.insert(8);
 	nb.insert(3);
 	nb.insert(5);
@@ -37,11 +37,15 @@ int main() {
 	nb.insert(-4);
 	*/
 
-
+	nb.print();
+	std::cout << nb.remove(5) << '\n';
 	nb.print();
 
-	std::cout << "is 1 leaf : " << nb.is_leaf_node(nb.get_index_of(1)) << '\n';
-	std::cout << "is 5 leaf : " << nb.is_leaf_node( nb.get_index_of(10) ) << '\n';
+	/*
+	std::cout << nb.search(7) << '\n';
+	std::cout << nb.search(3) << '\n';
+	std::cout << nb.search(11) << '\n';
+	*/
 
 	return 0;
 }

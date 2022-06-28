@@ -38,11 +38,11 @@ namespace trees{
         operator >      => o(1)
     */
 
-    template<typename T> class DT_Node {
+    template<typename T> class dt_node {
 
         private:
             // parent of this node 
-            DT_Node<T>* parent;
+            dt_node<T>* parent;
 
             bool binary_search(std::string const &target_name , int &target_index){
                 int min = 0;
@@ -82,7 +82,7 @@ namespace trees{
 
         public:
             // children of this node 
-            std::vector<DT_Node<T>> children;
+            std::vector<dt_node<T>> children;
             
             // name => for dealing with nodes "search , sort , ..."
             std::string name;
@@ -91,10 +91,10 @@ namespace trees{
             T value;
 
             // default constructor
-            DT_Node() {}
+            dt_node() {}
 
             // second constructor
-            DT_Node(std::string node_name, T node_value , DT_Node<T> * parent_node = NULL)
+            dt_node(std::string node_name, T node_value , dt_node<T> * parent_node = NULL)
                 : name    { node_name }  , 
                   value   { node_value } ,
                   parent  { parent_node }
@@ -114,7 +114,7 @@ namespace trees{
                 
                 // then
                 // insert new child
-                children.push_back( DT_Node<T>(new_node_name, new_node_value, this) );
+                children.push_back( dt_node<T>(new_node_name, new_node_value, this) );
 
                 // o(n log n)
                 // sort children
@@ -149,7 +149,7 @@ namespace trees{
                 if(reverse){
                     std::sort(this->children.begin() , this->children.end() , 
                         // comparison function
-                        [](DT_Node<T> a , DT_Node<T> b){
+                        [](dt_node<T> a , dt_node<T> b){
                             return (a > b);
                         }
                     );
@@ -157,7 +157,7 @@ namespace trees{
                 else{
                     std::sort(this->children.begin() , this->children.end() , 
                         // comparison function
-                        [](DT_Node<T> a , DT_Node<T> b){
+                        [](dt_node<T> a , dt_node<T> b){
                             return (a < b);
                         }
                     );
@@ -168,7 +168,7 @@ namespace trees{
             // o(1) --> o(log n)
             // get a copy of specific child , this copy not connected to the original tree
             // in case target not found return will be a empty node
-            DT_Node<T> getCopy(std::string const &target_node_name){
+            dt_node<T> getCopy(std::string const &target_node_name){
                 
                 int index = -1;
 
@@ -176,7 +176,7 @@ namespace trees{
                 this->search_for_index(target_node_name,index);
 
                 // temp copy
-                DT_Node<T> copy_of_child;
+                dt_node<T> copy_of_child;
 
                 // in case target found
                 if(index != -1){
@@ -189,7 +189,7 @@ namespace trees{
             }
 
             // get a copy of this node
-            DT_Node<T> getCopy(){
+            dt_node<T> getCopy(){
                 return *this;
             }
 
@@ -215,12 +215,12 @@ namespace trees{
             void removeChildren(){
                 
                 // nested recursive removeChildren => remove all children of children
-                for(DT_Node<T> &child : this->children){
+                for(dt_node<T> &child : this->children){
                     child.removeChildren();
                 }
 
                 // last step remove children by setup a new empty vector 
-                this->children = std::vector<DT_Node<T>>();
+                this->children = std::vector<dt_node<T>>();
             }
 
 
@@ -230,12 +230,12 @@ namespace trees{
             }
 
             // < comparison operator between tow nodes
-            bool operator < (DT_Node<T> &another_node){
+            bool operator < (dt_node<T> &another_node){
                 return ( this->name.compare(another_node.name) < 0 ) ? true : false;
             } 
 
             // > comparison operator between tow nodes
-            bool operator > (DT_Node<T> &another_node){
+            bool operator > (dt_node<T> &another_node){
                 return ( this->name.compare(another_node.name) > 0 ) ? true : false;
             }
 
@@ -245,13 +245,13 @@ namespace trees{
 
  
 
-    // =========================
-    // === DynamicTree class ===
-    // =========================
+    // ==========================
+    // === dynamic tree class ===
+    // ==========================
 
         
     /*
-        Dynamic Tree 
+        dynamic tree 
         
         -- NAME ------	BEST --> WORST
         search_up		o(1)
@@ -266,12 +266,12 @@ namespace trees{
 
     */
 
-    template<typename V> class DynamicTree {
+    template<typename V> class dynamic_tree {
 
         private:
 
             // main node in DynamicTree
-            DT_Node<V> root;
+            dt_node<V> root;
 
             /* 
                 **** some private function **** 
@@ -281,7 +281,7 @@ namespace trees{
             // o(1) 
             // function take a "temp node" & make a simple check if that temp include a parent with specific name
             // return will be a "parent pointer" or NULL
-            DT_Node<V>* search_up(std::string &parent_name , DT_Node<V> *temp) {
+            dt_node<V>* search_up(std::string &parent_name , dt_node<V> *temp) {
                 
                 if(temp->parent != NULL && temp->parent->name == parent_name) {
                         return temp->parent;
@@ -292,7 +292,7 @@ namespace trees{
 
             // o(1) --> o(log n) 
             // like "search_up" function , but this one for looking "down" between children
-            DT_Node<V>* search_down(std::string &node_name , DT_Node<V> *temp) {
+            dt_node<V>* search_down(std::string &node_name , dt_node<V> *temp) {
                 
                 // o(log n)
                 // search for target 
@@ -317,7 +317,7 @@ namespace trees{
                 // temp only for "check & test" if "path_of_names" are valid or not
                 // if "path_of_names" is valid we make it the new current_position "as last step" 
                 // else nothing will be happen
-                DT_Node<V> *temp = current_node;
+                dt_node<V> *temp = current_node;
 
                 // up true => mean that "path_of_names" in parents direction "up"
                 if(up){
@@ -362,17 +362,17 @@ namespace trees{
 
             // current_node => it's a node represent you position in tree
             // "important !" for many operation like search , movement , ...
-            DT_Node<V> *current_node;
+            dt_node<V> *current_node;
 
             // constructor
-            DynamicTree(std::string root_name , V root_value) {
+            dynamic_tree(std::string root_name , V root_value) {
                 // parent of root must be null
-                root = DT_Node<V>( root_name , root_value , NULL ); 
+                root = dt_node<V>( root_name , root_value , NULL ); 
                 current_node = &root;
             }
 
             // destructor
-            ~DynamicTree(){  }
+            ~dynamic_tree(){  }
 
             // o(1) --> o(log n)
             // target_child_name => mean node where you want to go

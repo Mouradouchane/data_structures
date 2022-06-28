@@ -63,13 +63,13 @@
     <ClInclude Include="stacks\static_stack.hpp">
       <Filter>Resource Files\stacks</Filter>
     </ClInclude>
-    <ClInclude Include="trees\binary_tree.hpp">
+    <ClInclude Include="trees\binary_tree_arr.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
     <ClInclude Include="trees\dynamic_tree.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
-    <ClInclude Include="trees\n_binary_tree.hpp">
+    <ClInclude Include="trees\binary_tree_nodes.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
     <ClInclude Include="trees\avl_tree.hpp">

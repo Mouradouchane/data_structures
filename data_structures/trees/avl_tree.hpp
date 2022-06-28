@@ -1,21 +1,21 @@
-#include "n_binary_tree.hpp"
+
 
 namespace trees {
 	
-	template<typename V> class node : trees::b_node<typename V> {
+	template<typename V> class avl_node {
 
-		node() { }
+		avl_node() { }
 
-		~node() { }
+		~avl_node() { }
 
-	}; // end of class node
+	}; // end of class avl_node
 
-	template<typename T> class avl_binary_tree {
+	template<typename T> class binary_tree_avl {
 
-		avl_binary_tree() { }
+		binary_tree_avl() { }
 
-		~avl_binary_tree() { }
+		~binary_tree_avl() { }
 
-	}; // end of class avl_binary_tree
+	}; // end of class binary_tree_avl
 
 } // end of namespace
