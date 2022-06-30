@@ -38,14 +38,17 @@ int main() {
 	*/
 
 	nb.print();
-	std::cout << nb.remove(5) << '\n';
-	nb.print();
+	
+	nb.go_right();
+	nb.go_right();
+	nb.go_right();
+	nb.go_right();
 
-	/*
-	std::cout << nb.search(7) << '\n';
-	std::cout << nb.search(3) << '\n';
-	std::cout << nb.search(11) << '\n';
-	*/
+	nb.jump_to(7);
+	nb.travel_up( {5} );
+
+	std::cout << nb.current_node->value << '\n';
+
 
 	return 0;
 }

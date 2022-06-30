@@ -1,4 +1,4 @@
-
+#include <vector>
 #pragma once
 
 // ==============================
@@ -267,9 +267,37 @@ namespace trees {
 				return false;
 			}
 
-			bool travel_up() {
+			// o( path )
+			//
+			bool travel_up(std::vector<V> const &path) {
 				
-				return false;
+				bt_node<V>* temp = this->current_node;
+				unsigned int i = 0;
+				bool gap = false;
+
+				while ( i < path.size() ) {
+
+					if (temp->parent == nullptr) break;
+					if (path[i] == temp->parent->value) {
+
+						i += 1;
+						temp = temp->parent;
+
+					}
+					else {
+						gap = true;
+						break;
+					}
+				}
+
+				if (gap) return false;
+
+				this->current_node = temp;
+
+				temp = nullptr;
+				delete temp;
+
+				return true;
 			}
 
 			bool travle_up() {
@@ -282,6 +310,70 @@ namespace trees {
 				return false;
 			}
 
+			// o( 1 )
+			bool go_left() {
+				// if there's no left node to go in
+				if (this->current_node->left == nullptr) return false;
+				// else 
+				this->current_node = this->current_node->left;
+				return true;
+			}
+
+			// o( 1 )
+			bool go_right() {
+				// if there's no right node to go in
+				if (this->current_node->right == nullptr) return false;
+				// else
+				this->current_node = this->current_node->right;
+				return true;
+			}
+
+			// o( 1 )
+			bool go_back() {
+				// if there's no parent to go with
+				if (this->current_node == nullptr || this->current_node->parent == nullptr) return false;
+				
+				// else
+				this->current_node = this->current_node->parent;
+				return true;
+			}
+
+			// o( 1 )
+			// jump to root node
+			void go_to_root() {
+				this->current_node = this->root;
+			}
+
+			// o( log n )
+			// go/jump to target node if it's found
+			bool jump_to(V const& target_node_value) {
+
+				bt_node<V>* temp = this->root;
+
+				while (temp != nullptr) {
+
+					if (temp->value == target_node_value) {
+						this->current_node = temp;
+
+						temp = nullptr;
+						delete temp;
+						return true;
+					}
+					else {
+
+						if ( this->comp_function(target_node_value, temp->value) ) {
+							temp = temp->left;
+						}
+						else {
+							temp = temp->right;
+						}
+
+					}
+
+				}
+
+				return false;
+			}
 
 			// o( n ) 
 			// print function just for testing 
