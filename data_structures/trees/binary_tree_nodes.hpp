@@ -268,44 +268,94 @@ namespace trees {
 			}
 
 			// o( path )
-			//
+			// path : parent value as path to go on it 
 			bool travel_up(std::vector<V> const &path) {
 				
+				// temp node for process
 				bt_node<V>* temp = this->current_node;
+
 				unsigned int i = 0;
-				bool gap = false;
+				// to check if path is valid to travel on it or not
+				bool gap = false; 
+
 
 				while ( i < path.size() ) {
+					// if no more parent 
+					if (temp->parent == nullptr) {
+						gap = true;
+						break;
+					}
 
-					if (temp->parent == nullptr) break;
+					// if path still valid
 					if (path[i] == temp->parent->value) {
 
 						i += 1;
 						temp = temp->parent;
 
 					}
+					// if there's gap on path
 					else {
 						gap = true;
 						break;
 					}
 				}
 
+				// travel through path should not happen , because path is invalid
 				if (gap) return false;
+				
+				// else : mean path is valid
+				this->current_node = temp;
 
+				// make temp point to null-pointer & delete it 
+				temp = nullptr;
+				delete temp;
+
+				// return confirmation of that travling around the path is successed 
+				return true;
+			}
+
+			// o( log n )
+			// path : path of childern values to go on it
+			bool travel_down(std::vector<V> const &path) {
+
+				bt_node<V>* temp = this->current_node;
+				unsigned int i = 0;
+				bool gap = false;
+
+				while ( temp != nullptr && i < path.size() ) {
+
+					if (this->comp_function(path[i], temp->value)) {
+
+						if (temp->left != nullptr && temp->left->value == path[i]) {
+							i += 1;
+							temp = temp->left;
+						}
+						else{
+							gap = true;
+							break;
+						}
+					}
+					else {
+
+						if (temp->right != nullptr && temp->right->value == path[i]) {
+							i += 1;
+							temp = temp->right;
+						}
+						else {
+							gap = true;
+							break;
+						}
+					}
+
+				}
+
+				if (gap) return false;
+				
+				// else
 				this->current_node = temp;
 
 				temp = nullptr;
 				delete temp;
-
-				return true;
-			}
-
-			bool travle_up() {
-
-				return false;
-			}
-
-			bool travle_down() {
 
 				return false;
 			}

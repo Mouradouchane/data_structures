@@ -38,17 +38,11 @@ int main() {
 	*/
 
 	nb.print();
-	
-	nb.go_right();
-	nb.go_right();
-	nb.go_right();
-	nb.go_right();
 
 	nb.jump_to(7);
-	nb.travel_up( {5} );
+	nb.travel_up({ 5,3,8,0 });
 
 	std::cout << nb.current_node->value << '\n';
-
 
 	return 0;
 }
