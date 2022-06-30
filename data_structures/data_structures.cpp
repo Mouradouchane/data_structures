@@ -39,10 +39,14 @@ int main() {
 
 	nb.print();
 
-	nb.jump_to(7);
-	nb.travel_up({ 5,3,8,0 });
+	binary_tree_nodes<int>* cp = nb.get_sub_tree(false, 8);
 
-	std::cout << nb.current_node->value << '\n';
+	std::cout << " ===========================\n";
+	cp->print();
+	std::cout << " ===========================\n";
+	
+	nb.print();
+
 
 	return 0;
 }

@@ -9,7 +9,8 @@
 	-- NAME ----------- BEST --> WORST
 
 	length				O(1)
-	max_height			O(n) --> O(nodes)
+	min_height			O(n) --> O(log n)
+	max_height			O(n) --> O(log n)
 
 	insert				O(height) --> O(n)
 	remove				O(height) --> O(n)
@@ -21,8 +22,10 @@
 	go_left				O(1)
 	go_right			O(1)
 
+	jump_to				O(1) --> O(log n)
+	jump_to_root		O(1)
 	travle_up			O(path)
-	travle_down			O(path)
+	travle_down			O(log path)
 
 	is_leaf_node		O(1)
 */
@@ -38,10 +41,10 @@ namespace trees {
 			bt_node<T>* parent = nullptr;
 			bt_node<T>* left = nullptr;
 			bt_node<T>* right = nullptr;
-
-		public:
 			// node value
 			T value = NULL;
+
+		public:
 
 			// node constructor 1
 			bt_node(T node_value) :value{ node_value } { 
@@ -51,7 +54,39 @@ namespace trees {
 			bt_node(T node_value, bt_node<T>* node_parent = NULL) :value{ node_value }, parent{ node_parent } {
 			}
 
-			// node constructor 3
+			// node constructor 3 "copy constructor"
+			bt_node(bt_node<T>* other , bool const& cut) {
+
+				if (cut) {
+					// pass by value
+
+					this->left = new bt_node<T>();
+					this->right = new bt_node<T>();
+
+					if(other->right != nullptr) *(this->right) = *(other->right) ;
+					if(other->left  != nullptr) *(this->left)  = *(other->left) ;
+					this->value = other->value; 
+
+					if (other->parent != nullptr){
+						if(other->parent->left == other) other->parent->left = nullptr;
+						else other->parent->right = nullptr;
+					}
+					else {
+						delete other;
+					}
+				}
+				else {
+					// pass by reference
+					this->parent = other->parent;
+					this->left   = other->left; 
+					this->right  = other->right; 
+
+					this->value  = other->value;
+				}
+				
+			}
+
+			// node constructor 4
 			bt_node(){ }
 
 			// node destructor
@@ -62,19 +97,23 @@ namespace trees {
 
 			}
 
+			T get_value() {
+				return this->value;
+			}
+
 			void print( unsigned int spaces = 1 ) {
 
 				spaces += 1;
 
-				if (this->right != NULL) this->right->print(spaces);
+				if (this->right != nullptr) this->right->print(spaces);
 
 				for (unsigned int i = 1; i <= spaces; i += 1) {
 					std::cout << '\t';
 				}
-				std::cout << "[" <<this->value << "]\n";
+				std::cout << "[" << this->value << "]\n";
 				
 
-				if (this->left != NULL) this->left->print(spaces);
+				if (this->left != nullptr) this->left->print(spaces);
 
 			}
 
@@ -93,6 +132,31 @@ namespace trees {
 
 			bool (*comp_function)(V const &node_a, V const &node_b);
 
+			// o( log n )
+			bt_node<V>* SEARCH_FOR_NODE_REF(V const& target_node_value) {
+
+				bt_node<V>* temp = this->root;
+
+				while (temp != nullptr) {
+
+					if (temp->value == target_node_value) {
+
+						return temp;
+					}
+					else {
+
+						if (this->comp_function(target_node_value, temp->value)) {
+							temp = temp->left;
+						}
+						else temp = temp->right;
+
+					}
+				}
+
+				return nullptr;
+			}
+
+
 		public:
 			bt_node<V>* current_node;
 
@@ -110,6 +174,16 @@ namespace trees {
 			{
 				root = new bt_node<V>();
 				current_node = root;
+			}
+
+			// constructor 3 "copy constructor"
+			binary_tree_nodes(bt_node<V>* root_node , bool cut , bool(*comp)(V const& node_a, V const& node_b))
+				:comp_function{ comp }
+			{
+
+				this->root = new bt_node<V>(root_node,cut);
+				this->current_node = this->root;
+
 			}
 
 			// destructor
@@ -390,7 +464,7 @@ namespace trees {
 
 			// o( 1 )
 			// jump to root node
-			void go_to_root() {
+			void jump_to_root() {
 				this->current_node = this->root;
 			}
 
@@ -425,11 +499,29 @@ namespace trees {
 				return false;
 			}
 
+			// o( 1 )
+			// check if this current_node is a leaf node or not
+			bool is_leaf_node() {
+
+				return (this->current_node->left == nullptr && this->current_node->right == nullptr);
+			}
+
+			binary_tree_nodes<V>* get_sub_tree(bool const& cut , V const& target_node_value) {
+
+				bt_node<V>* temp = this->SEARCH_FOR_NODE_REF(target_node_value);
+
+				if (temp == nullptr) return nullptr;
+				else {
+					if (cut) this->jump_to_root();
+					return new binary_tree_nodes<V>(temp,cut,this->comp_function);
+				}
+			}
+
 			// o( n ) 
 			// print function just for testing 
 			void print() {
 
-				this->root->print();
+				if(this->root != nullptr) this->root->print();
 
 			}
 
