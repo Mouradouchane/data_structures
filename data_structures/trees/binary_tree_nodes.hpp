@@ -41,7 +41,7 @@ namespace trees {
 			bt_node<T>* parent = nullptr;
 			bt_node<T>* left = nullptr;
 			bt_node<T>* right = nullptr;
-			// node value
+			// this node value
 			T value = NULL;
 
 		public:
@@ -55,29 +55,39 @@ namespace trees {
 			}
 
 			// node constructor 3 "copy constructor"
+			// cut boolean option to cut that node from it's origin or not
 			bt_node(bt_node<T>* other , bool const& cut) {
 
+				// cut from it's origin
 				if (cut) {
-					// pass by value
 
+					// define new child's at the heap
 					this->left = new bt_node<T>();
 					this->right = new bt_node<T>();
 
+					// connect new child's with this node as parent
+					this->left->parent = this;
+					this->right->parent = this;
+
+					// cut values from origin
 					if(other->right != nullptr) *(this->right) = *(other->right) ;
 					if(other->left  != nullptr) *(this->left)  = *(other->left) ;
-					this->value = other->value; 
+					this->value = other->value;
+
+					// clear origin node value && it's connection with origin tree
 					other->value = NULL;
 
 					if (other->parent != nullptr){
 						if(other->parent->left == other) other->parent->left = nullptr;
 						else other->parent->right = nullptr;
 					}
-					else {
+					else { // if cut from root
 						delete other;
 					}
+
 				}
-				else {
-					// pass by reference
+				else { // just copy references no cut's
+
 					this->parent = other->parent;
 					this->left   = other->left; 
 					this->right  = other->right; 
@@ -177,11 +187,12 @@ namespace trees {
 				current_node = root;
 			}
 
-			// constructor 3 "copy constructor"
+			// constructor 3 "copy/cut constructor"
+			// root_node reference to that copied or cuted "sub tree"
 			binary_tree_nodes(bt_node<V>* root_node , bool cut , bool(*comp)(V const& node_a, V const& node_b))
 				:comp_function{ comp }
 			{
-
+				// call "copy/cut node constructor"
 				this->root = new bt_node<V>(root_node,cut);
 				this->current_node = this->root;
 
@@ -508,17 +519,28 @@ namespace trees {
 			}
 
 			// o( log target_node )
+			// copy or cut a part from this tree 
 			binary_tree_nodes<V>* get_sub_tree(bool const& cut , V const& target_node_value) {
 
+				// search for target node "reference"
 				bt_node<V>* temp = this->SEARCH_FOR_NODE_REF(target_node_value);
 
+				// if target not found
 				if (temp == nullptr) return nullptr;
 				else {
+
+					// if you want to cut from root 
 					if (cut && temp == this->root) {
+
+						// set root to another object at the heap
 						this->root = new bt_node<V>();
-						this->current_node = this->root;
+
 					}
+
+					// jump to root , to avoid refering to deleted node in tree
 					this->jump_to_root();
+
+					// return new sub tree
 					return new binary_tree_nodes<V>(temp,cut,this->comp_function);
 				}
 			}

@@ -39,7 +39,7 @@ int main() {
 
 	nb.print();
 
-	binary_tree_nodes<int>* cp = nb.get_sub_tree(true, 3);
+	binary_tree_nodes<int>* cp = nb.get_sub_tree(true, 8);
 	
 	cp->insert(6);
 
