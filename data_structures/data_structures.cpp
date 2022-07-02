@@ -39,12 +39,15 @@ int main() {
 
 	nb.print();
 
-	binary_tree_nodes<int>* cp = nb.get_sub_tree(false, 8);
+	binary_tree_nodes<int>* cp = nb.get_sub_tree(true, 3);
+	
+	cp->insert(6);
 
 	std::cout << " ===========================\n";
 	cp->print();
 	std::cout << " ===========================\n";
-	
+
+
 	nb.print();
 
 

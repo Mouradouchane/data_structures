@@ -66,6 +66,7 @@ namespace trees {
 					if(other->right != nullptr) *(this->right) = *(other->right) ;
 					if(other->left  != nullptr) *(this->left)  = *(other->left) ;
 					this->value = other->value; 
+					other->value = NULL;
 
 					if (other->parent != nullptr){
 						if(other->parent->left == other) other->parent->left = nullptr;
@@ -506,13 +507,18 @@ namespace trees {
 				return (this->current_node->left == nullptr && this->current_node->right == nullptr);
 			}
 
+			// o( log target_node )
 			binary_tree_nodes<V>* get_sub_tree(bool const& cut , V const& target_node_value) {
 
 				bt_node<V>* temp = this->SEARCH_FOR_NODE_REF(target_node_value);
 
 				if (temp == nullptr) return nullptr;
 				else {
-					if (cut) this->jump_to_root();
+					if (cut && temp == this->root) {
+						this->root = new bt_node<V>();
+						this->current_node = this->root;
+					}
+					this->jump_to_root();
 					return new binary_tree_nodes<V>(temp,cut,this->comp_function);
 				}
 			}
