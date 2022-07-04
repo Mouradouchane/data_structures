@@ -57,61 +57,94 @@ namespace trees {
 			// node constructor 3 "copy constructor"
 			// cut boolean option to cut that node from it's origin or not
 			bt_node(bt_node<T>* other , bool const& cut) {
-
-				// cut from it's origin
+				
+				// cut node from it's origin
 				if (cut) {
-
+				
 					// define new child's at the heap
 					this->left = new bt_node<T>();
 					this->right = new bt_node<T>();
 
+
 					// connect new child's with this node as parent
-					this->left->parent = this;
+					this->left->parent  = this;
 					this->right->parent = this;
 
-					// cut values from origin
-					if(other->right != nullptr) *(this->right) = *(other->right) ;
-					if(other->left  != nullptr) *(this->left)  = *(other->left) ;
 					this->value = other->value;
 
-					// clear origin node value && it's connection with origin tree
-					other->value = NULL;
+					// cut values from origin
+					if (other->right != nullptr) {
+						
+						this->right  = other->right;
+						other->right = nullptr;
+
+					}
+					if (other->left != nullptr) {
+
+						this->left  = other->left;
+						other->left = nullptr;
+
+					}
 
 					if (other->parent != nullptr){
-						if(other->parent->left == other) other->parent->left = nullptr;
+
+						if(  other->parent->left == other ) other->parent->left = nullptr;
 						else other->parent->right = nullptr;
-					}
-					else { // if cut from root
-						delete other;
+
 					}
 
+					delete other;	
 				}
-				else { // just copy references no cut's
+				// copy node from it's origin
+				else {
 
-					this->parent = other->parent;
-					this->left   = other->left; 
-					this->right  = other->right; 
+					// define new child's at the heap
 
-					this->value  = other->value;
+					if (other->left != nullptr) {
+						//*(this->left) = *(other->left);
+						this->left = new bt_node<T>(other->left , cut);
+						this->left->parent = this;
+					}
+					if (other->right != nullptr) {
+						//*(this->right) = *(other->right);
+						this->right = new bt_node<T>(other->right , cut);
+						this->right->parent = this;
+					}
+					
+					this->value = other->value;
+
 				}
-				
+
 			}
 
-			// node constructor 4
+			// def constructor
 			bt_node(){ }
 
 			// node destructor
 			~bt_node() {
 
-				if(this->left  != nullptr) this->left->~bt_node();
-				if(this->right != nullptr) this->right->~bt_node();
+				if (this->left != nullptr) {
+					this->left->~bt_node();
 
+					free( (void*)(this->left) );
+					this->left = nullptr;
+				}
+
+				if (this->right != nullptr) {
+					this->right->~bt_node();
+
+					free( (void*)(this->right) );
+					this->right = nullptr;
+				}
+
+				//free( (void*)(this->value) );
 			}
 
 			T get_value() {
 				return this->value;
 			}
 
+			// testing function
 			void print( unsigned int spaces = 1 ) {
 
 				spaces += 1;
@@ -200,10 +233,15 @@ namespace trees {
 
 			// destructor
 			~binary_tree_nodes() {
-				/*
-					delete this->current_node;
-				*/
-				 this->root->~bt_node();
+
+				// destruct tree from the root recursivly 
+				if (this->root != nullptr) {
+					this->root->~bt_node();
+
+					this->root = nullptr;
+					this->current_node = this->root;
+				}
+
 			}
 
 			// o( 1 )
