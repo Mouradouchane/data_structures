@@ -28,32 +28,19 @@ int main() {
 	nb.insert(13);
 	nb.insert(7);
 	nb.insert(1);
+	nb.insert(109);
+	nb.insert(120);
+	nb.insert(160);
 	/*
-	nb.insert(9);
-	nb.insert(3);
-	nb.insert(6);
 	nb.insert(9);
 	nb.insert(-1);
 	nb.insert(-4);
 	*/
 
 	nb.print();
-
-	binary_tree_nodes<int>* cp = nb.get_sub_tree(true , 8);
-	cp->insert(100);
-
-
 	std::cout << " ===========================\n";
-	nb.print();
-
+	std::cout << " MAX HEIGTH : " << nb.max_height(true) << " \n";
 	std::cout << " ===========================\n";
-	
-	cp->print();
-	
-	cp->~binary_tree_nodes();
-	cp = nullptr;
-	/*
-	*/
 
 
 	return 0;

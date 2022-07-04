@@ -44,6 +44,26 @@ namespace trees {
 			// this node value
 			T value = NULL;
 
+
+			unsigned int CALC_PATH(bool const& min = false) {
+
+				unsigned int LEFT = 0;
+				unsigned int RIGHT = 0;
+
+				if (this->left != nullptr) {
+					LEFT = this->left->CALC_PATH(min) + 1;
+				}
+				if (this->right != nullptr) {
+					RIGHT = this->right->CALC_PATH(min) + 1;
+				}
+
+
+				if (min) return (LEFT < RIGHT) ? LEFT : RIGHT;
+				else     return (LEFT > RIGHT) ? LEFT : RIGHT;
+				
+			}
+
+
 		public:
 
 			// node constructor 1
@@ -588,6 +608,13 @@ namespace trees {
 			void print() {
 
 				if(this->root != nullptr) this->root->print();
+
+			}
+
+			// o( path )
+			unsigned int max_height( bool const& min = false ) {
+
+				return this->root->CALC_PATH(min);
 
 			}
 
