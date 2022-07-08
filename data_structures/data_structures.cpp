@@ -24,13 +24,13 @@ int main() {
 	nb.insert(3);
 	nb.insert(5);
 	nb.insert(2);
-	nb.insert(10);
-	nb.insert(13);
+	nb.insert(109);
+	//nb.insert(10);
+	//nb.insert(13);
+	//nb.insert(120);
 	nb.insert(7);
 	nb.insert(1);
-	nb.insert(109);
-	nb.insert(120);
-	nb.insert(160);
+	//nb.insert(160);
 	/*
 	nb.insert(9);
 	nb.insert(-1);
@@ -39,7 +39,8 @@ int main() {
 
 	nb.print();
 	std::cout << " ===========================\n";
-	std::cout << " MAX HEIGTH : " << nb.max_height(true) << " \n";
+	std::cout << " MAX HEIGTH : " << nb.max_height() << " \n";
+	std::cout << " MIN HEIGTH : " << nb.min_height() << " \n";
 	std::cout << " ===========================\n";
 
 

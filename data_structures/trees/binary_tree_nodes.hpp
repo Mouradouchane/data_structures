@@ -9,8 +9,8 @@
 	-- NAME ----------- BEST --> WORST
 
 	length				O(1)
-	min_height			O(n) --> O(log n)
-	max_height			O(n) --> O(log n)
+	min_height			O(log n) --> O(n) 
+	max_height			O(log n) --> O(n) 
 
 	insert				O(height) --> O(n)
 	remove				O(height) --> O(n)
@@ -47,8 +47,8 @@ namespace trees {
 
 			unsigned int CALC_PATH(bool const& min = false) {
 
-				unsigned int LEFT = 0;
-				unsigned int RIGHT = 0;
+				unsigned int LEFT = NULL;
+				unsigned int RIGHT = NULL;
 
 				if (this->left != nullptr) {
 					LEFT = this->left->CALC_PATH(min) + 1;
@@ -57,9 +57,15 @@ namespace trees {
 					RIGHT = this->right->CALC_PATH(min) + 1;
 				}
 
+				if (min) {
 
-				if (min) return (LEFT < RIGHT) ? LEFT : RIGHT;
-				else     return (LEFT > RIGHT) ? LEFT : RIGHT;
+					if (LEFT == NULL && RIGHT == NULL) return NULL;
+					if (LEFT == NULL && RIGHT != NULL) return RIGHT;
+					if (LEFT != NULL && RIGHT == NULL) return LEFT;
+
+					return (LEFT < RIGHT) ? LEFT : RIGHT;
+				}
+				else  return (LEFT > RIGHT) ? LEFT : RIGHT;
 				
 			}
 
@@ -611,10 +617,17 @@ namespace trees {
 
 			}
 
-			// o( path )
-			unsigned int max_height( bool const& min = false ) {
+			// o( log n ) --> o( n )
+			unsigned int max_height(  ) {
 
-				return this->root->CALC_PATH(min);
+				return this->root->CALC_PATH(false);
+
+			}
+
+			// o( log n ) --> o( n )
+			unsigned int min_height() {
+
+				return this->root->CALC_PATH(true);
 
 			}
 
