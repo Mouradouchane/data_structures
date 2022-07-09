@@ -153,7 +153,7 @@
     <ClInclude Include="queues\static_queue.hpp" />
     <ClInclude Include="stacks\dynamic_stack.hpp" />
     <ClInclude Include="stacks\static_stack.hpp" />
-    <ClInclude Include="trees\avl_tree.hpp" />
+    <ClInclude Include="trees\binary_tree_avl.hpp" />
     <ClInclude Include="trees\binary_tree_arr.hpp" />
     <ClInclude Include="trees\dynamic_tree.hpp" />
     <ClInclude Include="trees\binary_tree_nodes.hpp" />

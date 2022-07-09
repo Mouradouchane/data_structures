@@ -16,7 +16,7 @@
 	remove				O(height) --> O(n)
 	search				O(height) --> O(n)
 
-	get_sub_tree		O(nodes * 2) -->  O(n * 2) toor
+	get_sub_tree		O(log n) -->  O(log n * 2)
 
 	go_back				O(1)
 	go_left				O(1)

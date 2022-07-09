@@ -8,7 +8,7 @@
 #include "trees/dynamic_tree.hpp"
 #include "trees/binary_tree_arr.hpp"
 #include "trees/binary_tree_nodes.hpp"
-#include "trees/avl_tree.hpp"
+#include "trees/binary_tree_avl.hpp"
 
 using namespace trees;
 
@@ -19,7 +19,7 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 	
-	binary_tree_nodes<int> nb( comp );
+	binary_tree_avl<int> nb( comp );
 	nb.insert(8);
 	nb.insert(3);
 	nb.insert(5);

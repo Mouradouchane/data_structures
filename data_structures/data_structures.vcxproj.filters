@@ -72,7 +72,7 @@
     <ClInclude Include="trees\binary_tree_nodes.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
-    <ClInclude Include="trees\avl_tree.hpp">
+    <ClInclude Include="trees\binary_tree_avl.hpp">
       <Filter>Resource Files\trees</Filter>
     </ClInclude>
   </ItemGroup>
