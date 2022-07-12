@@ -28,6 +28,12 @@
 	travle_down			O(log path)
 
 	is_leaf_node		O(1)
+
+	is_balanced			O(log n) --> O(n)
+	ll_rotation			O(1)
+	rr_rotation			O(1)
+	lr_rotation			O(1)
+	rl_rotation			O(1)
 */
 
 
@@ -70,6 +76,44 @@ namespace trees {
 
 		}
 
+		// O( log n )
+		// calc balance factor recursivly at some specific node
+		static void CALC_BALANCE( avl_node<T>* target , int &left  , int &right ) {
+
+			if (target == nullptr) return;
+
+			if (target->left != nullptr) {
+				avl_node<T>::CALC_BALANCE(target->left, left , right);
+				left += 1;
+			}
+			if (target->right != nullptr) {
+				avl_node<T>::CALC_BALANCE(target->right, left , right );
+				right += 1;
+			}
+
+			int balance = left - right;
+			
+			if (balance < -1 || balance > 1) avl_node<T>::BALANCE( target, (right > left) );
+
+		}
+
+		// O(1)
+		// balance unbalance target in tree
+		static void BALANCE(avl_node<T>* target, bool right = false) {
+
+			std::cout << "unbalance in node : " << target->value << '\n';
+
+			// unbalance in left
+			if (!right) {
+
+			}
+			// unbalance in right
+			else {
+
+			}
+
+		}
+
 
 	public:
 
@@ -89,12 +133,12 @@ namespace trees {
 			if (cut) {
 
 				// define new child's at the heap
-				this->left = new avl_node<T>();
+				this->left  = new avl_node<T>();
 				this->right = new avl_node<T>();
 
 
 				// connect new child's with this node as parent
-				this->left->parent = this;
+				this->left->parent  = this;
 				this->right->parent = this;
 
 				this->value = other->value;
@@ -102,13 +146,13 @@ namespace trees {
 				// cut values from origin
 				if (other->right != nullptr) {
 
-					this->right = other->right;
+					this->right  = other->right;
 					other->right = nullptr;
 
 				}
 				if (other->left != nullptr) {
 
-					this->left = other->left;
+					this->left  = other->left;
 					other->left = nullptr;
 
 				}
@@ -172,19 +216,19 @@ namespace trees {
 		}
 
 		// testing function
-		void print(unsigned int spaces = 1) {
+		static void print(avl_node<T>* target , unsigned int spaces = 1) {
 
 			spaces += 1;
 
-			if (this->right != nullptr) this->right->print(spaces);
+			if (target->right != nullptr) avl_node<T>::print(target->right , spaces);
 
 			for (unsigned int i = 1; i <= spaces; i += 1) {
 				std::cout << '\t';
 			}
-			std::cout << "[" << this->value << "]\n";
+			std::cout << "[" << target->value << "]\n";
 
 
-			if (this->left != nullptr) this->left->print(spaces);
+			if (target->left  != nullptr) avl_node<T>::print(target->left, spaces);
 
 		}
 
@@ -279,7 +323,11 @@ namespace trees {
 		// o( log n )
 		bool insert(V const new_node_value) {
 
+			bool get_insert = false;
 			avl_node<V>* temp = this->root;
+			
+			// for balance calaculations
+			int left = NULL, right = NULL;
 
 			// search for place to insert on it
 			while (temp != nullptr) {
@@ -289,6 +337,7 @@ namespace trees {
 
 				// if empty node founded
 				if (temp->value == NULL) {
+					
 					// insert it
 					temp->value = new_node_value;
 					this->len += 1;
@@ -296,7 +345,8 @@ namespace trees {
 					temp = nullptr;
 					delete temp;
 
-					return true;
+					get_insert = true;
+					break;
 
 				}
 				else {
@@ -306,6 +356,7 @@ namespace trees {
 
 						// if there's no left child
 						if (temp->left == nullptr) {
+							
 							// insert
 							temp->left = new avl_node<V>(new_node_value, temp);
 							this->len += 1;
@@ -313,7 +364,9 @@ namespace trees {
 							temp = nullptr;
 							delete temp;
 
-							return true;
+							get_insert = true;
+							break;
+
 						}
 						// else go left
 						else temp = temp->left;
@@ -322,6 +375,7 @@ namespace trees {
 
 						// if there's no right child
 						if (temp->right == nullptr) {
+							
 							// insert
 							temp->right = new avl_node<V>(new_node_value, temp);
 							this->len += 1;
@@ -329,7 +383,9 @@ namespace trees {
 							temp = nullptr;
 							delete temp;
 
-							return true;
+							get_insert = true;
+							break;
+
 						}
 						// else go right
 						else temp = temp->right;
@@ -337,8 +393,11 @@ namespace trees {
 				}
 			}
 
+			// check if tree became unbalanced or not
+			if(get_insert) avl_node<V>::CALC_BALANCE(this->root , left , right);
+
 			// in case no insertion happend
-			return false;
+			return get_insert;
 		}
 
 		// o( log n )
@@ -346,6 +405,10 @@ namespace trees {
 
 			avl_node<V>* temp = this->root;
 			bool LorR = NULL;
+			bool target_found = false;
+
+			// for balance calculating
+			int left = NULL, right = NULL;
 
 			// search for target 
 			while (temp != nullptr) {
@@ -362,7 +425,8 @@ namespace trees {
 
 					delete temp;
 
-					return true;
+					target_found = true;
+					break;
 
 				}
 				else {
@@ -384,8 +448,13 @@ namespace trees {
 			temp = nullptr;
 			delete temp;
 
+			//
+			if (target_found) {
+				avl_node<V>::CALC_BALANCE(this->root , left , right);
+			}
+
 			// in case target not found
-			return false;
+			return target_found;
 		}
 
 		// o( log n )
@@ -614,7 +683,7 @@ namespace trees {
 		// print function just for testing 
 		void print() {
 
-			if (this->root != nullptr) this->root->print();
+			if (this->root != nullptr) avl_node<V>::print(this->root);
 
 		}
 
