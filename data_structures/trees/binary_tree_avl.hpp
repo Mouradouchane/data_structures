@@ -78,37 +78,65 @@ namespace trees {
 
 		// O( log n )
 		// calc balance factor recursivly at some specific node
-		static void CALC_BALANCE( avl_node<T>* target , int &left  , int &right ) {
+		static int CALC_BALANCE( avl_node<T>* target = nullptr , bool &skip_recursive = false ) {
 
-			if (target == nullptr) return;
+			int left_factor  = NULL;
+			int right_factor = NULL;
 
-			if (target->left != nullptr) {
-				avl_node<T>::CALC_BALANCE(target->left, left , right);
-				left += 1;
+			if ( target == nullptr || skip_recursive ) return NULL;
+
+
+			if ( target->left  != nullptr && !skip_recursive ) {
+				left_factor  = avl_node<T>::CALC_BALANCE( target->left , skip_recursive ) + 1;
 			}
-			if (target->right != nullptr) {
-				avl_node<T>::CALC_BALANCE(target->right, left , right );
-				right += 1;
+			if ( target->right != nullptr && !skip_recursive ) {
+				right_factor = avl_node<T>::CALC_BALANCE( target->right , skip_recursive ) + 1;
 			}
 
-			int balance = left - right;
+			if ( skip_recursive ) return NULL;
+
+			int balance_factor = left_factor - right_factor;
 			
-			if (balance < -1 || balance > 1) avl_node<T>::BALANCE( target, (right > left) );
-
+			if (balance_factor < -1 || balance_factor > 1) {
+				avl_node<T>::BALANCE(target, (right_factor > left_factor));
+				skip_recursive = true;
+			}
+			return (left_factor >= right_factor) ? left_factor : right_factor;
 		}
 
 		// O(1)
 		// balance unbalance target in tree
-		static void BALANCE(avl_node<T>* target, bool right = false) {
+		// unbalance_direction : mean where side are unbalanced at target node , left or right !
+		static void BALANCE(avl_node<T>* target, bool unbalance_direction = false) {
 
-			std::cout << "unbalance in node : " << target->value << '\n';
 
-			// unbalance in left
-			if (!right) {
+			// unbalance in left side
+			if (!unbalance_direction) {
+
+				// LL unbalance
+				if (target->left != nullptr && target->left->left != nullptr) {
+					std::cout << "left left unbalance at node : " << target->value << '\n';
+				}
+
+				// LR unbalance
+				if (target->left != nullptr && target->left->right != nullptr) {
+					std::cout << "left right unbalance at node : " << target->value << '\n';
+				}
 
 			}
-			// unbalance in right
+
+			// unbalance in right side
 			else {
+
+				// RR unbalance
+				if (target->right != nullptr && target->right->right != nullptr) {
+					std::cout << "right right unbalance at node : " << target->value << '\n';
+				}
+
+				// RL unbalance
+				if (target->right != nullptr && target->right->left != nullptr) {
+					std::cout << "right left unbalance at node : " << target->value << '\n';
+				}
 
 			}
 
@@ -325,10 +353,7 @@ namespace trees {
 
 			bool get_insert = false;
 			avl_node<V>* temp = this->root;
-			
-			// for balance calaculations
-			int left = NULL, right = NULL;
-
+	
 			// search for place to insert on it
 			while (temp != nullptr) {
 
@@ -393,10 +418,12 @@ namespace trees {
 				}
 			}
 
-			// check if tree became unbalanced or not
-			if(get_insert) avl_node<V>::CALC_BALANCE(this->root , left , right);
-
-			// in case no insertion happend
+							// check if tree is still balanced or not
+			if (get_insert) {
+				bool skip_recursive = false;
+				avl_node<V>::CALC_BALANCE(this->root , skip_recursive);
+			}
+			// confirmation
 			return get_insert;
 		}
 
@@ -406,9 +433,6 @@ namespace trees {
 			avl_node<V>* temp = this->root;
 			bool LorR = NULL;
 			bool target_found = false;
-
-			// for balance calculating
-			int left = NULL, right = NULL;
 
 			// search for target 
 			while (temp != nullptr) {
@@ -448,13 +472,19 @@ namespace trees {
 			temp = nullptr;
 			delete temp;
 
-			//
+
 			if (target_found) {
-				avl_node<V>::CALC_BALANCE(this->root , left , right);
+				// check if tree is still balanced or not
+				avl_node<V>::CALC_BALANCE( this->root );
 			}
 
-			// in case target not found
+			// confirmation
 			return target_found;
+		}
+
+		// o( log n )
+		void balance() {
+			avl_node<V>::BALANCE(this->root);
 		}
 
 		// o( log n )

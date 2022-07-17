@@ -21,15 +21,16 @@ int main() {
 	
 	binary_tree_avl<int> nb( comp );
 	nb.insert(8);
-	nb.insert(3);
-	nb.insert(5);
-	nb.insert(2);
-	nb.insert(109);
+	nb.insert(12);
+	nb.insert(10);
+	//nb.insert(1);
+	//nb.insert(4);
+	//nb.insert(109);
 	//nb.insert(10);
 	//nb.insert(13);
 	//nb.insert(120);
-	nb.insert(7);
-	nb.insert(1);
+	//nb.insert(7);
+	//nb.insert(1);
 	//nb.insert(160);
 	/*
 	nb.insert(9);
