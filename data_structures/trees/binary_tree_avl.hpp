@@ -107,20 +107,28 @@ namespace trees {
 		// O(1)
 		// balance unbalance target in tree
 		// unbalance_direction : mean where side are unbalanced at target node , left or right !
-		static void BALANCE(avl_node<T>* target, bool unbalance_direction = false) {
+		static void BALANCE( avl_node<T>* target, bool right_unbalance = false ) {
 
 
 			// unbalance in left side
-			if (!unbalance_direction) {
-
-				// LL unbalance
-				if (target->left != nullptr && target->left->left != nullptr) {
-					std::cout << "left left unbalance at node : " << target->value << '\n';
-				}
+			if (!right_unbalance) {
 
 				// LR unbalance
 				if (target->left != nullptr && target->left->right != nullptr) {
 					std::cout << "left right unbalance at node : " << target->value << '\n';
+
+					// preforme LEFT RIGHT balance
+					avl_node<T>::LR_BALANCE(target);
+					return;
+				}
+
+				// LL unbalance
+				if (target->left != nullptr && target->left->left != nullptr) {
+					std::cout << "left left unbalance at node : " << target->value << '\n';
+					
+					// preforme LEFT LEFT balance
+					avl_node<T>::LL_BALANCE(target);
+					return;
 				}
 
 			}
@@ -128,20 +136,199 @@ namespace trees {
 			// unbalance in right side
 			else {
 
-				// RR unbalance
-				if (target->right != nullptr && target->right->right != nullptr) {
-					std::cout << "right right unbalance at node : " << target->value << '\n';
-				}
-
 				// RL unbalance
 				if (target->right != nullptr && target->right->left != nullptr) {
 					std::cout << "right left unbalance at node : " << target->value << '\n';
+
+					// preforme RIGHT LEFT balance
+					avl_node<T>::RL_BALANCE(target);
+					return;
+				}
+
+
+				// RR unbalance
+				if (target->right != nullptr && target->right->right != nullptr) {
+					std::cout << "right right unbalance at node : " << target->value << '\n';
+
+					// preforme RIGHT RIGHT balance
+					avl_node<T>::RR_BALANCE(target);
+					return;
 				}
 
 			}
 
 		}
 
+		// =========== rotation functions ===============
+
+		// O(1)
+		static void LL_BALANCE( avl_node<T>* target ) {
+
+			// target -> left node
+			avl_node<T>* l_node = target->left;
+			// target -> left node -> right node
+			avl_node<T>* lr_node = l_node->right;
+
+			// set target parent as left node parent
+			l_node->parent = target->parent;
+
+			// set l_node as child to the parent
+			if (target->parent->left == target) {
+				l_node->parent->left = l_node;
+			}
+			else {
+				l_node->parent->right = l_node;
+			}
+
+			// set target as right node of l_node
+			l_node->right = target;
+			// target parent now will be l_node
+			target->parent = l_node;
+
+			// if l_node as right child , put it in target left child
+			if (lr_node != nullptr) {
+				target->left = lr_node;
+				lr_node->parent = target;
+			}
+
+			
+			l_node = nullptr;
+			lr_node = nullptr;
+
+			delete l_node;
+			delete lr_node;
+		}
+		
+		// O(1)
+		static void LR_BALANCE( avl_node<T>* target ) {
+
+			// target -> left node -> right node
+			avl_node<T>* lr_node = target->left->right;
+			// left & right child of lr_node
+			avl_node<T>* l_node = lr_node->left;
+			avl_node<T>* r_node = lr_node->right;
+
+			lr_node->parent = target->parent;
+
+			if (target->parent->left == target) {
+				target->parent->left = lr_node;
+			}
+			else {
+				target->parent->right = lr_node;
+			}
+
+			lr_node->left = target->left;
+			lr_node->left->parent = lr_node;
+
+			target->parent = lr_node;
+			lr_node->right = target;
+
+			if (l_node != nullptr) {
+
+				lr_node->left->right = l_node;
+				l_node->parent = lr_node->left;
+			}
+
+			if (r_node != nullptr) {
+
+				lr_node->right->left = r_node;
+				r_node->parent = lr_node->right;
+			}
+
+			lr_node = nullptr;
+			l_node = nullptr;
+			r_node = nullptr;
+
+			delete lr_node;
+			delete l_node;
+			delete r_node;
+		}
+		
+		// O(1)
+		static void RL_BALANCE( avl_node<T>* target ) {
+
+			// target -> right node -> left node
+			avl_node<T>* rl_node = target->right->left;
+			// left & right child of rl_node
+			avl_node<T>* l_node = rl_node->left;
+			avl_node<T>* r_node = rl_node->right;
+
+			rl_node->parent = target->parent;
+
+			if (target->parent != nullptr) {
+
+				if (target->parent->left == target) {
+					target->parent->left = rl_node;
+				}
+				else {
+					target->parent->right = rl_node;
+				}
+
+			}
+
+
+			rl_node->left = target;
+			target->parent = rl_node;
+
+			rl_node->right = target->right;
+			rl_node->right->parent = rl_node;
+
+			if (l_node != nullptr) {
+
+				rl_node->left->right = l_node;
+				l_node->parent = rl_node->left;
+			}
+
+			if (r_node != nullptr) {
+
+				rl_node->right->left = r_node;
+				r_node->parent = rl_node->right;
+			}
+
+			rl_node = nullptr;
+			l_node = nullptr;
+			r_node = nullptr;
+
+			delete rl_node;
+			delete l_node;
+			delete r_node;
+
+		}
+		
+		// O(1)
+		static void RR_BALANCE( avl_node<T>* target ) {
+
+			// target -> right node
+			avl_node<T>* r_node = target->right;
+			// target -> right node -> left node
+			avl_node<T>* rl_node = r_node->left;
+
+			// set target parent to right node parent
+			r_node->parent = target->parent;
+			
+			// set right node to the parent as child
+			if (target->parent->left == target) {
+				r_node->parent->left = r_node;
+			}
+			else {
+				r_node->parent->right = r_node;
+			}
+
+			// set target as left child to right node
+			target->parent = r_node;
+			r_node->left = target;
+
+			if (rl_node != nullptr) {
+				target->right = rl_node;
+				rl_node->parent = target;
+			}
+
+			r_node = nullptr;
+			rl_node = nullptr;
+
+			delete r_node;
+			delete rl_node;
+		}
 
 	public:
 
@@ -485,6 +672,7 @@ namespace trees {
 		// o( log n )
 		void balance() {
 			avl_node<V>::BALANCE(this->root);
+			this->current_node = this->root;
 		}
 
 		// o( log n )
