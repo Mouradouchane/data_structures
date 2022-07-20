@@ -20,19 +20,29 @@ bool comp(int const& x, int const& y) {
 int main() {
 	
 	binary_tree_avl<int> nb( comp );
-	nb.insert(8);
-	nb.insert(12);
-	nb.insert(10);
-	//nb.insert(1);
-	//nb.insert(4);
-	//nb.insert(109);
-	//nb.insert(10);
-	//nb.insert(13);
-	//nb.insert(120);
-	//nb.insert(7);
-	//nb.insert(1);
-	//nb.insert(160);
+	nb.insert(58);
+	nb.insert(46);
+	nb.insert(37);
+	nb.insert(38);
+	nb.insert(39);
+	nb.insert(40);
 	/*
+	nb.insert(-1);
+	nb.insert(-2);
+	nb.insert(0);
+	nb.insert(13);
+	nb.insert(14);
+	nb.insert(16);
+	nb.insert(10);
+	nb.insert(1);
+	nb.insert(4);
+	nb.insert(109);
+	nb.insert(10);
+	nb.insert(13);
+	nb.insert(120);
+	nb.insert(7);
+	nb.insert(1);
+	nb.insert(160);
 	nb.insert(9);
 	nb.insert(-1);
 	nb.insert(-4);
@@ -42,7 +52,6 @@ int main() {
 	std::cout << " ===========================\n";
 	std::cout << " MAX HEIGTH : " << nb.max_height() << " \n";
 	std::cout << " MIN HEIGTH : " << nb.min_height() << " \n";
-	std::cout << nb.current_node->get_value() << " \n";
 	std::cout << " ===========================\n";
 
 

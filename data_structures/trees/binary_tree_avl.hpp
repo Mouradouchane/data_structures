@@ -178,29 +178,36 @@ namespace trees {
 			// target -> left node -> right node
 			avl_node<T>* lr_node = l_node->right;
 
-			// set target parent as left node parent
+			// set target parent to left node parent
 			l_node->parent = target->parent;
 
-			// set l_node as child to the parent
-			if (target->parent->left == target) {
-				l_node->parent->left = l_node;
-			}
-			else {
-				l_node->parent->right = l_node;
+			// set left node to the parent as child
+			if (target->parent != nullptr) {
+
+				if (target->parent->left == target) {
+					l_node->parent->left = l_node;
+				}
+				else {
+					l_node->parent->right = l_node;
+				}
+
 			}
 
-			// set target as right node of l_node
-			l_node->right = target;
-			// target parent now will be l_node
+			if (tree != nullptr && tree->is_the_root(target)) {
+				tree->root = l_node;
+				tree->current_node = tree->root;
+			}
+
+			// set target as left child to right node
 			target->parent = l_node;
+			l_node->right = target;
 
-			// if l_node as right child , put it in target left child
 			if (lr_node != nullptr) {
 				target->left = lr_node;
 				lr_node->parent = target;
 			}
+			else target->left = nullptr;
 
-			
 			l_node = nullptr;
 			lr_node = nullptr;
 
@@ -213,24 +220,36 @@ namespace trees {
 
 			// target -> left node -> right node
 			avl_node<T>* lr_node = target->left->right;
-			// left & right child of lr_node
+			// left & right child of rl_node
 			avl_node<T>* l_node = lr_node->left;
 			avl_node<T>* r_node = lr_node->right;
 
 			lr_node->parent = target->parent;
 
-			if (target->parent->left == target) {
-				target->parent->left = lr_node;
+			if (target->parent != nullptr) {
+
+				if (target->parent->left == target) {
+					target->parent->left  = lr_node;
+				}
+				else {
+					target->parent->right = lr_node;
+				}
+
 			}
-			else {
-				target->parent->right = lr_node;
+
+			if (tree != nullptr && tree->is_the_root(target)) {
+				tree->root = lr_node;
+				tree->current_node = tree->root;
 			}
+
+			lr_node->right = target;
+			target->parent = lr_node;
 
 			lr_node->left = target->left;
 			lr_node->left->parent = lr_node;
+			lr_node->left->right = nullptr;
 
-			target->parent = lr_node;
-			lr_node->right = target;
+			target->left = nullptr;
 
 			if (l_node != nullptr) {
 
@@ -251,6 +270,7 @@ namespace trees {
 			delete lr_node;
 			delete l_node;
 			delete r_node;
+
 		}
 
 		// O(1)
@@ -275,7 +295,7 @@ namespace trees {
 
 			}
 
-			if (tree->is_the_root(target)) {
+			if (tree != nullptr && tree->is_the_root(target)) {
 				tree->root = rl_node;
 				tree->current_node = tree->root;
 			}
@@ -323,11 +343,20 @@ namespace trees {
 			r_node->parent = target->parent;
 			
 			// set right node to the parent as child
-			if (target->parent->left == target) {
-				r_node->parent->left = r_node;
+			if (target->parent != nullptr) {
+
+				if (target->parent->left == target) {
+					r_node->parent->left = r_node;
+				}
+				else {
+					r_node->parent->right = r_node;
+				}
+
 			}
-			else {
-				r_node->parent->right = r_node;
+
+			if (tree != nullptr && tree->is_the_root(target)) {
+				tree->root = r_node;
+				tree->current_node = tree->root;
 			}
 
 			// set target as left child to right node
@@ -338,8 +367,9 @@ namespace trees {
 				target->right = rl_node;
 				rl_node->parent = target;
 			}
+			else target->right = nullptr;
 
-			r_node = nullptr;
+			r_node  = nullptr;
 			rl_node = nullptr;
 
 			delete r_node;
@@ -953,6 +983,7 @@ namespace trees {
 			return this->root->CALC_PATH(true);
 
 		}
+
 
 		// o( 1 )
 		// function check if a specific node is the same root of this tree
