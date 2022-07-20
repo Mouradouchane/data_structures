@@ -42,6 +42,7 @@ int main() {
 	std::cout << " ===========================\n";
 	std::cout << " MAX HEIGTH : " << nb.max_height() << " \n";
 	std::cout << " MIN HEIGTH : " << nb.min_height() << " \n";
+	std::cout << nb.current_node->get_value() << " \n";
 	std::cout << " ===========================\n";
 
 
