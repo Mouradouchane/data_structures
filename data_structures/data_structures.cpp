@@ -20,6 +20,7 @@ bool comp(int const& x, int const& y) {
 int main() {
 	
 	binary_tree_avl<int> nb( comp );
+
 	nb.insert(58);
 	nb.insert(46);
 	nb.insert(37);
@@ -50,13 +51,13 @@ int main() {
 
 	nb.print();
 
-	nb.remove(109);
-	std::cout << " ===========================\n";
-	nb.print();
-
 	std::cout << " ===========================\n";
 	std::cout << " MAX HEIGTH : " << nb.max_height() << " \n";
 	std::cout << " MIN HEIGTH : " << nb.min_height() << " \n";
+	std::cout << " TARGET : " << (nb.search(10) ? "true" : "false") << " \n";
+	std::cout << " TARGET : " << (nb.search(500) ? "true" : "false") << " \n";
+	std::cout << " TARGET : " << (nb.search(-2) ? "true" : "false") << " \n";
+	std::cout << " TARGET : " << ( nb.search(44)  ? "true" : "false" ) << " \n";
 	std::cout << " ===========================\n";
 
 

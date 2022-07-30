@@ -9,14 +9,13 @@
 	-- NAME ----------- BEST --> WORST
 
 	length				O(1)
-	min_height			O(log n) --> O(n)
-	max_height			O(log n) --> O(n)
+	min_height			O( log n )
+	max_height			O( log n )
 
-	insert				O(height) --> O(n)
-	remove				O(height) --> O(n)
-	search				O(height) --> O(n)
-
-	get_sub_tree		O(log n) -->  O(log n * 2)
+	insert				O( log n )
+	remove				O( log n )
+	search				O( log n )
+	SEARCH_FOR_NODE_REF O( log n )
 
 	go_back				O(1)
 	go_left				O(1)
@@ -24,8 +23,10 @@
 
 	jump_to				O(1) --> O(log n)
 	jump_to_root		O(1)
+
 	travle_up			O(path)
-	travle_down			O(log path)
+	travle_down			O(log n)
+	travle_to_root      O(path)
 
 	is_leaf_node		O(1)
 
@@ -45,8 +46,10 @@
 
 namespace trees {
 
+
 	// define avl class for node class
 	template<typename V> class binary_tree_avl;
+
 
 	// binary tree nodes class
 	template<typename T> class avl_node {
@@ -60,22 +63,27 @@ namespace trees {
 		// this node value
 		T value = NULL;
 
+		// ============ some static and private functions ======================
+
 		// o( log n )
-		// calc how many steps take to reach some target from root
-		// this function used in "min_height & max_height" functions
-		unsigned int CALC_PATH(bool const& min = false) {
+		// calc_path function used in "min_height & max_height" functions
+		static unsigned int CALC_PATH(avl_node<T>* const target , bool const& min = false) {
 
 			unsigned int LEFT = NULL;
 			unsigned int RIGHT = NULL;
 
-			// recursivlly search in left "GO LEFT"
-			if (this->left != nullptr) {
-				LEFT  = this->left->CALC_PATH(min) + 1;
-			}
+			if (target != nullptr) {
 
-			// recursivlly search in right "GO RIGHT"
-			if (this->right != nullptr) {
-				RIGHT = this->right->CALC_PATH(min) + 1;
+				// recursivlly "GO LEFT"
+				if (target->left != nullptr) {
+					LEFT  = avl_node<T>::CALC_PATH(target->left  , min) + 1;
+				}
+
+				// recursivlly "GO RIGHT"
+				if (target->right != nullptr) {
+					RIGHT = avl_node<T>::CALC_PATH(target->right , min) + 1;
+				}
+
 			}
 
 			if (min) { // search for smaller value
@@ -92,7 +100,6 @@ namespace trees {
 			// search for bigger value 
 			else return (LEFT > RIGHT) ? LEFT : RIGHT;
 
-		
 		}
 
 		// o( log n ) --> o( n )
@@ -405,6 +412,8 @@ namespace trees {
 		// print function only for testing "not stable with complex types"
 		static void print(avl_node<T>* target, unsigned int spaces = 1) {
 
+			if (target == nullptr) return;
+
 			spaces += 1;
 
 			if (target->right != nullptr) avl_node<T>::print(target->right, spaces);
@@ -430,90 +439,24 @@ namespace trees {
 		avl_node(T node_value, avl_node<T>* node_parent = NULL) :value{ node_value }, parent{ node_parent } {
 		}
 
-		// node constructor 3 "copy constructor"
-		// cut boolean option to cut that node from it's origin or not
-		avl_node(avl_node<T>* other, bool const& cut) {
-
-			// cut node from it's origin
-			if (cut) {
-
-				// define new child's at the heap
-				this->left  = new avl_node<T>();
-				this->right = new avl_node<T>();
-
-
-				// connect new child's with this node as parent
-				this->left->parent  = this;
-				this->right->parent = this;
-
-				this->value = other->value;
-
-				// cut values from origin
-				if (other->right != nullptr) {
-
-					this->right  = other->right;
-					other->right = nullptr;
-
-				}
-				if (other->left != nullptr) {
-
-					this->left  = other->left;
-					other->left = nullptr;
-
-				}
-
-				if (other->parent != nullptr) {
-
-					if (other->parent->left == other) other->parent->left = nullptr;
-					else other->parent->right = nullptr;
-
-				}
-
-				delete other;
-			}
-			// copy node from it's origin
-			else {
-
-				// define new child's at the heap
-
-				if (other->left != nullptr) {
-					//*(this->left) = *(other->left);
-					this->left = new avl_node<T>(other->left, cut);
-					this->left->parent = this;
-				}
-				if (other->right != nullptr) {
-					//*(this->right) = *(other->right);
-					this->right = new avl_node<T>(other->right, cut);
-					this->right->parent = this;
-				}
-
-				this->value = other->value;
-
-			}
-
-		}
-
 		// def constructor
 		avl_node() { }
 
 		// node destructor
 		~avl_node() {
 
-			if (this->left != nullptr) {
-				this->left->~avl_node();
 
-				free((void*)(this->left));
-				this->left = nullptr;
+			if (this->left != nullptr) {
+
+				this->left->~avl_node();
 			}
 
 			if (this->right != nullptr) {
+
 				this->right->~avl_node();
 
-				free((void*)(this->right));
-				this->right = nullptr;
 			}
 
-			//free( (void*)(this->value) );
 		}
 
 		T get_value() {
@@ -579,17 +522,6 @@ namespace trees {
 		{
 			root = new avl_node<V>();
 			current_node = root;
-		}
-
-		// constructor 3 "copy/cut constructor"
-		// root_node reference to that copied or cuted "sub tree"
-		binary_tree_avl(avl_node<V>* root_node, bool cut, bool(*comp)(V const& node_a, V const& node_b))
-			:comp_function{ comp }
-		{
-			// call "copy/cut node constructor"
-			this->root = new avl_node<V>(root_node, cut);
-			this->current_node = this->root;
-
 		}
 
 		// destructor
@@ -702,20 +634,23 @@ namespace trees {
 				// if target found
 				if (temp->value == target_node_value) {
 
-					// call that node destructor
-					temp->~avl_node();
-
+					
 					// delete it from it's parent
-					if (!LorR) temp->parent->left = nullptr;
-					else temp->parent->right = nullptr;
+					if (temp->parent != nullptr) {
 
+						if (!LorR) temp->parent->left = nullptr;
+						else temp->parent->right = nullptr;
+
+					}
+
+					// free temp
 					delete temp;
 
+					// confirm
 					target_found = true;
 					break;
-
 				}
-				else {
+				else { 
 					// calc direction to go "left" or "right" node 
 					if (this->comp_function(target_node_value, temp->value)) {
 						// if left 
@@ -731,17 +666,22 @@ namespace trees {
 
 			}
 
-			temp = nullptr;
-			delete temp;
-
 
 			if (target_found) {
-				// check if tree is still balanced or not
-				bool skip_recursive = false;
-				avl_node<V>::CALC_BALANCE(this , this->root , skip_recursive);
+
+				if (temp != this->root) {
+					// check if tree is still balanced or not
+					bool skip_recursive = false;
+					avl_node<V>::CALC_BALANCE(this, this->root, skip_recursive);
+				}
+				else {
+					this->root = new avl_node<V>();
+					this->current_node = this->root;
+				}
+
 			}
 
-			// confirmation
+			// confirmation :)
 			return target_found;
 		}
 
@@ -958,32 +898,6 @@ namespace trees {
 
 		}
 
-		// o( log target_node )
-		// copy or cut a part from this tree 
-		binary_tree_avl<V>* get_sub_tree(bool const& cut, V const& target_node_value) {
-
-			// search for target node "reference"
-			avl_node<V>* temp = this->SEARCH_FOR_NODE_REF(target_node_value);
-
-			// if target not found
-			if (temp == nullptr) return nullptr;
-			else {
-
-				// if you want to cut from root 
-				if (cut && temp == this->root) {
-
-					// set root to another object at the heap
-					this->root = new avl_node<V>();
-
-				}
-
-				// jump to root , to avoid refering to deleted node in tree
-				this->jump_to_root();
-
-				// return new sub tree
-				return new binary_tree_avl<V>(temp, cut, this->comp_function);
-			}
-		}
 
 		// o( log n ) ==> o( n ) 
 		void balance() {
@@ -1004,14 +918,14 @@ namespace trees {
 		// o( log n ) --> o( n )
 		unsigned int max_height() {
 
-			return this->root->CALC_PATH(false);
+			return avl_node<V>::CALC_PATH(this->root , false);
 
 		}
 
 		// o( log n ) --> o( n )
 		unsigned int min_height() {
 
-			return this->root->CALC_PATH(true);
+			return avl_node<V>::CALC_PATH(this->root , true);
 
 		}
 
