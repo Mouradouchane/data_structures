@@ -54,12 +54,10 @@ int main() {
 	std::cout << " ===========================\n";
 	std::cout << " MAX HEIGTH : " << nb.max_height() << " \n";
 	std::cout << " MIN HEIGTH : " << nb.min_height() << " \n";
-	std::cout << " TARGET : " << (nb.search(10) ? "true" : "false") << " \n";
-	std::cout << " TARGET : " << (nb.search(500) ? "true" : "false") << " \n";
-	std::cout << " TARGET : " << (nb.search(-2) ? "true" : "false") << " \n";
-	std::cout << " TARGET : " << ( nb.search(44)  ? "true" : "false" ) << " \n";
+	std::cout << " IS BALANED : " << (nb.is_balanced() ? "true" : "false") << " \n";
+
 	std::cout << " ===========================\n";
 
-
+	
 	return 0;
 }

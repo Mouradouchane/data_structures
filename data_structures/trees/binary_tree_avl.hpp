@@ -428,6 +428,38 @@ namespace trees {
 
 		}
 
+		// o( log n ) --> o( n )
+		// function to check if there's balance or not at some node
+		static int IS_BALANCED(avl_node<T>* target , bool &check , bool &skip ) {
+
+			int left  = NULL;
+			int right = NULL;
+
+			if (target == nullptr || skip ) return NULL;
+
+			if (target->left != nullptr && !skip) {
+				left  = avl_node<T>::IS_BALANCED(target->left , check, skip) + 1;
+			}
+
+			if (target->right != nullptr && !skip) {
+				right = avl_node<T>::IS_BALANCED(target->right , check, skip) + 1;
+			}
+
+			if (skip) return NULL;
+
+			int balance = left - right;
+
+			if (balance < -1 || balance > 1) {
+
+				check = false;
+				skip  = true;
+
+				return NULL;
+			}
+
+			return ( left > right ) ? left : right;
+		}
+
 
 	public:
 
@@ -916,12 +948,14 @@ namespace trees {
 		}
 
 		// o( log n ) --> o( n )
+		// get the maximum height in tree
 		unsigned int max_height() {
 
 			return avl_node<V>::CALC_PATH(this->root , false);
 
 		}
 
+		// get the minimum height in tree
 		// o( log n ) --> o( n )
 		unsigned int min_height() {
 
@@ -929,6 +963,17 @@ namespace trees {
 
 		}
 
+		// o( log n ) --> o( n )
+		// check if tree is completly balanced or not
+		bool is_balanced() {
+			
+			bool skip  = false;
+			bool check = true;
+
+			avl_node<V>::IS_BALANCED( this->root , check , skip );
+
+			return check;
+		}
 
 		// o( 1 )
 		// function to check if a specific node is the same root of this tree
