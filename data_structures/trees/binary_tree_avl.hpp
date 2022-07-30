@@ -29,15 +29,23 @@
 
 	is_leaf_node		O(1)
 
+	calc_balance		O( log n ) --> O( n )
+	preform_balance     O(1)
+
 	is_balanced			O(log n) --> O(n)
+
 	ll_rotation			O(1)
 	rr_rotation			O(1)
 	lr_rotation			O(1)
 	rl_rotation			O(1)
+
+	is_the_root			O(1)
 */
 
 
 namespace trees {
+
+	// define avl class for node class
 	template<typename V> class binary_tree_avl;
 
 	// binary tree nodes class
@@ -52,35 +60,44 @@ namespace trees {
 		// this node value
 		T value = NULL;
 
-
+		// o( log n )
+		// calc how many steps take to reach some target from root
+		// this function used in "min_height & max_height" functions
 		unsigned int CALC_PATH(bool const& min = false) {
 
 			unsigned int LEFT = NULL;
 			unsigned int RIGHT = NULL;
 
+			// recursivlly search in left "GO LEFT"
 			if (this->left != nullptr) {
-				LEFT = this->left->CALC_PATH(min) + 1;
+				LEFT  = this->left->CALC_PATH(min) + 1;
 			}
+
+			// recursivlly search in right "GO RIGHT"
 			if (this->right != nullptr) {
 				RIGHT = this->right->CALC_PATH(min) + 1;
 			}
 
-			if (min) {
+			if (min) { // search for smaller value
 
+				// check for smaller possible value
 				if (LEFT == NULL && RIGHT == NULL) return NULL;
 				if (LEFT == NULL && RIGHT != NULL) return RIGHT;
 				if (LEFT != NULL && RIGHT == NULL) return LEFT;
 
+				// return min value
 				return (LEFT < RIGHT) ? LEFT : RIGHT;
-			}
-			else  return (LEFT > RIGHT) ? LEFT : RIGHT;
 
+			}
+			// search for bigger value 
+			else return (LEFT > RIGHT) ? LEFT : RIGHT;
+
+		
 		}
 
-		// O( log n )
-		// calc balance factor recursivly at some specific node
-		// and return biggest balance_factor
-		static int CALC_BALANCE(binary_tree_avl<T>* tree = nullptr , avl_node<T>* target = nullptr ,bool &skip_recursive = false ) {
+		// o( log n ) --> o( n )
+		// calc balance factor recursivly at some specific node and return biggest balance_factor
+		static int CALC_BALANCE(binary_tree_avl<T>* tree = nullptr , avl_node<T>* target = nullptr , bool &skip_recursive = false ) {
 
 			int left_factor  = NULL;
 			int right_factor = NULL;
@@ -89,13 +106,14 @@ namespace trees {
 
 
 			if ( target->left  != nullptr && !skip_recursive ) {
-				left_factor  = avl_node<T>::CALC_BALANCE( nullptr , target->left  , skip_recursive ) + 1;
+				left_factor  = avl_node<T>::CALC_BALANCE( tree , target->left  , skip_recursive ) + 1;
 			}
 			if ( target->right != nullptr && !skip_recursive ) {
-				right_factor = avl_node<T>::CALC_BALANCE( nullptr , target->right , skip_recursive ) + 1;
+				right_factor = avl_node<T>::CALC_BALANCE( tree , target->right , skip_recursive ) + 1;
 			}
 
-			if ( skip_recursive ) return NULL;
+			if (skip_recursive) return NULL;
+			
 
 			// calc balance factor
 			int balance_factor = left_factor - right_factor;
@@ -103,69 +121,76 @@ namespace trees {
 			// if tree unbalanced then we should perform balancing 
 			if (balance_factor < -1 || balance_factor > 1) {
 
-				avl_node<T>::BALANCE(tree, target, (right_factor > left_factor));
+				// search for unbalance again & again until tree get full balanced 
+				if (avl_node<T>::PERFORM_BALANCE(tree, target, (right_factor > left_factor))) {
+					bool skip = false;
+					avl_node<T>::CALC_BALANCE(tree, tree->root, skip);
+				}
 			
-				skip_recursive = true;
 
+				skip_recursive = true;
 			}
 
 			// return biggest factor "important for recursive check"
 			return (left_factor >= right_factor) ? left_factor : right_factor;
 		}
 
+
 		// O(1)
 		// balance unbalance target in tree
 		// unbalance_direction : mean where side are unbalanced at target node , left or right !
-		static void BALANCE( binary_tree_avl<T>* tree = nullptr , avl_node<T>* target = nullptr, bool right_unbalance = false ) {
-
+		static bool PERFORM_BALANCE( binary_tree_avl<T>* tree = nullptr , avl_node<T>* target = nullptr, bool right_unbalance = false ) {
 
 			// unbalance in left side
 			if (!right_unbalance) {
 
 				// LR unbalance
 				if (target->left != nullptr && target->left->right != nullptr) {
-					std::cout << "left right unbalance at node : " << target->value << '\n';
+					//std::cout << "left right unbalance at node : " << target->value << '\n';
 
 					// preforme LEFT RIGHT balance
 					avl_node<T>::LR_BALANCE(tree, target);
-					return;
+
+					return true;
 				}
 
 				// LL unbalance
 				if (target->left != nullptr && target->left->left != nullptr) {
-					std::cout << "left left unbalance at node : " << target->value << '\n';
+					//std::cout << "left left unbalance at node : " << target->value << '\n';
 					
 					// preforme LEFT LEFT balance
 					avl_node<T>::LL_BALANCE(tree , target);
-					return;
+
+					return true;
 				}
 
-			}
-
-			// unbalance in right side
+			} // else mean unbalance in right side
 			else {
 
 				// RL unbalance
 				if (target->right != nullptr && target->right->left != nullptr) {
-					std::cout << "right left unbalance at node : " << target->value << '\n';
+					//std::cout << "right left unbalance at node : " << target->value << '\n';
 
 					// preforme RIGHT LEFT balance
 					avl_node<T>::RL_BALANCE(tree , target);
-					return;
+
+					return true;
 				}
 
 
 				// RR unbalance
 				if (target->right != nullptr && target->right->right != nullptr) {
-					std::cout << "right right unbalance at node : " << target->value << '\n';
+					//std::cout << "right right unbalance at node : " << target->value << '\n';
 
 					// preforme RIGHT RIGHT balance
 					avl_node<T>::RR_BALANCE(tree , target);
-					return;
+
+					return true;
 				}
 
 			}
 
+			return false;
 		}
 
 		// =========== rotation functions ===============
@@ -216,7 +241,7 @@ namespace trees {
 		}
 		
 		// O(1)
-		static void LR_BALANCE( binary_tree_avl<T>* tree , avl_node<T>* target) {
+		static void LR_BALANCE( binary_tree_avl<T>* tree , avl_node<T>* target ) {
 
 			// target -> left node -> right node
 			avl_node<T>* lr_node = target->left->right;
@@ -274,7 +299,7 @@ namespace trees {
 		}
 
 		// O(1)
-		static void RL_BALANCE( binary_tree_avl<T>* tree , avl_node<T>* target) {
+		static void RL_BALANCE( binary_tree_avl<T>* tree , avl_node<T>* target ) {
 
 			// target -> right node -> left node
 			avl_node<T>* rl_node = target->right->left;
@@ -376,6 +401,25 @@ namespace trees {
 			delete rl_node;
 		}
 
+		// o(1)
+		// print function only for testing "not stable with complex types"
+		static void print(avl_node<T>* target, unsigned int spaces = 1) {
+
+			spaces += 1;
+
+			if (target->right != nullptr) avl_node<T>::print(target->right, spaces);
+
+			for (unsigned int i = 1; i <= spaces; i += 1) {
+				std::cout << '\t';
+			}
+			std::cout << "[" << target->value << "]\n";
+
+
+			if (target->left != nullptr) avl_node<T>::print(target->left, spaces);
+
+		}
+
+
 	public:
 
 		// node constructor 1
@@ -476,33 +520,18 @@ namespace trees {
 			return this->value;
 		}
 
-		// testing function
-		static void print(avl_node<T>* target , unsigned int spaces = 1) {
-
-			spaces += 1;
-
-			if (target->right != nullptr) avl_node<T>::print(target->right , spaces);
-
-			for (unsigned int i = 1; i <= spaces; i += 1) {
-				std::cout << '\t';
-			}
-			std::cout << "[" << target->value << "]\n";
-
-
-			if (target->left  != nullptr) avl_node<T>::print(target->left, spaces);
-
-		}
-
-		// give binary_tree_avl access
+		// give access for friend class ==> binary_tree_avl :)
 		template<typename T> friend class binary_tree_avl;
 
-	}; // end of node class
+
+	}; // =========== end of node class ======================
 
 
 	// binary tree class
 	template<typename V> class binary_tree_avl {
 
 	private:
+
 		avl_node<V>* root;
 		unsigned int len = 0;
 
@@ -956,14 +985,16 @@ namespace trees {
 			}
 		}
 
+		// o( log n ) ==> o( n ) 
 		void balance() {
 
-			avl_node<V>::CALC_BALANCE(this , this->root , false);
+			bool skip = false;
+			avl_node<V>::CALC_BALANCE(this , this->root , skip);
 
 		}
 
 		// o( n ) 
-		// print function just for testing 
+		// print function just for testing , not gonna work with "complex types"
 		void print() {
 
 			if (this->root != nullptr) avl_node<V>::print(this->root);
@@ -986,7 +1017,7 @@ namespace trees {
 
 
 		// o( 1 )
-		// function check if a specific node is the same root of this tree
+		// function to check if a specific node is the same root of this tree
 		bool is_the_root(avl_node<V>* target) {
 
 			return (this->root == target);
