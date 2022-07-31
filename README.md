@@ -37,8 +37,7 @@ repository contain a collection of data structures for **C++**
 * stack's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
 * queue's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
 * hash table's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
-* tree's : [![status](https://img.shields.io/badge/status-demo-red)](#)  [![status](https://img.shields.io/badge/manual%20testing-not%20ready-yellow)](#)
-
+* tree's : [![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)  [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)
 ### contribution :
 if want to contribute/reporte , you're welcome😙 
 please before you do anything , text me first or open [issue](https://github.com/Mouradouchane/data_structures/issues) 😄 

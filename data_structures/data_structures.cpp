@@ -52,6 +52,7 @@ int main() {
 	nb.print();
 
 	std::cout << " ===========================\n";
+
 	std::cout << " MAX HEIGTH : " << nb.max_height() << " \n";
 	std::cout << " MIN HEIGTH : " << nb.min_height() << " \n";
 	std::cout << " IS BALANED : " << (nb.is_balanced() ? "true" : "false") << " \n";

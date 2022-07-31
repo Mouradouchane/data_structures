@@ -429,34 +429,41 @@ namespace trees {
 		}
 
 		// o( log n ) --> o( n )
-		// function to check if there's balance or not at some node
+		// function to check if there's balance or not at some node , "recursivlly"
 		static int IS_BALANCED(avl_node<T>* target , bool &check , bool &skip ) {
 
-			int left  = NULL;
-			int right = NULL;
+			int left  = NULL; // left  node factor
+			int right = NULL; // right node factor
 
+			// stop recursive process if there is no target left or skip recursive is true 
 			if (target == nullptr || skip ) return NULL;
 
+			// if there is a left node "GO left"
 			if (target->left != nullptr && !skip) {
 				left  = avl_node<T>::IS_BALANCED(target->left , check, skip) + 1;
 			}
 
+			// if there is a right node "GO right"
 			if (target->right != nullptr && !skip) {
 				right = avl_node<T>::IS_BALANCED(target->right , check, skip) + 1;
 			}
 
+			// skip true mean unbalance found soo no more processing needed
 			if (skip) return NULL;
 
+			// calc balance factor
 			int balance = left - right;
 
+			// check if there is unbalance
 			if (balance < -1 || balance > 1) {
 
-				check = false;
-				skip  = true;
+				check = false; // switch to false "tree is unbalance"
+				skip  = true;  // activate skip , to skip all previous recursive calls
 
 				return NULL;
 			}
 
+			// return biggest factor for keep checking
 			return ( left > right ) ? left : right;
 		}
 
