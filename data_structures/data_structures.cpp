@@ -9,6 +9,7 @@
 #include "trees/binary_tree_arr.hpp"
 #include "trees/binary_tree_nodes.hpp"
 #include "trees/binary_tree_avl.hpp"
+#include "trees/binary_heap.hpp"
 
 using namespace trees;
 
@@ -18,44 +19,46 @@ bool comp(int const& x, int const& y) {
 };
 
 int main() {
-	
-	binary_tree_avl<int> nb( comp );
 
-	nb.insert(58);
-	nb.insert(46);
-	nb.insert(37);
-	nb.insert(38);
-	nb.insert(39);
-	nb.insert(40);
-	nb.insert(-1);
-	nb.insert(-2);
-	nb.insert(0);
-	nb.insert(13);
-	nb.insert(14);
-	nb.insert(16);
-	nb.insert(10);
-	nb.insert(1);
-	nb.insert(4);
-	nb.insert(109);
-	nb.insert(10);
-	nb.insert(13);
-	nb.insert(120);
-	nb.insert(7);
-	nb.insert(1);
-	nb.insert(160);
-	nb.insert(9);
-	nb.insert(500);
-	nb.insert(44);
+	int arr[] = { 1,2,30,4,50,6,7,8,9 };
+
+	binary_heap<int> heap(9 , comp , arr);
+	binary_heap<int>::print(&heap);
+
 	/*
+	heap.insert(58);
+	heap.insert(46);
+	heap.insert(37);
+	heap.insert(38);
+	heap.insert(39);
+	heap.insert(40);
+	heap.insert(-1);
+	heap.insert(-2);
+	heap.insert(0);
+	heap.insert(13);
+	heap.insert(14);
+	heap.insert(16);
+	heap.insert(10);
+	heap.insert(1);
+	heap.insert(4);
+	heap.insert(109);
+	heap.insert(10);
+	heap.insert(13);
+	heap.insert(120);
+	heap.insert(7);
+	heap.insert(1);
+	heap.insert(160);
+	heap.insert(9);
+	heap.insert(500);
+	heap.insert(44);
 	*/
 
-	nb.print();
+
 
 	std::cout << " ===========================\n";
 
-	std::cout << " MAX HEIGTH : " << nb.max_height() << " \n";
-	std::cout << " MIN HEIGTH : " << nb.min_height() << " \n";
-	std::cout << " IS BALANED : " << (nb.is_balanced() ? "true" : "false") << " \n";
+	std::cout << " \n";
+	std::cout << " \n";
 
 	std::cout << " ===========================\n";
 
