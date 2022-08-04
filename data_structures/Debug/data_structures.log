@@ -1,2 +1,15 @@
 ﻿  data_structures.cpp
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(131,30): warning C4018: '>': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(126): message : while compiling class template member function 'bool trees::binary_heap<int>::insert(const T &)'
+          with
+          [
+              T=int
+          ]
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(29): message : see reference to function template instantiation 'bool trees::binary_heap<int>::insert(const T &)' being compiled
+          with
+          [
+              T=int
+          ]
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(27): message : see reference to class template instantiation 'trees::binary_heap<int>' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(142,46): warning C4018: '<': signed/unsigned mismatch
   data_structures.vcxproj -> C:\Users\devc\Desktop\cpp\data_structures\Debug\data_structures.exe

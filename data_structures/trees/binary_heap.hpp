@@ -1,3 +1,5 @@
+#include <vector> 
+#pragma once
 
 /*
 	Binary Heap methods
@@ -48,6 +50,18 @@ namespace trees {
 		// parameter for lock/unlock insert/remove... from heap
 		bool locked = false;
 
+
+		// ========= some static private functions for heap ============
+
+		// print function only for testing
+		static void PRINT(unsigned int const& size, T* heap) {
+
+			for (unsigned int i = 0; i < size; i += 1) {
+				std::cout << "[" << i << "]" << heap[i] << "\n";
+			}
+
+		}
+
 	public: 
 
 		// o(n)
@@ -71,28 +85,28 @@ namespace trees {
 
 		// o(n)
 		// heapify constructor
-		binary_heap( unsigned int heap_size , bool (*comparison_function)(T const& a , T const& b) ,T *heap_elements ) {
+		binary_heap( bool (*comparison_function)(T const& a , T const& b) , std::vector<T> const& heap_elements ) {
 
 			this->comp_function = comparison_function;
 
 			// allocate array in heap with that heap_size
-			this->heap = new T[heap_size];
+			this->heap = new T[heap_elements.size()];
 
-			this->heap_size = heap_size;
+			this->heap_size = heap_elements.size();
 			this->len  = 0;
 
 			// o(n)
 			// loop over all elements in heap & set NULL value
-			for (unsigned int i = 0; i < this->heap_size ; i += 1) {
+			for ( unsigned int i = 0; i < heap_elements.size(); i += 1 ) {
 				
-				// if element not out of heap size
-				if (i > this->heap_size) break;
-
 				// then insert element & update length
 				this->heap[i] = heap_elements[i];
 				this->len += 1;
 				
 			}
+
+			// lock this heap because it's full
+			this->locked = true;
 
 			// o(n)
 			// after that heapify
@@ -109,8 +123,40 @@ namespace trees {
 		}
 
 		// o(1) --> o(log n)
-		bool insert(T const& new_value) {
-			return false;
+		bool insert( T const& new_value ) {
+
+			int index = this->len + 1;
+
+			// if heap is full or locked then no insert
+			if (this->locked || index > this->heap_size) return false;
+
+			// insert new value in last known empty spot
+			this->heap[ index - 1 ] = new_value;
+
+			// update length
+			this->len += 1;
+
+			// *** after insertion we have to preforme adjustment ***
+			int parent_index = (int)( index / 2);
+
+			while ( parent_index > 0  && parent_index < this->heap_size ){
+
+				// if compare function tell us that parent must be switch with it's child "new_value"
+				if (this->comp_function(this->heap[parent_index-1], this->heap[index-1])) {
+
+					// preforme switch
+					T temp = this->heap[parent_index-1];
+					this->heap[parent_index-1] = this->heap[index-1];
+					this->heap[index-1] = temp;
+
+					index = parent_index;
+					parent_index = (int)(index / 2);
+				}
+				else break;
+			}
+
+			// insert confirmation 
+			return true;
 		}
 
 		// o(1) --> o(log n)
@@ -155,7 +201,7 @@ namespace trees {
 
 		// o(1)
 		bool is_full() {
-			return false;
+			return ( this->len >= this->heap_size );
 		}
 
 		// o(1)
@@ -178,13 +224,14 @@ namespace trees {
 			return false;
 		}
 
-		// print function only for testing
-		static void print( binary_heap<T> *heap ) {
 
-			for (unsigned int i = 0; i < heap->heap_size; i += 1) {
-				std::cout << "[" << i << "]" << heap->heap[i] << "\n";
-			}
-			 
+		// o(n)
+		// print function only for testing
+		void print() {
+
+			// recursive print for binary heap visualisation
+			binary_heap<T>::PRINT(this->heap_size, this->heap);
+
 		}
 
 	}; // end of class "binary_heap"
