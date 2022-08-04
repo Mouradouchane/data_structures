@@ -54,12 +54,22 @@ namespace trees {
 		// ========= some static private functions for heap ============
 
 		// print function only for testing
-		static void PRINT(unsigned int const& size, T* heap) {
+		static void PRINT(unsigned int const& size, int index , int tab , T* heap) {
 
-			for (unsigned int i = 0; i < size; i += 1) {
-				std::cout << "[" << i << "]" << heap[i] << "\n";
+			int left  = index * 2;
+			int right = left  + 1;
+
+			tab += 1;
+
+			if (right <= size) binary_heap<T>::PRINT(size, right, tab, heap);
+
+			for (unsigned int i = 0; i < tab ; i += 1) {
+				std::cout << '\t';
 			}
+				
+			std::cout << '[' << heap[index - 1] << ']' << "\n";
 
+			if (left  <= size) binary_heap<T>::PRINT(size, left , tab, heap);
 		}
 
 	public: 
@@ -229,8 +239,10 @@ namespace trees {
 		// print function only for testing
 		void print() {
 
+			int index = 1 , tab = 0;
+
 			// recursive print for binary heap visualisation
-			binary_heap<T>::PRINT(this->heap_size, this->heap);
+			binary_heap<T>::PRINT(this->heap_size, index , tab , this->heap);
 
 		}
 

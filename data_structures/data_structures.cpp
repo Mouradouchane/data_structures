@@ -24,15 +24,15 @@ int main() {
 
 	std::vector<int> arr = { 11 , 2 , 30 , 4 , 50 , 6 };
 	
-	binary_heap<int> heap( 12 , comp );
+	binary_heap<int> heap( 7 , comp );
 
+	heap.insert(40);
 	heap.insert(37);
+	heap.insert(39);
+	heap.insert(38);
 	heap.insert(46);
 	heap.insert(58);
 	/*
-	heap.insert(38);
-	heap.insert(39);
-	heap.insert(40);
 	heap.insert(-1);
 	heap.insert(-2);
 	heap.insert(0);
@@ -59,11 +59,11 @@ int main() {
 
 	std::cout << " ===========================\n";
 
-	std::cout << "ROOT    : " << heap.get_root() << " \n";
-	std::cout << "LENGTH  : " << heap.length() << " \n";
-	std::cout << "SIZE    : " << heap.size() << " \n";
-	std::cout << "IS_FULL : " << heap.is_full() << " \n";
-	std::cout << "LOCKED  : " << heap.is_locked() << " \n";
+	std::cout << " ROOT    : " << heap.get_root() << " \n";
+	std::cout << " LENGTH  : " << heap.length() << " \n";
+	std::cout << " SIZE    : " << heap.size() << " \n";
+	std::cout << " IS_FULL : " << heap.is_full() << " \n";
+	std::cout << " LOCKED  : " << heap.is_locked() << " \n";
 
 	std::cout << " ===========================\n";
 
