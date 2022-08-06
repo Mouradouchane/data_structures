@@ -58,9 +58,9 @@ namespace trees {
 
 			int left  = index * 2;
 			int right = left  + 1;
-
+			
 			tab += 1;
-
+			
 			if (right <= size) binary_heap<T>::PRINT(size, right, tab, heap);
 
 			for (unsigned int i = 0; i < tab ; i += 1) {
@@ -169,9 +169,24 @@ namespace trees {
 			return true;
 		}
 
-		// o(1) --> o(log n)
-		bool remove() {
-			return false;
+		// o(1) --> o(log n
+		// get_root : if you want to take root value after it's get deleted
+		bool remove( T *get_root = nullptr ) {
+
+			if ( this->heap[0] == NULL || this->locked ) return false;
+
+			if (get_root != nullptr) {
+				*get_root = this->heap[0];
+			}
+
+			this->len -= 1; // update length
+			this->heap[0] = this->heap[ this->len ]; // put last value in root 
+			this->heap[this->len] = NULL; // remove last value from it's old position
+
+			// index 1 => root
+			this->adjust( 1 );
+
+			return true;
 		}
 
 		// o(1) --> o(log n)
@@ -180,12 +195,38 @@ namespace trees {
 		}
 
 		// o(n)
-		int index_of(T const& target ) {
+		int index_of( T const& target ) {
 			return -1;
 		}
 
 		// o(1)
-		void adjust() {
+		// index from 1 to ....
+		void adjust( unsigned int const& index ) {
+				
+			if (index > this->heap_size) return;
+
+			int left_index  = index * 2;
+			int right_index = left_index + 1;
+			int precedence = NULL;
+
+			if (left_index > this->heap_size && right_index > this->heap_size) return;
+
+			if (left_index <= this->heap_size && right_index <= this->heap_size) {
+				precedence = this->comp_function(this->heap[left_index - 1], this->heap[right_index - 1]) ? right_index : left_index;
+			}
+
+			if (left_index  > this->heap_size && right_index <= this->heap_size) precedence = right_index;
+
+			if (right_index > this->heap_size && left_index  <= this->heap_size) precedence = left_index;
+
+			if ( this->comp_function(this->heap[index - 1], this->heap[precedence - 1]) ) {
+
+				T temp = this->heap[index - 1];
+				this->heap[index - 1] = this->heap[precedence - 1];
+				this->heap[precedence - 1] = temp;
+
+				this->adjust(precedence);
+			}
 
 		}
 
@@ -244,6 +285,7 @@ namespace trees {
 			// recursive print for binary heap visualisation
 			binary_heap<T>::PRINT(this->heap_size, index , tab , this->heap);
 
+			std::cout << "========================== \n";
 		}
 
 	}; // end of class "binary_heap"

@@ -32,6 +32,7 @@ int main() {
 	heap.insert(38);
 	heap.insert(46);
 	heap.insert(58);
+	heap.insert(1);
 	/*
 	heap.insert(-1);
 	heap.insert(-2);
@@ -55,7 +56,21 @@ int main() {
 	*/
 
 	heap.print();
-
+	heap.remove();
+	heap.print();
+	heap.remove();
+	heap.print();
+	heap.remove();
+	heap.print();
+	heap.remove();
+	heap.print();
+	heap.remove();
+	heap.print();
+	heap.remove();
+	heap.print();
+	heap.remove();
+	heap.print();
+	heap.remove();
 
 	std::cout << " ===========================\n";
 
