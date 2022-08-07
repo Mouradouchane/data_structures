@@ -72,6 +72,40 @@ namespace trees {
 			if (left  <= size) binary_heap<T>::PRINT(size, left , tab, heap);
 		}
 
+		static void HEAPIFY(binary_heap<T>* BINARY_HEAP, unsigned int target_index) {
+
+			unsigned int left_index  = target_index * 2;
+			unsigned int right_index = left_index   + 1;
+
+			unsigned int precedence = NULL;
+
+			if (left_index > BINARY_HEAP->heap_size && right_index > BINARY_HEAP->heap_size) return;
+			
+			if (left_index <= BINARY_HEAP->heap_size && right_index <= BINARY_HEAP->heap_size) {
+
+				precedence = BINARY_HEAP->comp_function(BINARY_HEAP->heap[left_index - 1], BINARY_HEAP->heap[right_index - 1]) ? right_index : left_index;
+
+			}
+			else {
+
+				if (left_index <= BINARY_HEAP->heap_size && right_index > BINARY_HEAP->heap_size) precedence = left_index;
+				
+				if (left_index > BINARY_HEAP->heap_size && right_index <= BINARY_HEAP->heap_size) precedence = right_index;
+			
+			}
+			
+			if ( BINARY_HEAP->comp_function(BINARY_HEAP->heap[target_index - 1], BINARY_HEAP->heap[precedence - 1]) ) {
+
+				T temp = BINARY_HEAP->heap[target_index - 1];
+				BINARY_HEAP->heap[target_index - 1] = BINARY_HEAP->heap[precedence - 1];
+				BINARY_HEAP->heap[precedence - 1] = temp;
+
+
+				binary_heap<T>::HEAPIFY(BINARY_HEAP, precedence);
+			}
+
+		}
+
 	public: 
 
 		// o(n)
@@ -136,7 +170,7 @@ namespace trees {
 		// o(1) --> o(log n)
 		bool insert( T const& new_value ) {
 
-			int index = this->len + 1;
+			unsigned int index = this->len + 1;
 
 			// if heap is full or locked then no insert
 			if (this->locked || index > this->heap_size) return false;
@@ -148,7 +182,7 @@ namespace trees {
 			this->len += 1;
 
 			// *** after insertion we have to preforme adjustment ***
-			int parent_index = (int)( index / 2);
+			int parent_index = (int)( index / 2 );
 
 			while ( parent_index > 0  && parent_index < this->heap_size ){
 
@@ -263,6 +297,12 @@ namespace trees {
 		// o(n)
 		// heapify the all elements in heap 
 		void heapify() {
+
+			for (unsigned int i = this->heap_size ; i > 0; i -= 1) {
+
+				binary_heap<T>::HEAPIFY(this , i);
+
+			}
 
 		}
 

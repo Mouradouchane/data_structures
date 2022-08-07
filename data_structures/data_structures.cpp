@@ -22,9 +22,10 @@ bool comp(int const& x, int const& y) {
 
 int main() {
 
-	std::vector<int> arr = { 11 , 2 , 30 , 4 , 50 , 6 };
+	std::vector<int> arr = { 10,2,3,4,50,6,7,81,9,10,120,13,144};
 	
-	binary_heap<int> heap( 7 , comp );
+	//binary_heap<int> heap(7, comp);
+	binary_heap<int> heap( comp , arr );
 
 	heap.insert(40);
 	heap.insert(37);
@@ -56,7 +57,6 @@ int main() {
 	*/
 
 	heap.print();
-	heap.remove();
 
 	std::cout << " ===========================\n";
 

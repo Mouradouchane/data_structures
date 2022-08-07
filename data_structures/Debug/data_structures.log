@@ -1,34 +1,23 @@
 ﻿  data_structures.cpp
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(142,30): warning C4018: '>': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(137): message : while compiling class template member function 'bool trees::binary_heap<int>::insert(const T &)'
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(187,46): warning C4018: '<': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(171): message : while compiling class template member function 'bool trees::binary_heap<int>::insert(const T &)'
           with
           [
               T=int
           ]
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(29): message : see reference to function template instantiation 'bool trees::binary_heap<int>::insert(const T &)' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(30): message : see reference to function template instantiation 'bool trees::binary_heap<int>::insert(const T &)' being compiled
           with
           [
               T=int
           ]
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(27): message : see reference to class template instantiation 'trees::binary_heap<int>' being compiled
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(153,46): warning C4018: '<': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(230,19): warning C4018: '>': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(217): message : while compiling class template member function 'void trees::binary_heap<int>::adjust(const unsigned int &)'
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(188): message : see reference to function template instantiation 'void trees::binary_heap<int>::adjust(const unsigned int &)' being compiled
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(230,52): warning C4018: '>': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(234,19): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(234,53): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(240,20): warning C4018: '>': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(240,53): warning C4018: '<=': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(243,20): warning C4018: '>': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(243,53): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(28): message : see reference to class template instantiation 'trees::binary_heap<int>' being compiled
 C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(64,14): warning C4018: '<=': signed/unsigned mismatch
 C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(57): message : while compiling class template member function 'void trees::binary_heap<int>::PRINT(const unsigned int &,int,int,T *)'
           with
           [
               T=int
           ]
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(351): message : see reference to function template instantiation 'void trees::binary_heap<int>::PRINT(const unsigned int &,int,int,T *)' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(391): message : see reference to function template instantiation 'void trees::binary_heap<int>::PRINT(const unsigned int &,int,int,T *)' being compiled
           with
           [
               T=int
