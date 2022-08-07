@@ -19,7 +19,7 @@
 	get_root			o(1) --> o(log n)
 
 	is_full				o(1)
-	is_complete			o(1)
+	is_complete			o(n)
 
 	lock				o(1)
 	unlock				o(1)
@@ -75,18 +75,20 @@ namespace trees {
 	public: 
 
 		// o(n)
-		// def constructor
+		// normal constructor
 		binary_heap( unsigned int const& heap_size  , bool (*comparison_function)(T const& a , T const& b) ) {
 
+			// will be used to compare between heap values
 			this->comp_function = comparison_function;
 
 			// allocate array in heap with that heap_size
 			this->heap = new T[heap_size];
 
+			// set heap size & length
 			this->heap_size = heap_size;
 			this->len  = 0;
 
-			// loop over all elements in heap & set NULL value
+			// loop over all and set NULL values
 			for (unsigned int i = 0; i < this->heap_size ; i += 1) {
 				this->heap[i] = NULL;
 			}
@@ -97,30 +99,29 @@ namespace trees {
 		// heapify constructor
 		binary_heap( bool (*comparison_function)(T const& a , T const& b) , std::vector<T> const& heap_elements ) {
 
+			// will be used to compare between heap values
 			this->comp_function = comparison_function;
 
 			// allocate array in heap with that heap_size
 			this->heap = new T[heap_elements.size()];
 
+			// set heap size & length
 			this->heap_size = heap_elements.size();
 			this->len  = 0;
 
 			// o(n)
-			// loop over all elements in heap & set NULL value
+			// loop over all and insert values in heap
 			for ( unsigned int i = 0; i < heap_elements.size(); i += 1 ) {
 				
-				// then insert element & update length
+				// insert and update length
 				this->heap[i] = heap_elements[i];
 				this->len += 1;
 				
 			}
 
-			// lock this heap because it's full
-			this->locked = true;
-
 			// o(n)
-			// after that heapify
-
+			// then we have to preforme "heapify"
+			this->heapify();
 		}
 
 		// o(1)
@@ -195,84 +196,148 @@ namespace trees {
 		}
 
 		// o(n)
+		// search for index of target
 		int index_of( T const& target ) {
+
+			// loop over all & search
+			for (unsigned int i = 0; i < this->heap_size ; i += 1) {
+
+				// if target found return it's index in heap
+				if (this->heap[i] == target) return i + 1;
+
+			}
+
+			// if target not found
 			return -1;
 		}
 
 		// o(1)
-		// index from 1 to ....
+		// adjust the process of compare current root with children and swap if needed
+		// to keep the heap , a heap
 		void adjust( unsigned int const& index ) {
 				
+			// if index is out heap stop
 			if (index > this->heap_size) return;
 
+			// calc left right index's
 			int left_index  = index * 2;
 			int right_index = left_index + 1;
+
+			// we need it to store the index of each value is "the precedence one"
 			int precedence = NULL;
 
+			// if left & right index's out of heap stop
 			if (left_index > this->heap_size && right_index > this->heap_size) return;
 
+			// if left & right index's in the heap
+			// then we have to compare bettween the left child & right child to get "the precedence one"
 			if (left_index <= this->heap_size && right_index <= this->heap_size) {
+				// compare left vs right 
 				precedence = this->comp_function(this->heap[left_index - 1], this->heap[right_index - 1]) ? right_index : left_index;
 			}
 
+			// if left out of heap & right not
 			if (left_index  > this->heap_size && right_index <= this->heap_size) precedence = right_index;
 
+			// if right out of heap & left not
 			if (right_index > this->heap_size && left_index  <= this->heap_size) precedence = left_index;
 
+			// last step is to compare bettween "parent/index" & "the precedence" value
 			if ( this->comp_function(this->heap[index - 1], this->heap[precedence - 1]) ) {
 
+				/*
+				if comparison is true that mean we need to prefome a swap 
+				between target "parent/index" & "the precedence"
+				*/ 
 				T temp = this->heap[index - 1];
 				this->heap[index - 1] = this->heap[precedence - 1];
 				this->heap[precedence - 1] = temp;
 
+				// if swap done that mean "the precedence" now it's "the old parent"
+				// soo we need to adjust again 
 				this->adjust(precedence);
 			}
 
 		}
 
 		// o(n)
+		// heapify the all elements in heap 
 		void heapify() {
 
 		}
 
 		// o(1)
+		// get copy of the "current root"
 		T get_root() {
 			return this->heap[0];
 		}
 
 		// o(1)
+		// length or how many elements in the heap "currently"
 		unsigned int length() {
 			return this->len;
 		}
 
 		// o(1)
+		// get the size of that heap
 		unsigned int size() {
 			return this->heap_size;
 		}
 
 		// o(1)
+		// check if heap is full of values nor not yet
 		bool is_full() {
 			return ( this->len >= this->heap_size );
 		}
 
-		// o(1)
+		// o(n)
+		// check if that heap is "complete binary tree"
 		bool is_complete() {
-			return false;
+
+			// loop over all & check for gaps
+			for (unsigned int i = 1; i < this->heap_size; i += 1) {
+
+				// if gaps found
+				if (this->heap[i - 1] == NULL && this->heap[i] != NULL) return false;
+
+			}
+
+			// if no gaps found
+			return true;
 		}
 
 		// o(1)
+		// check if the heap is locked or not
 		bool is_locked() {
 			return this->locked;
 		}
 
 		// o(1)
+		// if you want to lock the heap
 		bool lock() {
-			return false;
+			
+			// if already locked then return false as confirmation
+			if (this->locked) return false;
+			// else mean we can lock that heap 
+			else {
+				// preforme lock & return true as confirmation
+				this->locked = true;
+				return true;
+			}
+
 		}
 
 		// o(1)
+		// this one like "lock function" above but it's for unlock the heap
 		bool unlock() {
-			return false;
+
+			if (!this->locked) return false;
+			else {
+
+				this->locked = false;
+				return true;
+			}
+
 		}
 
 
