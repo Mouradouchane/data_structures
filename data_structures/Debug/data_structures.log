@@ -1,6 +1,6 @@
 ﻿  data_structures.cpp
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(187,46): warning C4018: '<': signed/unsigned mismatch
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(171): message : while compiling class template member function 'bool trees::binary_heap<int>::insert(const T &)'
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(200,46): warning C4018: '<': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(184): message : while compiling class template member function 'bool trees::binary_heap<int>::insert(const T &)'
           with
           [
               T=int
@@ -10,14 +10,24 @@ C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(30
           [
               T=int
           ]
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(28): message : see reference to class template instantiation 'trees::binary_heap<int>' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(27): message : see reference to class template instantiation 'trees::binary_heap<int>' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(290,19): warning C4018: '>': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(277): message : while compiling class template member function 'void trees::binary_heap<int>::adjust(const unsigned int &)'
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(251): message : see reference to function template instantiation 'void trees::binary_heap<int>::adjust(const unsigned int &)' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(290,52): warning C4018: '>': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(294,19): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(294,53): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(300,20): warning C4018: '>': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(300,53): warning C4018: '<=': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(303,20): warning C4018: '>': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(303,53): warning C4018: '<=': signed/unsigned mismatch
 C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(64,14): warning C4018: '<=': signed/unsigned mismatch
 C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(57): message : while compiling class template member function 'void trees::binary_heap<int>::PRINT(const unsigned int &,int,int,T *)'
           with
           [
               T=int
           ]
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(391): message : see reference to function template instantiation 'void trees::binary_heap<int>::PRINT(const unsigned int &,int,int,T *)' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\trees\binary_heap.hpp(418): message : see reference to function template instantiation 'void trees::binary_heap<int>::PRINT(const unsigned int &,int,int,T *)' being compiled
           with
           [
               T=int

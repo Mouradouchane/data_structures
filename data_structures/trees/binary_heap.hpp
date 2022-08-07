@@ -13,8 +13,8 @@
 	remove				o(1) --> o(log n)
 	remove_at			o(1) --> o(log n)
 
-	adjust				o(1)
-	heapify				o(n)
+	adjust				o(1) --> o(log n)
+	heapify				o(n) 
 
 	get_root			o(1) --> o(log n)
 
@@ -72,21 +72,31 @@ namespace trees {
 			if (left  <= size) binary_heap<T>::PRINT(size, left , tab, heap);
 		}
 
+		// o(1) --> o(log n)
+		// recursive heapify until the element get in it's place
 		static void HEAPIFY(binary_heap<T>* BINARY_HEAP, unsigned int target_index) {
 
+			/*
+				the same process like adjust function but from down to top
+			*/
+
+			// get index's
 			unsigned int left_index  = target_index * 2;
 			unsigned int right_index = left_index   + 1;
 
 			unsigned int precedence = NULL;
 
-			if (left_index > BINARY_HEAP->heap_size && right_index > BINARY_HEAP->heap_size) return;
-			
-			if (left_index <= BINARY_HEAP->heap_size && right_index <= BINARY_HEAP->heap_size) {
+			// check the all possible cases
 
+			// all is out of heap
+			if (left_index > BINARY_HEAP->heap_size && right_index > BINARY_HEAP->heap_size) return;
+			// all is inside heap
+			if (left_index <= BINARY_HEAP->heap_size && right_index <= BINARY_HEAP->heap_size) {
+				// compare to get the precedence
 				precedence = BINARY_HEAP->comp_function(BINARY_HEAP->heap[left_index - 1], BINARY_HEAP->heap[right_index - 1]) ? right_index : left_index;
 
 			}
-			else {
+			else { // otherwise one of them out of heap
 
 				if (left_index <= BINARY_HEAP->heap_size && right_index > BINARY_HEAP->heap_size) precedence = left_index;
 				
@@ -94,13 +104,15 @@ namespace trees {
 			
 			}
 			
+			// compare the precedence with target 
 			if ( BINARY_HEAP->comp_function(BINARY_HEAP->heap[target_index - 1], BINARY_HEAP->heap[precedence - 1]) ) {
 
+				// if we need to preforme a swap
 				T temp = BINARY_HEAP->heap[target_index - 1];
 				BINARY_HEAP->heap[target_index - 1] = BINARY_HEAP->heap[precedence - 1];
 				BINARY_HEAP->heap[precedence - 1] = temp;
 
-
+				// after swap check the down value recursivly 
 				binary_heap<T>::HEAPIFY(BINARY_HEAP, precedence);
 			}
 
@@ -122,6 +134,7 @@ namespace trees {
 			this->heap_size = heap_size;
 			this->len  = 0;
 
+			// o(n)
 			// loop over all and set NULL values
 			for (unsigned int i = 0; i < this->heap_size ; i += 1) {
 				this->heap[i] = NULL;
@@ -129,7 +142,7 @@ namespace trees {
 
 		}
 
-		// o(n)
+		// o(n*2)
 		// heapify constructor
 		binary_heap( bool (*comparison_function)(T const& a , T const& b) , std::vector<T> const& heap_elements ) {
 
@@ -162,7 +175,7 @@ namespace trees {
 		// def destructor
 		~binary_heap() {
 
-			// delete/free heap array from "heap"
+			// "delete/free" heap_array from "heap"
 			delete this->heap;
 
 		}
@@ -226,7 +239,20 @@ namespace trees {
 
 		// o(1) --> o(log n)
 		bool remove_at( unsigned int const& index_of_target ) {
-			return false;
+
+			if (index_of_target < 1 || index_of_target > this->heap_size) return false;
+			else {
+
+				this->len -= 1;
+
+				this->heap[index_of_target-1] = this->heap[ this->len ];
+				this->heap[ this->len ] = NULL;
+
+				this->adjust(index_of_target);
+
+				return true;
+			}
+
 		}
 
 		// o(n)
@@ -245,7 +271,7 @@ namespace trees {
 			return -1;
 		}
 
-		// o(1)
+		// o(1) --> o(log n)
 		// adjust the process of compare current root with children and swap if needed
 		// to keep the heap , a heap
 		void adjust( unsigned int const& index ) {
@@ -298,6 +324,7 @@ namespace trees {
 		// heapify the all elements in heap 
 		void heapify() {
 
+			// loop over all values & preforme heapify 
 			for (unsigned int i = this->heap_size ; i > 0; i -= 1) {
 
 				binary_heap<T>::HEAPIFY(this , i);

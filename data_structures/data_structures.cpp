@@ -24,8 +24,8 @@ int main() {
 
 	std::vector<int> arr = { 10,2,3,4,50,6,7,81,9,10,120,13,144};
 	
-	//binary_heap<int> heap(7, comp);
-	binary_heap<int> heap( comp , arr );
+	binary_heap<int> heap(7, comp);
+	//binary_heap<int> heap( comp , arr );
 
 	heap.insert(40);
 	heap.insert(37);
@@ -33,7 +33,7 @@ int main() {
 	heap.insert(38);
 	heap.insert(46);
 	heap.insert(58);
-	//heap.insert(1);
+	heap.insert(1);
 	/*
 	heap.insert(-1);
 	heap.insert(-2);
@@ -56,6 +56,8 @@ int main() {
 	heap.insert(44);
 	*/
 
+	heap.print();
+	heap.remove_at(heap.index_of(1));
 	heap.print();
 
 	std::cout << " ===========================\n";
