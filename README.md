@@ -1,8 +1,5 @@
 ﻿# Data Structures 
-<img src="https://img.shields.io/github/issues/Mouradouchane/data_structures">
-<img src="https://img.shields.io/github/forks/Mouradouchane/data_structures">
-<img src="https://img.shields.io/github/stars/Mouradouchane/data_structures">
-<img src="https://img.shields.io/github/license/Mouradouchane/data_structures">
+<img src="https://img.shields.io/github/issues/Mouradouchane/data_structures"> <img src="https://img.shields.io/github/forks/Mouradouchane/data_structures"> <img src="https://img.shields.io/github/stars/Mouradouchane/data_structures"> <img src="https://img.shields.io/github/license/Mouradouchane/data_structures">
 
 <br>
 
