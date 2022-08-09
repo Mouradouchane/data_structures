@@ -18,9 +18,12 @@ int main() {
 
 	static_array<int> x = { 1,5,6,88 };
 
-	std::cout << x[0] << '\n';
-	std::cout << x[1] << '\n';
-	std::cout << x[3] << '\n';
+	arr.reverse();
+
+	arr.for_each([](int a) {
+		std::cout << a << '\n';
+	});
+
 
 	/*
 	arr.for_each([](int a) {
