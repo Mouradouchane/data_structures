@@ -142,6 +142,8 @@
     <ClCompile Include="data_structures.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="arrays\dynamic_array.hpp" />
+    <ClInclude Include="arrays\static_array.hpp" />
     <ClInclude Include="hash tables\hash_table.hpp" />
     <ClInclude Include="hash tables\hash_table_chaining.hpp" />
     <ClInclude Include="hash tables\hash_table_openAddressing.hpp" />

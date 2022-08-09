@@ -28,6 +28,9 @@
     <Filter Include="Resource Files\trees">
       <UniqueIdentifier>{9bcf374f-0b54-41e4-af9a-eaace617bb81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\arrays">
+      <UniqueIdentifier>{979a5662-fb82-41d1-a0b3-53545731f816}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hash tables\hash_table.hpp">
@@ -77,6 +80,12 @@
     </ClInclude>
     <ClInclude Include="trees\binary_heap.hpp">
       <Filter>Resource Files\trees</Filter>
+    </ClInclude>
+    <ClInclude Include="arrays\dynamic_array.hpp">
+      <Filter>Resource Files\arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="arrays\static_array.hpp">
+      <Filter>Resource Files\arrays</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

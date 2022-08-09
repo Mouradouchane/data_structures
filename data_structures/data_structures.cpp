@@ -6,26 +6,26 @@
 #include <map>
 #include <string>
 
-#include "trees/dynamic_tree.hpp"
-#include "trees/binary_tree_arr.hpp"
-#include "trees/binary_tree_nodes.hpp"
-#include "trees/binary_tree_avl.hpp"
-#include "trees/binary_heap.hpp"
+#include "arrays/static_array.hpp"
+#include "arrays/dynamic_array.hpp"
 
-using namespace trees;
+using namespace arrays;
 
-
-bool comp(int const& x, int const& y) {
-
-	return x < y;
-};
 
 int main() {
 
-	std::vector<int> arr = { 10,2,3,4,50,6,7,81,9,10,120,13,144};
-	
-	binary_heap<int> heap(12, comp);
-	//binary_heap<int> heap( comp , arr );
+	static_array<int> arr( { 10,22,31,14,25,63,7,80 } );
+
+	static_array<int> x = { 1,5,6,88 };
+
+	std::cout << x[0] << '\n';
+	std::cout << x[1] << '\n';
+	std::cout << x[3] << '\n';
+
+	/*
+	arr.for_each([](int a) {
+		std::cout << a << '\n';
+	});
 
 	heap.insert(40);
 	heap.insert(37);
@@ -40,7 +40,6 @@ int main() {
 	heap.insert(10);
 	heap.insert(120);
 
-	/*
 	heap.insert(-1);
 	heap.insert(-2);
 	heap.insert(0);
@@ -61,24 +60,6 @@ int main() {
 	heap.insert(44);
 	*/
 
-	heap.print();
 
-	std::vector<int> hs = binary_heap<int>::heap_sort(heap);
-
-	for (int& e : hs) {
-		std::cout << e << '\n';
-	}
-
-	std::cout << " ===========================\n";
-
-	std::cout << " ROOT    : " << heap.get_root() << " \n";
-	std::cout << " LENGTH  : " << heap.length() << " \n";
-	std::cout << " SIZE    : " << heap.size() << " \n";
-	std::cout << " IS_FULL : " << heap.is_full() << " \n";
-	std::cout << " COMPLET : " << heap.is_complete() << " \n";
-
-	std::cout << " ===========================\n";
-
-	
 	return 0;
 }
