@@ -16,20 +16,24 @@
 	adjust				o(1) --> o(log n)
 	heapify				o(n) 
 
+	heap_sort			o(n log n)
+
 	get_root			o(1) --> o(log n)
 
 	is_full				o(1)
 	is_complete			o(n)
 
-	lock				o(1)
-	unlock				o(1)
-	is_locked			o(1)
-
 	index_of			o(n)
+	value_of			o(n)
 */
 
 namespace trees {
 
+	/*
+	
+		index's in binary_heap start from "1"
+
+	*/
 
 	template<typename T> class binary_heap {
 
@@ -47,11 +51,12 @@ namespace trees {
 		// call_back function used to comapre nodes 
 		bool (*comp_function)(T const& a, T const& b);
 
-		// parameter for lock/unlock insert/remove... from heap
-		bool locked = false;
 
+		/*
+		
+			========= some static private functions for heap ============
 
-		// ========= some static private functions for heap ============
+		*/ 
 
 		// print function only for testing
 		static void PRINT(unsigned int const& size, int index , int tab , T* heap) {
@@ -117,6 +122,7 @@ namespace trees {
 			}
 
 		}
+
 
 	public: 
 
@@ -185,8 +191,8 @@ namespace trees {
 
 			unsigned int index = this->len + 1;
 
-			// if heap is full or locked then no insert
-			if (this->locked || index > this->heap_size) return false;
+			// if heap is full then no insert
+			if (index > this->heap_size) return false;
 
 			// insert new value in last known empty spot
 			this->heap[ index - 1 ] = new_value;
@@ -217,13 +223,14 @@ namespace trees {
 			return true;
 		}
 
-		// o(1) --> o(log n
+		// o(1) --> o(log n)
+		// remove root only
 		// get_root : if you want to take root value after it's get deleted
-		bool remove( T *get_root = nullptr ) {
+		bool remove( T* get_root = nullptr ) {
 
-			if ( this->heap[0] == NULL || this->locked ) return false;
+			if ( this->heap[0] == NULL ) return false;
 
-			if (get_root != nullptr) {
+			if ( get_root != nullptr ) {
 				*get_root = this->heap[0];
 			}
 
@@ -238,16 +245,20 @@ namespace trees {
 		}
 
 		// o(1) --> o(log n)
+		// remove any value you want
+		// index from 1 to ....
 		bool remove_at( unsigned int const& index_of_target ) {
 
 			if (index_of_target < 1 || index_of_target > this->heap_size) return false;
 			else {
-
+				// update length
 				this->len -= 1;
 
+				// move last element in heap to that target place
 				this->heap[index_of_target-1] = this->heap[ this->len ];
 				this->heap[ this->len ] = NULL;
 
+				// then preforme adjust to keep heap valid
 				this->adjust(index_of_target);
 
 				return true;
@@ -256,7 +267,7 @@ namespace trees {
 		}
 
 		// o(n)
-		// search for index of target
+		// search for index of target in heap
 		int index_of( T const& target ) {
 
 			// loop over all & search
@@ -269,6 +280,16 @@ namespace trees {
 
 			// if target not found
 			return -1;
+		}
+
+		// o(1)
+		// get value of specific index at the heap
+		T value_of_index(unsigned int const& index_of_target) {
+
+			// if index ouf of heap
+			if (index_of_target < 1 || index_of_target > this->heap_size) return NULL;
+			else return this->heap[index_of_target-1];
+
 		}
 
 		// o(1) --> o(log n)
@@ -373,38 +394,30 @@ namespace trees {
 			return true;
 		}
 
-		// o(1)
-		// check if the heap is locked or not
-		bool is_locked() {
-			return this->locked;
-		}
 
-		// o(1)
-		// if you want to lock the heap
-		bool lock() {
+		/*
+			======= public static functions =========
+		*/ 
+
+		// o(n log n)
+		// take all the elements sorted from target_heap
+		static std::vector<T> heap_sort( binary_heap<T>& target_heap ) {
+
+			T* temp = new T();
+			std::vector<T> elements;
+
+			for (unsigned int i = 1; i <= target_heap.heap_size; i += 1) {
+
+				if ( target_heap.remove(temp) ) {
+					elements.push_back( *temp );
+				}
+
+			}
+
+			delete temp;
+
 			
-			// if already locked then return false as confirmation
-			if (this->locked) return false;
-			// else mean we can lock that heap 
-			else {
-				// preforme lock & return true as confirmation
-				this->locked = true;
-				return true;
-			}
-
-		}
-
-		// o(1)
-		// this one like "lock function" above but it's for unlock the heap
-		bool unlock() {
-
-			if (!this->locked) return false;
-			else {
-
-				this->locked = false;
-				return true;
-			}
-
+			return elements;
 		}
 
 

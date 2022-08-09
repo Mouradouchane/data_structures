@@ -24,7 +24,7 @@ int main() {
 
 	std::vector<int> arr = { 10,2,3,4,50,6,7,81,9,10,120,13,144};
 	
-	binary_heap<int> heap(7, comp);
+	binary_heap<int> heap(12, comp);
 	//binary_heap<int> heap( comp , arr );
 
 	heap.insert(40);
@@ -34,11 +34,16 @@ int main() {
 	heap.insert(46);
 	heap.insert(58);
 	heap.insert(1);
+	heap.insert(13);
+	heap.insert(4);
+	heap.insert(109);
+	heap.insert(10);
+	heap.insert(120);
+
 	/*
 	heap.insert(-1);
 	heap.insert(-2);
 	heap.insert(0);
-	heap.insert(13);
 	heap.insert(14);
 	heap.insert(16);
 	heap.insert(10);
@@ -57,8 +62,12 @@ int main() {
 	*/
 
 	heap.print();
-	heap.remove_at(heap.index_of(1));
-	heap.print();
+
+	std::vector<int> hs = binary_heap<int>::heap_sort(heap);
+
+	for (int& e : hs) {
+		std::cout << e << '\n';
+	}
 
 	std::cout << " ===========================\n";
 
@@ -66,7 +75,6 @@ int main() {
 	std::cout << " LENGTH  : " << heap.length() << " \n";
 	std::cout << " SIZE    : " << heap.size() << " \n";
 	std::cout << " IS_FULL : " << heap.is_full() << " \n";
-	std::cout << " LOCKED  : " << heap.is_locked() << " \n";
 	std::cout << " COMPLET : " << heap.is_complete() << " \n";
 
 	std::cout << " ===========================\n";
