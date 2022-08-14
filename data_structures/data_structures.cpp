@@ -14,22 +14,23 @@ using namespace arrays;
 
 int main() {
 
-	static_array<int> arr( { 10,22,31,14,25,63,7,80 } );
+	static_array<int> arr( 4 );
 
-	static_array<int> x = { 1,5,6,88 };
+	int x = 5;
 
-	arr.reverse();
+	arr.insert_at(0,11);
+	arr.insert_at(1,22);
+	arr.insert_at(2,33);
+	arr.insert_at(3,44);
+
+	arr.remove(0);
+	arr.remove(5);
 
 	arr.for_each([](int a) {
 		std::cout << a << '\n';
 	});
-
 
 	/*
-	arr.for_each([](int a) {
-		std::cout << a << '\n';
-	});
-
 	heap.insert(40);
 	heap.insert(37);
 	heap.insert(39);
@@ -62,6 +63,16 @@ int main() {
 	heap.insert(500);
 	heap.insert(44);
 	*/
+
+
+
+	std::cout << "================================" << '\n';
+	std::cout << "SIZE    : " << arr.size() << '\n';
+	std::cout << "LENGTH  : " << arr.length() << '\n';
+	std::cout << "IS_FULL : " << arr.is_full() << '\n';
+	std::cout << "IS_EMPTY: " << arr.is_empty() << '\n';
+	std::cout << "================================" << '\n';
+
 
 
 	return 0;

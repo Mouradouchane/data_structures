@@ -1,2 +1,6 @@
 ﻿  data_structures.cpp
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\arrays\static_array.hpp(136,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\arrays\static_array.hpp(134): message : while compiling class template member function 'bool arrays::static_array<int>::is_full(void)'
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(72): message : see reference to function template instantiation 'bool arrays::static_array<int>::is_full(void)' being compiled
+C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(17): message : see reference to class template instantiation 'arrays::static_array<int>' being compiled
   data_structures.vcxproj -> C:\Users\devc\Desktop\cpp\data_structures\Debug\data_structures.exe

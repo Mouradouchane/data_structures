@@ -6,6 +6,28 @@
 
 	-- NAME ----------- BEST --> WORST
 
+	length				O(1)
+	size				O(1)
+
+	insert				O(1) --> O(n)
+	insert_at			O(1)
+	remove				O(1)
+
+	reverse				O(n/2)
+	sort				O(n log n) --> O(n²)
+
+	search				O(n)
+	binary_search		O(log n) --> O(n)
+
+	for_each			O(n)
+	is_full				O(1)
+	is_empty			O(1)
+	
+	[]					O(1)
+	= {...}				O(n)
+	= array				O(n)
+	+=					O(n + new_n)
+	+					O(arr_1 + arr_2)
 */
 
 namespace arrays {
@@ -14,7 +36,7 @@ namespace arrays {
 
 	private:
 		size_t _size = 0;
-		int len = -1;
+		int len = 0;
 
 		T* arr = nullptr;
 
@@ -54,11 +76,25 @@ namespace arrays {
 
 		}
 
-	
+		// constructor 3
+		static_array(static_array<T>* new_array) {
+
+			this->_size = new_array->_size;
+			this->len   = new_array->len;
+			this->arr   = new_array->arr;
+
+
+		}
+
+
 		// destructor
 		~static_array() {
 
-			delete[] this->arr;
+			if (this->arr != nullptr) {
+
+				delete[] this->arr;
+
+			}
 
 		}
 
@@ -83,7 +119,7 @@ namespace arrays {
 
 		// o(1)
 		// get the count of how many elements currently in this array
-		int lenght() {
+		int length() {
 			return this->len;
 		}
 
@@ -98,6 +134,12 @@ namespace arrays {
 		bool is_full() {
 
 			return (this->len < this->_size) ? false : true;
+		}
+
+		// o(1)
+		// check if array is empty or not
+		bool is_empty() {
+			return (this->len > 0) ? false : true;
 		}
 
 		// o(n/2)
@@ -119,14 +161,70 @@ namespace arrays {
 
 		}
 
+		// o(n)
+		// loop over all and find the empty spot for that new_element
+		bool insert(const T& new_element ) {
+			
+			for (size_t i = 0; i < this->_size; i += 1) {
+				// if empty spot found
+				if ( *(this->arr + i) == NULL) {
+
+					// insert at it & return
+					*(this->arr + i) = new_element;
+
+					this->len += 1;
+					return true;
+				}
+
+			}
+			
+			return false;
+		}
+
+		// o(1)
+		bool insert_at(size_t const& target_index , const T& new_element ) {
+
+			// if index out of array range
+			if (target_index >= this->_size) return false;
+			else {
+				// otherwise insert
+				*(this->arr + target_index) = new_element;
+
+				this->len += 1;
+				return true;
+			}
+
+		}
+
+		// o(1)
+		// remove element from array 
+		// "NOTE" this function it's not affect the size of array 
+		bool remove( const size_t& target_index ) {
+
+			// if index out or range
+			if ( target_index > this->_size ) return false;
+
+			// if spot is already empty
+			if ( *(this->arr + target_index) == NULL ) return false;
+
+			// otherwise
+			*(this->arr + target_index) = NULL;
+			this->len -= 1;
+
+			return true;
+		}
+
 		/*
 		
 			public operators
 
 		*/
 
+
+		// o(1)
 		// random access operator to access elements
-		T& operator[] (size_t const& index) {
+		// but you can't assign values "READ-ONLY"
+		T operator [] (size_t const& index) {
 
 			// if index out of range
 			if (index > this->_size) {
@@ -139,9 +237,9 @@ namespace arrays {
 
 		}
 
-		// o(n + x)
+		// o(n + new_arr)
 		// add a hole static_array of elements to this current one
-		void operator+= (static_array<T>& new_elements) {
+		void operator += (static_array<T>& new_elements) {
 
 			// allocated new array with new size that can fit all elements
 			T* new_arr = new T[sizeof(T) * ( this->_size + new_elements._size)];
@@ -171,15 +269,54 @@ namespace arrays {
 			
 		}
 
+		// o(arr_1 + arr_2)
+		static_array<T>& operator + ( static_array<T> &arr_2 ) {
+
+			static_array<T>* new_array = new static_array<T>( this->size() + arr_2.size() );
+
+			for (size_t i = 0 ; i < this->size() ; i += 1) {
+
+				*(new_array->arr + i) = *(this->arr + i);
+				new_array->len += 1;
+			}
+
+			for (size_t i = 0 , c = this->size() ; i < arr_2.size() ; i += 1 , c += 1) {
+
+				*(new_array->arr + c) = *(arr_2.arr + i);
+				new_array->len += 1;
+
+			}
+
+			return *new_array;
+		}
+
 		// o(n)
-		// assigne list of elements to this new array
-		static_array<T>& operator= (std::initializer_list<T> &elements) {
+		// assign list of elements to this new array
+		static_array<T>& operator = (std::initializer_list<T> &elements) {
 
 			// construct new array and paste it over that current array
 			return static_array<T>(elements);
 
 		}
 
+		// o(n)
+		// assign a static_array to this one , it's like "copy constructor"
+		void operator = ( static_array<T> &new_array ) {
+			
+			delete[] this->arr;
+			this->arr = new T[sizeof(T) * new_array.size()];
+
+	
+			this->_size    = new_array._size;
+			this->len      = new_array.len;
+			
+			for ( size_t i = 0; i < new_array.size(); i += 1 ) {
+
+				*(this->arr + i) = *(new_array.arr + i);
+
+			}
+
+		}
 
 	}; // end of class static_array
 
