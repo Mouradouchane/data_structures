@@ -11,13 +11,26 @@
 
 using namespace arrays;
 
-
 int main() {
 
-	static_array<int> arr( 4 );
+	size_t size = 4;
+	std::initializer_list<int> elements = { 4,8,9,10,3 };
 
-	int x = 5;
+	dynamic_array<int> arr( 4 , 2 );
+	dynamic_array<int> fdr = { 1,2,3 };
 
+	arr.insert(0, size);
+	arr.insert(1, 22);
+	arr.insert(2, 33);
+	arr.insert(3, 44);
+
+
+	arr.for_each([](int a) {
+		std::cout << a << '\n';
+	});
+
+
+	/*
 	arr.insert_at(0,11);
 	arr.insert_at(1,22);
 	arr.insert_at(2,33);
@@ -26,11 +39,6 @@ int main() {
 	arr.remove(0);
 	arr.remove(5);
 
-	arr.for_each([](int a) {
-		std::cout << a << '\n';
-	});
-
-	/*
 	heap.insert(40);
 	heap.insert(37);
 	heap.insert(39);
@@ -69,7 +77,6 @@ int main() {
 	std::cout << "================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
 	std::cout << "LENGTH  : " << arr.length() << '\n';
-	std::cout << "IS_FULL : " << arr.is_full() << '\n';
 	std::cout << "IS_EMPTY: " << arr.is_empty() << '\n';
 	std::cout << "================================" << '\n';
 
