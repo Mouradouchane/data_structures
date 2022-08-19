@@ -1,3 +1,2 @@
 ﻿  data_structures.cpp
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(20,35): error C2440: 'initializing': cannot convert from 'initializer list' to 'arrays::dynamic_array<int>'
-C:\Users\devc\Desktop\cpp\data_structures\data_structures\data_structures.cpp(20,35): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+  data_structures.vcxproj -> C:\Users\devc\Desktop\cpp\data_structures\Debug\data_structures.exe

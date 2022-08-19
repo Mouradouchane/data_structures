@@ -16,21 +16,19 @@ int main() {
 	size_t size = 4;
 	std::initializer_list<int> elements = { 4,8,9,10,3 };
 
-	dynamic_array<int> arr( 4 , 2 );
-	dynamic_array<int> fdr = { 1,2,3 };
+	dynamic_array<int> arr  = { 1,2,3,4 };
+	dynamic_array<int> arr2 = { 5,6,7,8 };
 
-	arr.insert(0, size);
-	arr.insert(1, 22);
-	arr.insert(2, 33);
-	arr.insert(3, 44);
+	dynamic_array<int> t = arr + arr2;
 
 
-	arr.for_each([](int a) {
+	t.for_each([](int a) {
 		std::cout << a << '\n';
 	});
 
-
 	/*
+
+	arr.insert(0, 111);
 	arr.insert_at(0,11);
 	arr.insert_at(1,22);
 	arr.insert_at(2,33);
@@ -75,12 +73,10 @@ int main() {
 
 
 	std::cout << "================================" << '\n';
-	std::cout << "SIZE    : " << arr.size() << '\n';
-	std::cout << "LENGTH  : " << arr.length() << '\n';
-	std::cout << "IS_EMPTY: " << arr.is_empty() << '\n';
+	std::cout << "SIZE    : " << t.size() << '\n';
+	std::cout << "LENGTH  : " << t.length() << '\n';
+	std::cout << "IS_EMPTY: " << t.is_empty() << '\n';
 	std::cout << "================================" << '\n';
-
-
 
 	return 0;
 }

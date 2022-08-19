@@ -12,6 +12,7 @@
 	length				o(1)
 	is_empty			o(1)
 
+	push				o(1)
 	insert				o(1)
 	remove				o(1)
 
@@ -109,6 +110,27 @@ namespace arrays {
 			}
 		}
 
+
+		// o(n)
+		// constructor 4
+		dynamic_array( std::initializer_list<T> const& array_elements ){
+
+			this->_resize_factor = 1;
+			this->_size = array_elements.size();
+
+			this->arr = new T[sizeof(T) * this->_size];
+
+			size_t i = 0;
+			for (T element : array_elements) {
+
+				*(this->arr + i) = element;
+				this->_len += 1;
+				i += 1;
+			}
+
+		}
+
+
 		// o(n)
 		// destructor 
 		~dynamic_array() {
@@ -116,6 +138,8 @@ namespace arrays {
 			if (this->arr != nullptr) {
 
 				delete[] this->arr;
+				this->arr = nullptr;
+
 			}
 
 		}
@@ -254,6 +278,18 @@ namespace arrays {
 			return (this->_len == 0);
 		}
 
+		// o(1)
+		void push(T const& new_element) {
+
+			// o(n)
+			// if array is full resize it then insert in last empty position
+			if (this->_len >= this->_size) this->resize();
+			
+			// insert & update length
+			this->_len += 1;
+			*(this->arr + this->_len - 1) = new_element;
+
+		}
 
 		/*
 		
@@ -269,27 +305,66 @@ namespace arrays {
 			else return *(this->arr + index);
 
 		}
+		
+		// o(n)
+		// add array elements to this one
+		void operator += (dynamic_array const& added_array) {
 
-		dynamic_array<T>& operator = (  std::initializer_list<T> &elements ) {
-			return dynamic_array<T>(1, elements);
-		}
+			this->_size += added_array._size;
+			this->_len  += added_array._len;
 
-		void operator = ( dynamic_array<T>& new_array ) {
+			T* new_arr = new T[sizeof(T) * this->_size];
 
-			this->_len  = new_array._len;
-			this->_size = new_array._size;
-			this->_resize_factor = new_array._resize_factor;
 
-			this->arr = new T[ sizeof(T) * this->_size ];
+			for (size_t i = 0; i < (this->_size - added_array._size) ; i += 1) {
 
-			for (size_t i = 0; i < this->_size; i += 1) {
-
-				*(this->arr + i) = *(this->new_array.arr + i);
+				*(new_arr + i) = *(this->arr + i);
+				*(new_arr + (i + added_array._size)) = *(added_array.arr + i);
 
 			}
 
+			delete[] this->arr;
+			this->arr = new_arr;
+			new_arr = nullptr;
+
 		}
-		
+
+		// o(n)
+		// add list of elements to this array
+		void operator += (std::initializer_list<T> const& new_elements) {
+
+			this->_size += new_elements.size();
+			this->_len  += new_elements.size();
+
+			T* new_arr = new T[sizeof(T) * this->_size];
+
+			for (size_t i = 0; i < (this->_size - new_elements.size()); i += 1) {
+
+				*(new_arr + i) = *(this->arr + i);
+				*(new_arr + (i + new_elements.size())) = *(new_elements.begin() + i);
+
+			}
+
+			delete[] this->arr;
+			this->arr = new_arr;
+			new_arr = nullptr;
+		}
+
+		dynamic_array<T>& operator + ( dynamic_array<T> const& array_1 ) {
+				
+			dynamic_array<T>* concated_array = new dynamic_array<T>( ( this->_size + array_1._size ) , (this->_resize_factor + array_1._resize_factor));
+
+			for (size_t i = 0; i < this->_size; i += 1) {
+				concated_array->push(*(this->arr + i));
+			}
+			for (size_t i = 0; i < array_1._size ; i += 1) {
+				concated_array->push(*(array_1.arr + i));
+			}
+
+
+			return *concated_array;
+
+		}
 
 	}; // end of dynamic_array class
 
