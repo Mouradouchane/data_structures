@@ -9,22 +9,49 @@
 #include "arrays/static_array.hpp"
 #include "arrays/dynamic_array.hpp"
 
-using namespace arrays;
+class pdf {
+	public :
+		std::string data = "";
+		pdf( std::string const& dt) {
+			this->data = dt;
+		}
+		pdf() {}
+		~pdf() { }
+};
 
 int main() {
-
+	/*
 	size_t size = 4;
 	std::initializer_list<int> elements = { 4,8,9,10,3 };
 
-	dynamic_array<int> arr  = { 1,2,3,4 };
-	dynamic_array<int> arr2 = { 5,6,7,8 };
+	std::vector<int> vt;
+	std::vector<int>::iterator vit = vt.begin();
+	*/
 
-	dynamic_array<int> t = arr + arr2;
+	arrays::static_array<pdf> arr(5);
+	arr[0] = pdf("PDF0");
+	arr[1] = pdf("PDF1");
+	arr[2] = pdf("PDF2");
+	arr[3] = pdf("PDF3");
 
+	arrays::static_array<pdf>::iterator it = arr.cend();
+	
+	//it -= 1;
+	std::cout << it->data << " : 0x"  << &it << '\n';
 
-	t.for_each([](int a) {
-		std::cout << a << '\n';
+	std::cout << "array :\n";
+	arr.for_each([](pdf& a) {
+		std::cout << a.data << " : 0x" << &a << '\n';
 	});
+
+	std::cout << "================================" << '\n';
+	std::cout << "SIZE    : " << arr.size() << '\n';
+	std::cout << "LENGTH  : " << arr.length() << '\n';
+	std::cout << "IS_EMPTY: " << arr.is_empty() << '\n';
+	std::cout << "================================" << '\n';
+
+	return 0;
+}
 
 	/*
 
@@ -71,12 +98,3 @@ int main() {
 	*/
 
 
-
-	std::cout << "================================" << '\n';
-	std::cout << "SIZE    : " << t.size() << '\n';
-	std::cout << "LENGTH  : " << t.length() << '\n';
-	std::cout << "IS_EMPTY: " << t.is_empty() << '\n';
-	std::cout << "================================" << '\n';
-
-	return 0;
-}

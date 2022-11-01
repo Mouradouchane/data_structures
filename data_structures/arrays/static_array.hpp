@@ -32,6 +32,7 @@
 
 namespace arrays {
 
+
 	template<typename T> class static_array {
 
 	private:
@@ -53,9 +54,11 @@ namespace arrays {
 
 			// o(n)
 			// loop over all & insert NULL , just clearing process
-			for (unsigned int i = 0; i < this->_size; i += 1) {
-				*(this->arr + i) = NULL;
-			}
+			/*
+				for (unsigned int i = 0; i < this->_size; i += 1) {
+					*(this->arr + i) = NULL;
+				}
+			*/
 
 		}
 		
@@ -107,7 +110,7 @@ namespace arrays {
 
 		// o(n)
 		// loop over all elements 
-		void for_each( void (*call_back_function)(T element) ) {
+		void for_each( void (* const& call_back_function)(T& element) ) {
 
 			for (unsigned int i = 0; i < this->_size; i += 1) {
 
@@ -318,7 +321,67 @@ namespace arrays {
 
 		}
 
+
+		/*/
+			-------------- iterators --------------
+		*/
+
+		class iterator {
+			private : 
+				T* addr = nullptr;
+			public:
+				iterator() { }
+				iterator(T* address) :addr{ address } { }
+			
+				// access and refer operators
+				T operator *() {
+					return *(this->addr);
+				}
+				T* operator &() {
+					return this->addr;
+				}
+
+				// increment operators
+				void operator ++() {
+					this->addr = (this->addr + 1);
+				}
+				void operator +=( int const& increment_value ) {
+					this->addr = (this->addr + increment_value);
+				}
+
+				// decrement operators
+				void operator --() {
+					this->addr = (this->addr - 1);
+				}
+				void operator -= ( int const& decrement_value ) {
+					this->addr = (this->addr - decrement_value);
+				}
+
+				T* operator -> () {
+					return this->addr;
+				}
+
+		}; // end of class iterator
+
+		// O(1)
+		T* begin() {
+			return (this->arr + 0);
+		}
+		T* cbegin() {
+			return (this->arr + this->_size - 1);
+		}
+
+		T* end() {
+					// "size + 1" for "out of range" address
+			return  (this->arr + this->_size);
+		}
+		T* cend() {
+			return  (this->arr - 1);
+		}
+
+
 	}; // end of class static_array
 
 
+	
 } // end of namespace arrays
