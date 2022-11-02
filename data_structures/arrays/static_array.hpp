@@ -39,7 +39,10 @@ namespace arrays {
 		size_t _size = 0;
 		int len = 0;
 
+		// array its self
 		T* arr = nullptr;
+		// map : to keep track which index is empty or not
+		bool *map = nullptr;
 
 	public :
 
@@ -49,16 +52,16 @@ namespace arrays {
 			// save array size
 			this->_size = array_size;
 
-			// allocated array at the heap
+			// allocated array and map at the heap
 			this->arr = new T[sizeof(T) * array_size];
+			this->map = new bool[sizeof(bool) * array_size];
 
 			// o(n)
-			// loop over all & insert NULL , just clearing process
-			/*
-				for (unsigned int i = 0; i < this->_size; i += 1) {
-					*(this->arr + i) = NULL;
-				}
-			*/
+			// declare all places in array as empty places
+			for (size_t i = 0; i < this->_size; i += 1) {
+				this->map[i] = false;
+			}
+			
 
 		}
 		
@@ -67,11 +70,13 @@ namespace arrays {
 	
 			this->_size = elements.size();
 			this->arr = new T[sizeof(T) * this->_size];
+			this->map = new bool[sizeof(bool) * this->_size];
 
-			unsigned int i = 0;
+			size_t i = 0;
 			for (T element : elements) {
 
 				*(this->arr + i) = element;
+				this->map[i] = true;
 
 				i += 1;
 				this->len += 1;
@@ -85,7 +90,7 @@ namespace arrays {
 			this->_size = new_array->_size;
 			this->len   = new_array->len;
 			this->arr   = new_array->arr;
-
+			this->map   = new_array->map;
 
 		}
 
@@ -93,11 +98,8 @@ namespace arrays {
 		// destructor
 		~static_array() {
 
-			if (this->arr != nullptr) {
-
-				delete[] this->arr;
-
-			}
+			if (this->arr != nullptr) delete[] this->arr;
+			if (this->map != nullptr) delete[] this->map;
 
 		}
 
@@ -114,7 +116,7 @@ namespace arrays {
 
 			for (unsigned int i = 0; i < this->_size; i += 1) {
 
-				call_back_function( *(this->arr + i) );
+				if(this->map[i] == true) call_back_function( *(this->arr + i) );
 
 			}
 
@@ -135,7 +137,6 @@ namespace arrays {
 		// o(1)
 		// check if array is full of elements or not
 		bool is_full() {
-
 			return (this->len < this->_size) ? false : true;
 		}
 
@@ -149,33 +150,42 @@ namespace arrays {
 		void reverse() {
 
 			// temp for swap each time
-			T temp = NULL;
+			T temp;
+			bool tbool;
 
 			// o(n/2)
 			// loop from the beginning to the middel and preforme swap
 			for (size_t i = 0, c = this->_size - 1; i < c ; i += 1, c -= 1) {
 
 				temp = *(this->arr + i);
-				*(this->arr + i) = *(this->arr + c);
-				*(this->arr + c) = temp;
+				bool tbool = *(this->map + i);
 
-				temp = NULL;
+
+				*(this->arr + i) = *(this->arr + c);
+				*(this->map + i) = *(this->map + c);
+				*(this->arr + c) = temp;
+				*(this->map + c) = tbool;
+
 			}
 
 		}
 
 		// o(n)
 		// loop over all and find the empty spot for that new_element
-		bool insert(const T& new_element ) {
+		bool insert( const T& new_element ) {
 			
 			for (size_t i = 0; i < this->_size; i += 1) {
-				// if empty spot found
-				if ( *(this->arr + i) == NULL) {
 
-					// insert at it & return
+				// if empty spot founded
+				if ( this->map[i] == false ) {
+
+					// insert 
 					*(this->arr + i) = new_element;
 
+					// update map & length
+					this->map[i] = true;
 					this->len += 1;
+
 					return true;
 				}
 
@@ -190,10 +200,13 @@ namespace arrays {
 			// if index out of array range
 			if (target_index >= this->_size) return false;
 			else {
+
 				// otherwise insert
 				*(this->arr + target_index) = new_element;
 
+				this->map[target_index] = true;
 				this->len += 1;
+
 				return true;
 			}
 
@@ -205,16 +218,27 @@ namespace arrays {
 		bool remove( const size_t& target_index ) {
 
 			// if index out or range
-			if ( target_index > this->_size ) return false;
+			if ( target_index >= this->_size ) return false;
 
-			// if spot is already empty
-			if ( *(this->arr + target_index) == NULL ) return false;
+			// if already is empty
+			if (this->map[target_index] == false) return false;
 
-			// otherwise
-			*(this->arr + target_index) = NULL;
+			// else
+			this->map[target_index] = false;
 			this->len -= 1;
 
 			return true;
+		}
+
+		// o(1)
+		// replacement for [] operator
+		T* get(size_t const& index) {
+
+			if (index >= this->_size) return (this->arr + this->_size);
+
+			if (this->map[index] == false) return (this->arr + this->_size);
+			
+			else return (this->arr + index);
 		}
 
 		/*
@@ -222,23 +246,6 @@ namespace arrays {
 			public operators
 
 		*/
-
-
-		// o(1)
-		// random access operator to access elements
-		// but you can't assign values "READ-ONLY"
-		T operator [] (size_t const& index) {
-
-			// if index out of range
-			if (index > this->_size) {
-
-				throw std::invalid_argument("argument 'index' out of range").what();
-
-			}
-			// else get value at this index
-			else return *(this->arr + index);
-
-		}
 
 		// o(n + new_arr)
 		// add a hole static_array of elements to this current one

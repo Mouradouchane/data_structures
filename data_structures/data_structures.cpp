@@ -17,6 +17,10 @@ class pdf {
 		}
 		pdf() {}
 		~pdf() { }
+
+		void operator = (pdf const& new_data) {
+			this->data = new_data.data;
+		}
 };
 
 int main() {
@@ -27,19 +31,27 @@ int main() {
 	std::vector<int> vt;
 	std::vector<int>::iterator vit = vt.begin();
 	*/
-
-	arrays::static_array<pdf> arr(5);
+	// { pdf("PDF1"),  pdf("PDF2") ,  pdf("PDF3") , pdf("PDF4") }
+	arrays::static_array<pdf> arr({ pdf("PDF1"),  pdf("PDF2") ,  pdf("PDF3") , pdf("PDF4") });
+	/*
 	arr[0] = pdf("PDF0");
 	arr[1] = pdf("PDF1");
 	arr[2] = pdf("PDF2");
 	arr[3] = pdf("PDF3");
+	arr.insert(pdf("PDF0"));
+	arr.insert(pdf("PDF1"));
+	arr.insert(pdf("PDF2"));
+	arr.insert(pdf("PDF3"));
+	*/
 
-	arrays::static_array<pdf>::iterator it = arr.cend();
-	
+	arr.remove(2);
+	arrays::static_array<pdf>::iterator it = arr.begin();
+
 	//it -= 1;
-	std::cout << it->data << " : 0x"  << &it << '\n';
+	//std::cout << it->data << " : 0x" << &it << '\n';
+	std::cout << arr.get(3)->data << " : 0x"  << arr.get(3) << '\n';
 
-	std::cout << "array :\n";
+	std::cout << "================================" << '\n';
 	arr.for_each([](pdf& a) {
 		std::cout << a.data << " : 0x" << &a << '\n';
 	});
