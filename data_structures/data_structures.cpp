@@ -45,9 +45,17 @@ int main() {
 	*/
 
 
-	arrays::static_array<pdf> arr = { pdf("PDF1"),  pdf("PDF2")  };
-	arrays::static_array<pdf> arr2 = arr;
-	
+	arrays::static_array<pdf> arr = 6;
+	arr.insert(pdf("PDF0"));
+	arr.insert(pdf("PDF1"));
+	arr.insert(pdf("PDF2"));
+	arr.insert(pdf("PDF3"));
+	arr.insert(pdf("PDF4"));
+	arr.insert(pdf("PDF5"));
+
+	arr.remove(2,1);
+	arr.reverse();
+
 	arrays::static_array<pdf>::iterator it = arr.begin();
 
 	pdf dt = arr.get(3);
@@ -60,6 +68,7 @@ int main() {
 	arr.for_each([](pdf& a) {
 		std::cout << a.data << " : 0x" << &a << '\n';
 	});
+
 
 	std::cout << "================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';

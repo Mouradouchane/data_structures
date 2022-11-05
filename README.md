@@ -4,28 +4,26 @@
 <br>
 
 repository contain a collection of data structures for **C++** . <br>
-**note** : each type in it's own **folder** and each version of that type in separate **header file** .
+**note** : each data-structure in it's own **hpp file** .
 
 <br>
 
-## - Usage :
+<h2> Usage </h2> 
 <hr>
 
-> copy any **"header_file"** you want to **you project** .
+> copy **"hpp file"** .
 
-> include that **"header_file.hpp"** .
+> include it  **"hpp file"** .
 
 > take a look on it in **[docs](https://github.com/Mouradouchane/data_structures/wiki)** .
 
-> happy coding :sweat_smile: .
-
 <br>
 
-## - Example :
+<h2> Example </h2> 
 <hr>
 
 ```c++
-  // include doubly linked list header file  
+  // include doubly linked list 
   #include "linkedlists/doubly_LinkedList.hpp"
   
   // use namespace if you want "optional" 
@@ -45,23 +43,19 @@ repository contain a collection of data structures for **C++** . <br>
 
 <br>
 
-## - Docs : [![](https://img.shields.io/badge/docs-Beta-blue)](#) 
+<h2> Docs </h2>
 <hr>
 
 for more information and details you can take a look at **[docs](https://github.com/Mouradouchane/data_structures/wiki)** .
 
-<br>
-
-## - Table of content : 
-<hr>
 
 <details >
 <summary>array</summary>
 
-| name | status | testing |
+| Name | Status | Testing |
 | ---- | ------ | ------- |
-| [static array](#) | [![status](https://img.shields.io/badge/status-unavailable-red?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-unavailable-blueviolet)](#)|
-| [dynamic array](#) | [![status](https://img.shields.io/badge/status-unavailable-red?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-unavailable-blueviolet)](#) |
+| [static array](#) |[![status](https://img.shields.io/badge/status-stable-brightgreen?style=flat)](#)| [![status](https://img.shields.io/badge/manual%20testing-pass-ff69b4)](#)|
+| [dynamic array](#) | [![status](https://img.shields.io/badge/status-not_stable-red?style=flat)](#) | [![status](https://img.shields.io/badge/manual%20testing-unavailable-blueviolet)](#) |
 
 </details>
 
@@ -124,8 +118,8 @@ for more information and details you can take a look at **[docs](https://github.
 
 <br>
 
-## - Contributions :
+<h2> Contribution </h2>
 <hr>
 
-if want to **contribute/reporte** and anything else , you're welcome 😙 , but
-please **before you do anything** , talk to me first or open **[issue](https://github.com/Mouradouchane/data_structures/issues)** 😄 .
+- if want to improve some data-structure here or and anything else , you're welcome .
+- before you make a **Pull-Request** , talk to me first or open **[ISSUE](https://github.com/Mouradouchane/data_structures/issues)** .

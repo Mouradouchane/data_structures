@@ -8,26 +8,22 @@
 
 	length				O(1)
 	size				O(1)
+	is_full				O(1)
+	is_empty			O(1)
 
 	insert				O(1) --> O(n)
 	insert_at			O(1)
+
+	get					O(1)
 	remove				O(1)
 
-	reverse				O(n/2)
-	sort				O(n log n) --> O(n²)
-
-	search				O(n)
-	binary_search		O(log n) --> O(n)
+	reverse				O(n)
 
 	for_each			O(n)
-	is_full				O(1)
-	is_empty			O(1)
-	
-	[]					O(1)
+
 	= {...}				O(n)
 	= array				O(n)
-	+=					O(n + new_n)
-	+					O(arr_1 + arr_2)
+
 */
 
 namespace arrays {
@@ -46,7 +42,7 @@ namespace arrays {
 
 	public :
 
-		// constructor 1
+		// default constructor 
 		static_array( size_t array_size = 0 ) {
 
 			// save array size
@@ -62,13 +58,13 @@ namespace arrays {
 				this->map[i] = false;
 			}
 			
-
 		}
 		
-		// constructor 2
+		// initializer_list constructor 
 		static_array( std::initializer_list<T> const& elements ) {
 	
 			this->_size = elements.size();
+			this->len = this->_size - 1;
 			this->arr = new T[sizeof(T) * this->_size];
 			this->map = new bool[sizeof(bool) * this->_size];
 
@@ -76,42 +72,38 @@ namespace arrays {
 			for (T element : elements) {
 
 				*(this->arr + i) = element;
-				this->map[i] = true;
+				*(this->map + i) = true;
 
 				i += 1;
-				this->len += 1;
 			}
 
 		}
 
-		// constructor 3
-		static_array(static_array<T>* new_array) {
+		// "copy constructor"
+		static_array(static_array<T> & new_array) {
 
-			this->_size = new_array->_size;
-			this->len   = new_array->len;
-			this->arr   = new_array->arr;
-			this->map   = new_array->map;
+			this->arr = new T[sizeof(T) * new_array._size];
+			this->map = new bool[sizeof(bool) * new_array._size];
+
+			// copy process
+			
+			this->_size  = new_array._size;
+			this->len    = new_array.len;
+
+			for (size_t i = 0; i < this->_size; i += 1) {
+
+				*(this->arr + i)  = *(new_array.arr + i);
+				*(this->map + i)  = *(new_array.map + i);
+
+			}
 
 		}
 
 
-		// destructor
-		~static_array() {
+		// destructor	
+		~static_array() { }
 
-			if (this->arr != nullptr) delete[] this->arr;
-			if (this->map != nullptr) delete[] this->map;
-
-			this->arr = nullptr;
-			this->map = nullptr;
-		}
-
-
-		/*
-
-			public methods
-
-		*/
-
+			
 		// o(n)
 		// loop over all elements 
 		void for_each( void (* const& call_back_function)(T& element) ) {
@@ -148,14 +140,13 @@ namespace arrays {
 			return (this->len > 0) ? false : true;
 		}
 
-		// o(n/2)
+		// o(n)
 		void reverse() {
 
 			// temp for swap each time
 			T temp;
 			bool tbool;
 
-			// o(n/2)
 			// loop from the beginning to the middel and preforme swap
 			for (size_t i = 0, c = this->_size - 1; i < c ; i += 1, c -= 1) {
 
@@ -216,24 +207,40 @@ namespace arrays {
 
 		// o(1)
 		// remove element from array 
-		// "NOTE" this function it's not affect the size of array 
-		bool remove( const size_t& target_index ) {
+		// NOTE : this function it's not affect the size of array 
+		// NOTE : remove "just as declare" the element will be there until overwrite or the hole array get deleted 
+		bool remove( size_t const& target_index ) {
 
 			// if index out or range
 			if ( target_index >= this->_size ) return false;
 
-			// if already is empty
+			// if already empty
 			if (this->map[target_index] == false) return false;
 
-			// else
+			// declare as removed
 			this->map[target_index] = false;
 			this->len -= 1;
 
 			return true;
 		}
+		
+		// o(range)
+		// "virtual remove" range of elements in array
+		bool remove(size_t const& start_index, size_t const& end_index) {
+
+			if (start_index < 0 || start_index >= this->_size) return false;
+			if (end_index   < 0 || end_index   >= this->_size) return false;
+			if (end_index < start_index) return false;
+
+			for (size_t i = start_index; i <= end_index; i += 1) {
+				this->remove(i);
+			}
+
+			return true;
+		}
 
 		// o(1)
-		// replacement for [] operator
+		// "get element by value"
 		T get(size_t const& index) {
 
 			if (index >= this->_size) return *(this->arr + this->_size);
@@ -243,82 +250,19 @@ namespace arrays {
 			else return *(this->arr + index);
 		}
 
+
 		/*
 		
 			-------------- public operators --------------
 
 		*/
 
-		// o(n + new_arr)
-		// add a hole static_array of elements to this current one
-		void operator += (static_array<T>& new_elements) {
-
-			// allocated new array with new size that can fit all elements
-			T* new_arr = new T[sizeof(T) * (this->_size + new_elements._size)];
-			bool *new_map = new bool[sizeof(bool) * ( this->_size + new_elements._size)];
-
-			// start copying 1st array
-			size_t i = 0;
-			for (; i < this->_size; i += 1) {
-
-				*(new_arr + i) = *(this->arr + i);
-				*(new_map + i) = *(this->map + i);
-
-			}
-
-			// delete old array and it's map
-			delete[] this->arr;
-			delete[] this->map;
-
-
-			// start copying from 2nd array
-			for (int c = 0; c < new_elements._size; c += 1 , i += 1) {
-
-				*(new_arr + i) = new_elements.get(c);
-				*(new_map + i) = *(new_elements.map + c);
-
-			}
-
-			// then save that new array
-			this->_size += new_elements._size;
-			this->len += new_elements.len;
-			this->arr = new_arr;
-			this->map = new_map;
-		}
-
-		// o(n)
-		// assign list of elements to this new array
-		static_array<T>& operator = (std::initializer_list<T> &elements) {
-
-			// construct new array and paste it over that current array
-			return static_array<T>(elements);
-
-		}
-
-
 		// o(n)
 		// "pass array by value not ref"
-		void operator = ( static_array<T> & new_array ) {
+
+		static_array<T>& operator = ( static_array<T> & replace_array ) {
 			
-			// delete old
-			delete[] this->arr;
-			delete[] this->map;
-			
-			// set new
-
-			this->arr = new T[sizeof(T) * new_array._size];
-			this->map = new bool[sizeof(bool) * new_array._size];
-
-			// copy process
-			for ( size_t i = 0; i < new_array._size; i += 1 ) {
-
-				*(this->arr + i) = *(new_array.arr + i);
-				*(this->map + i) = *(new_array.map + i);
-
-			}
-
-			this->len = new_array.len;
-			this->_size = new_array._size;
+			return static_array<T>(replace_array);
 
 		}
 
@@ -366,7 +310,12 @@ namespace arrays {
 
 		}; // end of class iterator
 
+		/*
+			-------------- methods for iterators --------------
+		*/
+
 		// O(1)
+
 		T* begin() {
 			return (this->arr + 0);
 		}
