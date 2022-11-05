@@ -21,6 +21,7 @@ class pdf {
 		void operator = (pdf const& new_data) {
 			this->data = new_data.data;
 		}
+
 };
 
 int main() {
@@ -32,7 +33,6 @@ int main() {
 	std::vector<int>::iterator vit = vt.begin();
 	*/
 	// { pdf("PDF1"),  pdf("PDF2") ,  pdf("PDF3") , pdf("PDF4") }
-	arrays::static_array<pdf> arr({ pdf("PDF1"),  pdf("PDF2") ,  pdf("PDF3") , pdf("PDF4") });
 	/*
 	arr[0] = pdf("PDF0");
 	arr[1] = pdf("PDF1");
@@ -44,12 +44,17 @@ int main() {
 	arr.insert(pdf("PDF3"));
 	*/
 
-	arr.remove(2);
+
+	arrays::static_array<pdf> arr = { pdf("PDF1"),  pdf("PDF2")  };
+	arrays::static_array<pdf> arr2 = arr;
+	
 	arrays::static_array<pdf>::iterator it = arr.begin();
+
+	pdf dt = arr.get(3);
 
 	//it -= 1;
 	//std::cout << it->data << " : 0x" << &it << '\n';
-	std::cout << arr.get(3)->data << " : 0x"  << arr.get(3) << '\n';
+	std::cout << dt.data << " : 0x"  << &dt << '\n';
 
 	std::cout << "================================" << '\n';
 	arr.for_each([](pdf& a) {
@@ -60,6 +65,7 @@ int main() {
 	std::cout << "SIZE    : " << arr.size() << '\n';
 	std::cout << "LENGTH  : " << arr.length() << '\n';
 	std::cout << "IS_EMPTY: " << arr.is_empty() << '\n';
+	std::cout << "IS_FULL : " << arr.is_full()  << '\n';
 	std::cout << "================================" << '\n';
 
 	return 0;

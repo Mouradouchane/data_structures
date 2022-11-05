@@ -101,6 +101,8 @@ namespace arrays {
 			if (this->arr != nullptr) delete[] this->arr;
 			if (this->map != nullptr) delete[] this->map;
 
+			this->arr = nullptr;
+			this->map = nullptr;
 		}
 
 
@@ -114,7 +116,7 @@ namespace arrays {
 		// loop over all elements 
 		void for_each( void (* const& call_back_function)(T& element) ) {
 
-			for (unsigned int i = 0; i < this->_size; i += 1) {
+			for (size_t i = 0; i < this->_size; i += 1) {
 
 				if(this->map[i] == true) call_back_function( *(this->arr + i) );
 
@@ -232,18 +234,18 @@ namespace arrays {
 
 		// o(1)
 		// replacement for [] operator
-		T* get(size_t const& index) {
+		T get(size_t const& index) {
 
-			if (index >= this->_size) return (this->arr + this->_size);
+			if (index >= this->_size) return *(this->arr + this->_size);
 
-			if (this->map[index] == false) return (this->arr + this->_size);
+			if (this->map[index] == false) return *(this->arr + this->_size);
 			
-			else return (this->arr + index);
+			else return *(this->arr + index);
 		}
 
 		/*
 		
-			public operators
+			-------------- public operators --------------
 
 		*/
 
@@ -252,52 +254,36 @@ namespace arrays {
 		void operator += (static_array<T>& new_elements) {
 
 			// allocated new array with new size that can fit all elements
-			T* new_arr = new T[sizeof(T) * ( this->_size + new_elements._size)];
+			T* new_arr = new T[sizeof(T) * (this->_size + new_elements._size)];
+			bool *new_map = new bool[sizeof(bool) * ( this->_size + new_elements._size)];
 
-			// start copying from first array
-			unsigned int i = 0;
+			// start copying 1st array
+			size_t i = 0;
 			for (; i < this->_size; i += 1) {
 
-				new_arr[i] = *(this->arr + i);
+				*(new_arr + i) = *(this->arr + i);
+				*(new_map + i) = *(this->map + i);
 
 			}
 
-			// delete old array from the heap
+			// delete old array and it's map
 			delete[] this->arr;
+			delete[] this->map;
 
-			// start copying from second array
+
+			// start copying from 2nd array
 			for (int c = 0; c < new_elements._size; c += 1 , i += 1) {
 
-				*(new_arr + i) = new_elements[c];
-				this->len += 1;
+				*(new_arr + i) = new_elements.get(c);
+				*(new_map + i) = *(new_elements.map + c);
 
 			}
 
 			// then save that new array
 			this->_size += new_elements._size;
+			this->len += new_elements.len;
 			this->arr = new_arr;
-			
-		}
-
-		// o(arr_1 + arr_2)
-		static_array<T>& operator + ( static_array<T> &arr_2 ) {
-
-			static_array<T>* new_array = new static_array<T>( this->size() + arr_2.size() );
-
-			for (size_t i = 0 ; i < this->size() ; i += 1) {
-
-				*(new_array->arr + i) = *(this->arr + i);
-				new_array->len += 1;
-			}
-
-			for (size_t i = 0 , c = this->size() ; i < arr_2.size() ; i += 1 , c += 1) {
-
-				*(new_array->arr + c) = *(arr_2.arr + i);
-				new_array->len += 1;
-
-			}
-
-			return *new_array;
+			this->map = new_map;
 		}
 
 		// o(n)
@@ -309,28 +295,38 @@ namespace arrays {
 
 		}
 
-		// o(n)
-		// assign a static_array to this one , it's like "copy constructor"
-		void operator = ( static_array<T> &new_array ) {
-			
-			delete[] this->arr;
-			this->arr = new T[sizeof(T) * new_array.size()];
 
-	
-			this->_size    = new_array._size;
-			this->len      = new_array.len;
+		// o(n)
+		// "pass array by value not ref"
+		void operator = ( static_array<T> & new_array ) {
 			
-			for ( size_t i = 0; i < new_array.size(); i += 1 ) {
+			// delete old
+			delete[] this->arr;
+			delete[] this->map;
+			
+			// set new
+
+			this->arr = new T[sizeof(T) * new_array._size];
+			this->map = new bool[sizeof(bool) * new_array._size];
+
+			// copy process
+			for ( size_t i = 0; i < new_array._size; i += 1 ) {
 
 				*(this->arr + i) = *(new_array.arr + i);
+				*(this->map + i) = *(new_array.map + i);
 
 			}
+
+			this->len = new_array.len;
+			this->_size = new_array._size;
 
 		}
 
 
-		/*/
+		/*
+
 			-------------- iterators --------------
+
 		*/
 
 		class iterator {
