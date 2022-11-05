@@ -123,19 +123,18 @@ namespace arrays {
 		}
 
 		// o(1)
-		// get size of this array
+		// get array size
 		size_t size() {
 			return this->_size;
 		}
 
 		// o(1)
-		// check if array is full of elements or not
 		bool is_full() {
-			return (this->len < this->_size) ? false : true;
+			if (this->_size == 0) return false;
+			return (this->len < this->_size - 1) ? false : true;
 		}
 
 		// o(1)
-		// check if array is empty or not
 		bool is_empty() {
 			return (this->len > 0) ? false : true;
 		}
@@ -257,15 +256,24 @@ namespace arrays {
 
 		*/
 
-		// o(n)
-		// "pass array by value not ref"
 
-		static_array<T>& operator = ( static_array<T> & replace_array ) {
-			
-			return static_array<T>(replace_array);
+		void operator = (std::initializer_list<T> const& elements) {
+
+			this->_size = elements.size();
+			this->len = this->_size - 1;
+			this->arr = new T[sizeof(T) * this->_size];
+			this->map = new bool[sizeof(bool) * this->_size];
+
+			size_t i = 0;
+			for (T element : elements) {
+
+				*(this->arr + i) = element;
+				*(this->map + i) = true;
+
+				i += 1;
+			}
 
 		}
-
 
 		/*
 
