@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdexcept> 
 #pragma once
 
@@ -30,6 +31,8 @@ namespace arrays {
 
 
 	template<typename T> class static_array {
+
+		static_assert(!std::is_pointer_v<T>, "T* 'pointer type' not allowed in static_array use the alternative 'static_array_p' ");
 
 	private:
 		size_t _size = 0;
@@ -144,48 +147,36 @@ namespace arrays {
 
 			// temp for swap each time
 			T temp;
-			bool tbool;
 
 			// loop from the beginning to the middel and preforme swap
 			for (size_t i = 0, c = this->_size - 1; i < c ; i += 1, c -= 1) {
 
 				temp = *(this->arr + i);
-				bool tbool = *(this->map + i);
-
 
 				*(this->arr + i) = *(this->arr + c);
-				*(this->map + i) = *(this->map + c);
 				*(this->arr + c) = temp;
-				*(this->map + c) = tbool;
 
+				temp = T();
+				/*
+				try {
+				}
+				catch (std::exception err) {
+					throw err;
+					throw ("make sure that your \"data - type\" support assignment to \"NULL\" value .");
+				}
+				*/
 			}
 
 		}
 
 		// o(n)
-		// loop over all and find the empty spot for that new_element
-		bool insert( const T& new_element ) {
-			
-			for (size_t i = 0; i < this->_size; i += 1) {
+		// replace all elements empty values
+		void clear() {
 
-				// if empty spot founded
-				if ( this->map[i] == false ) {
+			for (size_t i = 0; i < this->_size; i += 1) *(this->arr + i) = T();
 
-					// insert 
-					*(this->arr + i) = new_element;
-
-					// update map & length
-					this->map[i] = true;
-					this->len += 1;
-
-					return true;
-				}
-
-			}
-			
-			return false;
 		}
-
+		
 		// o(1)
 		bool insert_at(size_t const& target_index , const T& new_element ) {
 
@@ -256,7 +247,6 @@ namespace arrays {
 
 		*/
 
-
 		void operator = (std::initializer_list<T> const& elements) {
 
 			this->_size = elements.size();
@@ -275,6 +265,29 @@ namespace arrays {
 
 		}
 
+		T& operator[] (size_t const& index) {
+			return *(this->arr + index);
+		}
+
+
+		// O(1)
+
+		T* begin() {
+			return (this->arr + 0);
+		}
+		T* cbegin() {
+			return (this->arr + this->_size - 1);
+		}
+
+		T* end() {
+			// "size + 1" for "out of range" address
+			return  (this->arr + this->_size);
+		}
+		T* cend() {
+			return  (this->arr - 1);
+		}
+
+
 		/*
 
 			-------------- iterators --------------
@@ -282,8 +295,11 @@ namespace arrays {
 		*/
 
 		class iterator {
+
 			private : 
 				T* addr = nullptr;
+				int index = 0;
+
 			public:
 				iterator() { }
 				iterator(T* address) :addr{ address } { }
@@ -316,28 +332,31 @@ namespace arrays {
 					return this->addr;
 				}
 
+				// =========== compare iterator to reference ===========
+				bool operator != ( T * address_of_other_element ) {
+					return (this->addr != address_of_other_element) ? true : false;
+				}
+
+				bool operator == (T* address_of_other_element) {
+					return (this->addr == address_of_other_element) ? true : false;
+				}
+
+
+				// =========== compare iterator to iterator ===========
+				bool operator != (static_array<T>::iterator & other_iterator) {
+					return (this->addr != other_iterator.addr) ? true : false;
+				}
+
+				bool operator == (static_array<T>::iterator& other_iterator) {
+					return (this->addr == other_iterator.addr) ? true : false;
+				}
+
 		}; // end of class iterator
+
 
 		/*
 			-------------- methods for iterators --------------
 		*/
-
-		// O(1)
-
-		T* begin() {
-			return (this->arr + 0);
-		}
-		T* cbegin() {
-			return (this->arr + this->_size - 1);
-		}
-
-		T* end() {
-					// "size + 1" for "out of range" address
-			return  (this->arr + this->_size);
-		}
-		T* cend() {
-			return  (this->arr - 1);
-		}
 
 
 	}; // end of class static_array
