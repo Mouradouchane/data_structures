@@ -3,6 +3,11 @@
 
 #pragma once
 
+
+#define out_of_range "index out of range !"
+#define reversed_range "start_index should be smaller or equal to end_index ."
+
+
 /*
 	static array methods
 
@@ -32,34 +37,27 @@ namespace arrays {
 
 
 	template<typename T> class static_array {
-
-		// NOTE : "T" should not be pointer type "T*"
-		static_assert(!std::is_pointer_v<T>, "T* 'pointer type' not allowed in static_array use the alternative 'static_array_p' ");
-
+		
 	private:
 		size_t _size = 0;
 		int len = 0;
 
-		// "pointer" to the array in the heap
+		// would be heap allocation later
 		T* arr = nullptr;
-
 
 	public :
 
 		// default constructor 
 		static_array( size_t array_size = 0 ) {
 
-			// save array size
+			// array size
 			this->_size = array_size;
 
-			// allocated array at the heap
 			this->arr = new T[sizeof(T) * array_size];
 
-			// fill with empty values
-			for (size_t i = 0; i < this->_size; i += 1) {
-				*(this->arr + i) = T();
-			}
-			
+			// fill with T()
+			for (size_t i = 0; i < this->_size; i += 1) *(this->arr + i) = T();
+
 		}
 		
 		// initializer_list constructor 
@@ -138,6 +136,10 @@ namespace arrays {
 		*/
 		class iterator;
 
+		/*
+			===== errors =====
+		*/
+		class error ;
 	}; 
 	/*
 
@@ -210,18 +212,7 @@ namespace arrays {
 	// try to replace all elements with empty value
 	template<typename T> void static_array<T>::clear() {
 
-		for (size_t i = 0; i < this->_size; i += 1) *(this->arr + i) = T();
-
-	}
-
-	template<typename T> void static_array<T>::clear(size_t const& start_index, size_t const& end_index) {
-
-		if (start_index >= this->_size) return;
-		if (end_index >= this->_size) return;
-
-		if (start_index > end_index) return;
-
-		for (size_t i = start_index; i <= end_index; i += 1) {
+		for (size_t i = 0; i < this->_size; i += 1) {
 
 			*(this->arr + i) = T();
 
@@ -229,10 +220,33 @@ namespace arrays {
 
 	}
 
+	template<typename T> void static_array<T>::clear(size_t const& start_index, size_t const& end_index) {
+		try {
+
+			if (start_index >= this->_size)	throw static_array<T>::error( out_of_range );
+			if (end_index >= this->_size)	throw static_array<T>::error( out_of_range );
+
+			if (start_index > end_index) throw static_array<T>::error( reversed_range );
+
+			for (size_t i = start_index; i <= end_index; i += 1) {
+
+				*(this->arr + i) = T();
+
+			}
+
+		}
+		catch (static_array<T>::error & err) {
+			std::cerr << err.what() << '\n';
+		}
+	}
+
 	template<typename T> bool static_array<T>::insert_at(size_t const& target_index, T const& new_element) {
 
 		// if index out of array range
-		if (target_index >= this->_size) return false;
+		if (target_index >= this->_size) {
+			throw static_array<T>::error(out_of_range);
+			return false;
+		}
 		else {
 			// otherwise insert
 
@@ -295,7 +309,17 @@ namespace arrays {
 
 	}
 	template<typename T> T& static_array<T>::operator[] (size_t const& index) {
-		return *(this->arr + index);
+		
+		try {
+
+			if (index >= this->_size) throw static_array<T>::error(out_of_range);
+			else return *(this->arr + index);
+
+		}
+		catch (static_array<T>::error & err) {
+			std::cerr << err.what() << '\n';
+		}
+
 	}
 
 
@@ -381,6 +405,33 @@ namespace arrays {
 
 	}; 
 	// end of class iterator
+
+
+
+	/*
+		-------------- static_array error class --------------
+	*/
+	template<typename T> class static_array<T>::error : public std::runtime_error {
+		
+		private:
+			const char* msg;
+
+		public:
+
+			error();
+
+			error(const char* error_message) : std::runtime_error(error_message) {
+				this->msg = error_message;
+			}
+
+			~error() = default;
+
+			char const* what() const override {
+				return this->msg;
+			}
+
+	};
+	// end of class error
 
 
 } // end of namespace arrays
