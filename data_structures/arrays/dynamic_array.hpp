@@ -1,49 +1,25 @@
+#include <iostream>
+
 #pragma once
 
-/*
-	dynamic array methods 
-
-	-- NAME ----------- BEST --> WORST
-	
-	constructor			o(n)
-	destructor			o(n)
-
-	size				o(1)
-	length				o(1)
-	is_empty			o(1)
-
-	push				o(1)
-	insert				o(1)
-	remove				o(1)
-
-	search				o(n)
-	binary_search		o(log n) --> o(n)
-
-	sort				o(n log n)
-	reverse				o(n/2)
-
-	resize				o(n)
-	set_resize_factor	o(1)
-
-	for_each			o(n)
-
-	=					o(n)
-	[]					o(1)
-	+=					o(arr_1 + arr_2)
-	+					o(arr_1 + arr_2)
-*/
+#define out_of_range "index out of range !"
+#define reversed_range "start_index should be smaller or equal to end_index ."
+#define illegal_type_const "const type is not allowed in dynamic_array use the alternative c_dynamic_array ."
 
 namespace arrays {
 
 	template<typename T> class dynamic_array {
 
+		static_assert(!std::is_const<T>::value, illegal_type_const);
+
 	private:
 		
 		size_t _len  = 0;
-		size_t _size = NULL;
-		size_t _resize_factor = NULL;
+		size_t _size = 0;
+		size_t _resize_factor = 0;
 
 		T* arr = nullptr;
+		bool* map = nullptr;
 
 	public :
 
@@ -65,7 +41,7 @@ namespace arrays {
 
 			for (size_t i = 0; i < this->_size; i += 1) {
 
-				*(this->arr + i) = NULL;
+				*(this->arr + i) = T();
 
 			}
 
@@ -84,7 +60,7 @@ namespace arrays {
 
 			for (size_t i = 0; i < this->_size; i += 1) {
 
-				*(this->arr + i) = NULL;
+				*(this->arr + i) = T( );
 
 			}
 
@@ -133,239 +109,199 @@ namespace arrays {
 
 		// o(n)
 		// destructor 
-		~dynamic_array() {
-
-			if (this->arr != nullptr) {
-
-				delete[] this->arr;
-				this->arr = nullptr;
-
-			}
-
-		}
+		~dynamic_array() = default;
 
 
 		/*
 		
-			public methods
+			====== public methods ======
 		
 		*/
+		
+		size_t size(); // O(1)
+		size_t length(); // O(1)
+		bool is_empty(); // O(1)
+		void for_each(bool forward, void (* const& call_back_function)(T& element)); // O(n)
+		bool set_resize_factor(const size_t& new_resize_factor); // O(1)
+		bool insert(size_t const& index, T const& new_element);  // O(1)
+		bool remove(size_t const& index); // O(1)
+		void reverse(); // O(n)
+		void resize();  // O(n+sz)
+		void push(T const& new_element); // O(1)
 
 
-		// o(n)
-		// loop over all elements in this array
-		void for_each( void (*call_back_function)(T element) ) {
+		/*	
+			========= iterator class =========
+		*/
+		class iterator;
+
+	}; 
+	// end of class dynamic_array 
+
+
+	// o(n)
+	// loop over all elements in this array
+	template<typename T> void for_each(bool forward, void (* const& call_back_function)(T& element)) {
+
+		if (forward) {
 
 			for (size_t i = 0; i < this->_size; i += 1) {
 
-				call_back_function( *(this->arr + i) );
+				call_back_function(*(this->arr + i));
 
 			}
 
 		}
+		else {
 
-		// o(1)
-		// set resize factor for next resize operation
-		bool set_resize_factor( const size_t& new_resize_factor ) {
+			for (size_t i = this->_len; i >= 0; i -= 1) {
 
-			if (new_resize_factor > 0) {
-				this->_resize_factor = new_resize_factor;
-				return true;
+				call_back_function(*(this->arr + i));
+				if (i == 0) break;
+
 			}
-			else return false;
 
 		}
+	}
 
-		// o(1)
-		// insert new element to the array
-		bool insert( const size_t& index , const T& new_element ) {
+	// o(1)
+	// set resize factor for next resize operation
+	template<typename T> bool dynamic_array<T>::set_resize_factor(const size_t& new_resize_factor) {
 
-			// if index out of range
-			if (index >= this->_size) return false;
+		if (new_resize_factor > 0) {
+			this->_resize_factor = new_resize_factor;
+			return true;
+		}
+		else return false;
 
-			// if the same element is already there
-			if ( *(this->arr + index) == new_element ) return false;
+	}
 
-			// update length if new element added
-			if( *(this->arr + index) == NULL ) this->_len += 1;
+	// o(1)
+	// insert new element to the array
+	template<typename T> bool dynamic_array<T>::insert(size_t const& index, T const& new_element) {
+
+		// if array need resize
+		if (this->_len == this->_size) this->resize();
+
+		// if out_of_range
+		if (index >= this->_size) return false;
+
+		if ((this->arr + index) != nullptr || new_element != T()) {
 
 			// insert new element
 			*(this->arr + index) = new_element;
 
-			// if array is full we need to "resize it"
-			if (this->_len == this->_size) this->resize();
-
 			return true;
-		}
-
-		// o(1)
-		bool remove( const size_t& index ) {
-
-			if (index >= this->_size) return false;
-
-			if( *(this->arr + index) == NULL ) return false;
-
-			*(this->arr + index) = NULL;
-			this->_len -= 1;
-
-			return true;
-		}
-
-		// o(n/2)
-		void reverse() {
-
-			// temp for swap's operations
-			T temp = NULL;
-
-			// loop over all & preforme swap's
-			for (size_t i = 0, c = this->_size - 1; i < c; i += 1, c -= 1) {
-				
-				temp = *(this->arr + i);
-
-				*(this->arr + i) = *(this->arr + c);
-
-				*(this->arr + c) = temp;
-
-				temp = NULL;
-
-			}
 
 		}
+
+	}
+
+	// o(1)
+	template<typename T> bool dynamic_array<T>::remove(size_t const& index) {
+
+		if (index >= this->_size) return false;
+
+		if (*(this->arr + index) == T()) return false;
+
+		*(this->arr + index) = T();
+		this->_len -= 1;
+
+		return true;
+	}
+
+	// o(n)
+	template<typename T> void dynamic_array<T>::reverse() {
+
+		// temp for swap's operations
+		T temp = T();
+
+		// loop over all & preforme swap's
+		for (size_t i = 0, c = this->_size - 1; i < c; i += 1, c -= 1) {
+
+			temp = *(this->arr + i);
+
+			*(this->arr + i) = *(this->arr + c);
+
+			*(this->arr + c) = temp;
+
+			temp = T();
+
+		}
+
+	}
+
+	// o(n)
+	template<typename T> void dynamic_array<T>::resize() {
+
+		size_t old_size = this->_size;
+		// update size
+		this->_size += this->_resize_factor;
+
+		// allocated a new array with new size
+		T* new_array = new T[sizeof(T) * this->_size];
 
 		// o(n)
-		void resize() {
+		// loop over the old one & move elements to the new one
+		for (size_t i = 0; i < old_size; i += 1) {
 
-			size_t old_size = this->_size;
-			// update size
-			this->_size += this->_resize_factor;
+			*(new_array + i) = *(this->arr + i);
 
-			// allocated a new array with new size
-			T* new_array = new T[sizeof(T) * this->_size];
+		}
+		for (size_t i = old_size; i < this->_size; i += 1) {
 
-			// o(n)
-			// loop over the old one & move elements to the new one
-			for (size_t i = 0; i < old_size; i += 1) {
-
-				*(new_array + i) = *(this->arr + i);
-
-			}
-			for (size_t i = old_size; i < this->_size; i += 1) {
-
-				*(new_array + i) = NULL;
-
-			}
-
-			delete[] this->arr;
-
-			this->arr = new_array;
-
-			new_array = nullptr;
+			*(new_array + i) = T();
 
 		}
 
-		// o(1)
-		size_t size() {
-			return this->_size;
-		}
+		delete[] this->arr;
 
-		// o(1)
-		size_t length() {
-			return this->_len;
-		}
+		this->arr = new_array;
 
-		// o(1)
-		bool is_empty() {
-			return (this->_len == 0);
-		}
+		new_array = nullptr;
 
-		// o(1)
-		void push(T const& new_element) {
+	}
 
-			// o(n)
-			// if array is full resize it then insert in last empty position
-			if (this->_len >= this->_size) this->resize();
-			
-			// insert & update length
-			this->_len += 1;
-			*(this->arr + this->_len - 1) = new_element;
+	// o(1)
+	template<typename T> size_t dynamic_array<T>::size() {
+		return this->_size;
+	}
 
-		}
+	// o(1)
+	template<typename T> size_t dynamic_array<T>::length() {
+		return this->_len;
+	}
 
-		/*
-		
-			operators
-		
-		*/
+	// o(1)
+	template<typename T> bool dynamic_array<T>::is_empty() {
+		return (this->_len == 0);
+	}
 
-
-		// o(1)
-		T operator [] ( const size_t& index ) {
-
-			if (index >= this->_size) return NULL;
-			else return *(this->arr + index);
-
-		}
-		
-		// o(n)
-		// add array elements to this one
-		void operator += (dynamic_array const& added_array) {
-
-			this->_size += added_array._size;
-			this->_len  += added_array._len;
-
-			T* new_arr = new T[sizeof(T) * this->_size];
-
-
-			for (size_t i = 0; i < (this->_size - added_array._size) ; i += 1) {
-
-				*(new_arr + i) = *(this->arr + i);
-				*(new_arr + (i + added_array._size)) = *(added_array.arr + i);
-
-			}
-
-			delete[] this->arr;
-			this->arr = new_arr;
-			new_arr = nullptr;
-
-		}
+	// o(1)
+	template<typename T> void dynamic_array<T>::push(T const& new_element) {
 
 		// o(n)
-		// add list of elements to this array
-		void operator += (std::initializer_list<T> const& new_elements) {
+		// if array is full resize it then insert in last empty position
+		if (this->_len >= this->_size) this->resize();
 
-			this->_size += new_elements.size();
-			this->_len  += new_elements.size();
+		// insert & update length
+		this->_len += 1;
+		*(this->arr + this->_len - 1) = new_element;
 
-			T* new_arr = new T[sizeof(T) * this->_size];
-
-			for (size_t i = 0; i < (this->_size - new_elements.size()); i += 1) {
-
-				*(new_arr + i) = *(this->arr + i);
-				*(new_arr + (i + new_elements.size())) = *(new_elements.begin() + i);
-
-			}
-
-			delete[] this->arr;
-			this->arr = new_arr;
-			new_arr = nullptr;
-		}
-
-		dynamic_array<T>& operator + ( dynamic_array<T> const& array_1 ) {
-				
-			dynamic_array<T>* concated_array = new dynamic_array<T>( ( this->_size + array_1._size ) , (this->_resize_factor + array_1._resize_factor));
-
-			for (size_t i = 0; i < this->_size; i += 1) {
-				concated_array->push(*(this->arr + i));
-			}
-			for (size_t i = 0; i < array_1._size ; i += 1) {
-				concated_array->push(*(array_1.arr + i));
-			}
+	}
 
 
-			return *concated_array;
+	/*
+		
+		---------- iterator class ----------
 
-		}
-
-	}; // end of dynamic_array class
+	*/
+	template<typename T> class dynamic_array<T>::iterator {
+		private:
+			T * addr;
+		public :
+			iterator() { }
+			~iterator() = default;
+	};
 
 } // end of namespace arrays

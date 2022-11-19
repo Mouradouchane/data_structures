@@ -57,15 +57,22 @@ public:
 // test on objects
 void test1() {
 
-	arrays::static_array<pdf> arr {
+	arrays::dynamic_array<pdf> arr(5 ,{
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
-	};
+	});
 
-	arrays::static_array<pdf>::iterator s = arr.cbegin();
-	arrays::static_array<pdf>::iterator e = arr.cend();
+	arr.insert(1, pdf("pdf1"));
 
-	for (; s != e; --s ) std::cout << s->data << "\n";
+	arr.for_each(false, [](pdf& e) {
+		std::cout << e.data << '\n';
+	});
 
+	/*
+	arrays::dynamic_array<pdf>::iterator s = arr.begin();
+	arrays::dynamic_array<pdf>::iterator e = arr.end();
+	for (; s != e; ++s) if (s != nullptr) std::cout << s->data << "\n";
+	*/
+	
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
 	std::cout << "LENGTH  : " << arr.length() << '\n';

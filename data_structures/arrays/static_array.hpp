@@ -88,8 +88,10 @@ namespace arrays {
 		size_t size();	// O(1)
 		void reverse(); // O(n)
 		void clear();	// O(n)
+		void remove(size_t const& index); // O(1) 
 		void remove(size_t const& start_index, size_t const& end_index); // O(range)
 		bool insert_at(size_t const& target_index, T const& new_element); // O(n)
+
 
 		/*
 			===== methods for iterators =====
@@ -242,6 +244,22 @@ namespace arrays {
 
 		}
 		catch (static_array<T>::error & err) {
+			std::cerr << err.what() << '\n';
+		}
+	}
+
+	template<typename T> void static_array<T>::remove(size_t const& index) {
+		try {
+
+			if (index >= this->_size) throw static_array<T>::error(out_of_range);
+			else {
+
+				*(this->arr + index) = T();
+				this->len -= 1;
+
+			}
+		}
+		catch (static_array<T>::error& err) {
 			std::cerr << err.what() << '\n';
 		}
 	}
