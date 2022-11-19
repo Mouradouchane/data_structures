@@ -9,7 +9,7 @@ repository contain a collection of data structures for **C++** . <br>
 <br>
 
 <h2> Usage </h2> 
-<hr>
+
 
 > copy **"hpp file"** .
 
@@ -20,7 +20,7 @@ repository contain a collection of data structures for **C++** . <br>
 <br>
 
 <h2> Example </h2> 
-<hr>
+
 
 ```c++
   // include doubly linked list 
@@ -44,7 +44,7 @@ repository contain a collection of data structures for **C++** . <br>
 <br>
 
 <h2> Docs </h2>
-<hr>
+
 
 for more information and details you can take a look at **[docs](https://github.com/Mouradouchane/data_structures/wiki)** .
 
@@ -119,7 +119,7 @@ for more information and details you can take a look at **[docs](https://github.
 <br>
 
 <h2> Contribution </h2>
-<hr>
+
 
 - if want to improve some data-structure here or and anything else , you're welcome .
 - before you make a **Pull-Request** , talk to me first or open **[ISSUE](https://github.com/Mouradouchane/data_structures/issues)** .
