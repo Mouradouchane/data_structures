@@ -3,41 +3,17 @@
 
 #pragma once
 
-
 #define out_of_range "index out of range !"
 #define reversed_range "start_index should be smaller or equal to end_index ."
-
-
-/*
-	static array methods
-
-	-- NAME ----------- BEST --> WORST
-
-	length				O(1)
-	size				O(1)
-	is_full				O(1)
-	is_empty			O(1)
-
-	insert				O(1) --> O(n)
-	insert_at			O(1)
-
-	get					O(1)
-	remove				O(1)
-
-	reverse				O(n)
-
-	for_each			O(n)
-
-	= {...}				O(n)
-	= array				O(n)
-
-*/
+#define illegal_type_const "const type is not allowed in static_array use the alternative c_static_array ."
 
 namespace arrays {
 
 
 	template<typename T> class static_array {
 		
+		static_assert(!std::is_const<T>::value , illegal_type_const);
+
 	private:
 		size_t _size = 0;
 		int len = 0;
@@ -102,7 +78,7 @@ namespace arrays {
 			===== methods =====
 		*/
 
-		void for_each(void (* const& call_back_function)(T& element)); // O(n)
+		void for_each(bool const& forward , void (* const& call_back_function)(T& element)); // O(n)
 		void for_each(
 			size_t const& start_index , 
 			size_t const& end_index ,
@@ -112,10 +88,8 @@ namespace arrays {
 		size_t size();	// O(1)
 		void reverse(); // O(n)
 		void clear();	// O(n)
-		void clear(size_t const& start_index, size_t const& end_index); // O(range)
+		void remove(size_t const& start_index, size_t const& end_index); // O(range)
 		bool insert_at(size_t const& target_index, T const& new_element); // O(n)
-		bool remove(size_t const& target_index); // O(n)
-		bool remove(size_t const& start_index, size_t const& end_index); // O(range)
 
 		/*
 			===== methods for iterators =====
@@ -154,14 +128,27 @@ namespace arrays {
 	*/
 
 	// loop over all elements
-	template<typename T> void static_array<T>::for_each(void (* const& call_back_function)(T& element)) {
+	template<typename T> void static_array<T>::for_each(bool const& forward , void (* const& call_back_function)(T& element)) {
 
-		for (size_t i = 0; i < this->_size; i += 1) {
+		if (forward) {
 
-			call_back_function( *(this->arr + i) );
+			for (size_t i = 0; i < this->_size; i += 1) {
+
+				call_back_function( *(this->arr + i) );
+
+			}
 
 		}
+		else {
 
+			for (size_t i = this->len; i >= 0; i -= 1) {
+
+				call_back_function(*(this->arr + i));
+
+				if (i == 0) break;
+			}
+
+		}
 	}
 
 	template<typename T> void static_array<T>::for_each(
@@ -169,15 +156,32 @@ namespace arrays {
 		size_t const& end_index, 
 		void (* const& call_back_function)(T& element)
 	) {
+		try {
 
-		if (start_index >= this->_size) return;
-		if (end_index >= this->_size) return;
-		if (start_index > end_index) return;
+			if (start_index >= this->_size) throw static_array<T>::error(out_of_range);
+			if (end_index >= this->_size) throw static_array<T>::error(out_of_range);
+			
+			if (start_index < end_index) {
 
-		for (size_t i = start_index; i <= end_index; i += 1) {
+				for (size_t i = start_index; i <= end_index; i += 1) {
+					call_back_function( *(this->arr + i) );
+				}
 
-			call_back_function( *(this->arr + i) );
+			}
+			else {
 
+				for (size_t i = start_index; i >= end_index; i -= 1) {
+
+					call_back_function(*(this->arr + i));
+
+					if (i == 0) break;
+				}
+
+			}
+
+		}
+		catch (static_array<T>::error& err) {
+			std::cerr << err.what() << '\n';
 		}
 	}
 
@@ -212,15 +216,16 @@ namespace arrays {
 	// try to replace all elements with empty value
 	template<typename T> void static_array<T>::clear() {
 
+		this->len = 0;
+
 		for (size_t i = 0; i < this->_size; i += 1) {
 
 			*(this->arr + i) = T();
-
 		}
 
 	}
-
-	template<typename T> void static_array<T>::clear(size_t const& start_index, size_t const& end_index) {
+	
+	template<typename T> void static_array<T>::remove(size_t const& start_index, size_t const& end_index) {
 		try {
 
 			if (start_index >= this->_size)	throw static_array<T>::error( out_of_range );
@@ -231,6 +236,7 @@ namespace arrays {
 			for (size_t i = start_index; i <= end_index; i += 1) {
 
 				*(this->arr + i) = T();
+				this->len -= 1;
 
 			}
 
@@ -257,36 +263,6 @@ namespace arrays {
 			return true;
 		}
 
-	}
-
-	// remove => repalce element with "T()" value
-	template<typename T> bool static_array<T>::remove(size_t const& target_index) {
-
-		// if index out or range
-		if (target_index >= this->_size) return false;
-		
-		// else
-		*(this->arr + target_index) = T();
-		this->len -= 1;
-
-		return true;
-	}
-
-	// replace a range of elements in array with "T()"
-	template<typename T> bool static_array<T>::remove(size_t const& start_index, size_t const& end_index) {
-
-		// if out of range
-		if (start_index >= this->_size) return false;
-		if (end_index >= this->_size) return false;
-
-		// no reversed ranges :)
-		if (end_index < start_index) return false;
-
-		for (size_t i = start_index; i <= end_index; i += 1) {
-			this->remove(i);
-		}
-
-		return true;
 	}
 
 

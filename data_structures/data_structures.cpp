@@ -57,24 +57,14 @@ public:
 // test on objects
 void test1() {
 
-	arrays::static_array<pdf*> arr(6);
-
-	/*
-	arr = {
-		new pdf("pdf1") ,new  pdf("pdf2") , new pdf("pdf3") ,new pdf("pdf4")
+	arrays::static_array<pdf> arr {
+		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
 	};
-	*/
-	arr.insert_at(0, new pdf("RT"));
-	arr.insert_at(0, new pdf("newRT"));
-	arr.insert_at(3, new pdf("RT"));
-	arr.insert_at(5, new pdf("RT"));
 
-	for (pdf * p : arr) {
-		
-		if (p != nullptr) std::cout << p->data << '\n';
-		else std::cout << " \n";
-		
-	}
+	arrays::static_array<pdf>::iterator s = arr.cbegin();
+	arrays::static_array<pdf>::iterator e = arr.cend();
+
+	for (; s != e; --s ) std::cout << s->data << "\n";
 
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
@@ -87,12 +77,12 @@ void test1() {
 void test2() {
 
 	arrays::static_array<int> arr = { 1, 1, 3 , 6, 2, 9 };
-
-	for (int& num : arr) {
-
-		std::cout << num << '\n';
-
-	}
+	
+	arr.for_each(
+		true , [](int& a) {
+			std::cout << "CB : " << &a << '\n';
+		}
+	);
 
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
