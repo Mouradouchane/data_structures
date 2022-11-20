@@ -14,7 +14,7 @@
 
 class pdf;
 void test1();
-void test2();
+template<typename T> void p_test(size_t&& size);
 
 int main() {
 
@@ -23,7 +23,7 @@ int main() {
 	std::cout << "=============== OBJECTS TEST ===============\n";
 	test1();
 	std::cout << "=============== PRIMITIVE TEST ===============\n";
-	test2();
+	p_test<int>(6);
 
 	return 0;
 
@@ -61,18 +61,12 @@ void test1() {
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
 	});
 
-	arr.insert(1, pdf("pdf1"));
-
-	arr.for_each(false, [](pdf& e) {
-		std::cout << e.data << '\n';
+	arr.for_each(true, [](size_t i , bool emp , pdf& e) {
+		if (emp) std::cout << i << " : " << e.data << '\n';
+		else std::cout << i << " : EMPTY\n";
 	});
 
-	/*
-	arrays::dynamic_array<pdf>::iterator s = arr.begin();
-	arrays::dynamic_array<pdf>::iterator e = arr.end();
-	for (; s != e; ++s) if (s != nullptr) std::cout << s->data << "\n";
-	*/
-	
+
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
 	std::cout << "LENGTH  : " << arr.length() << '\n';
@@ -81,13 +75,23 @@ void test1() {
 }
 
 // test on primitives "int float ..."
-void test2() {
+template<typename T> void p_test( size_t && size ) {
 
-	arrays::static_array<int> arr = { 1, 1, 3 , 6, 2, 9 };
+	arrays::dynamic_array<T> arr( size , size );
 	
+	arr.insert( 9, T(std::rand()) );
+
+	arr.remove(2);
+	arr.remove(3);
+
+	arr.insert(10, T(std::rand()) );
+	arr.insert(11, T(std::rand()) );
+
+
 	arr.for_each(
-		true , [](int& a) {
-			std::cout << "CB : " << &a << '\n';
+		true , [](size_t i , bool emp  , T& a) {
+			if (emp) std::cout << i << " : " << a << '\n';
+			else std::cout << i << " : EMPTY\n";
 		}
 	);
 
