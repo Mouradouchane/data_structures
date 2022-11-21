@@ -128,7 +128,7 @@ namespace arrays {
 		*/
 		
 		size_t size(); // O(1)
-		size_t length(); // O(1)
+		size_t length(); // O(n)
 		bool is_empty(); // O(1)
 		void for_each( // O(n)
 			bool const& forward, 
@@ -141,6 +141,30 @@ namespace arrays {
 		void resize();  // O(n+sz)
 		void push(T const& new_element); // O(1)
 
+		// o(1)
+		T& operator [] (size_t index) {
+
+			T empty = T();
+			
+			if (index >= this->_size) return empty; // need to throw error
+			else return *(this->arr + index);
+
+		}
+
+		/*
+		T const& operator [] (size_t const& index, T const& new_value) {
+			const T x = T();
+			if (index >= this->_size) return x; // need to throw error
+			else {
+
+				if ( *(this->map + index) == false ) {
+					*(this->map + index) = true;
+					this->len += 1;
+				}
+				*(this->arr + index) = new_value;
+			}
+		}
+		*/
 
 		/*	
 			========= iterator class =========
