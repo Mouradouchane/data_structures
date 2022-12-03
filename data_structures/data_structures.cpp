@@ -10,14 +10,39 @@
 #include "arrays/static_array.hpp"
 #include "arrays/dynamic_array.hpp"
 
-#define op ==
+// objects for testing 
+class pdf {
+public:
+	std::string data = "";
+	pdf(std::string const& dt) {
+		this->data = dt;
+	}
+	pdf() { }
+	~pdf() { }
 
-class pdf;
+	pdf& operator = (pdf const& new_data) {
+		this->data = new_data.data;
+		return *this;
+	}
+
+	void operator = (std::string new_value) {
+		this->data = new_value;
+	}
+
+	void operator = (int const& index) {
+		this->data = "";
+	}
+
+	bool operator != (pdf const& other) {
+		return (this->data == other.data);
+	}
+};
+
 void test1();
 template<typename T> void p_test(size_t&& size);
 
 int main() {
-
+	
 	std::cout << "=============== OBJECTS TEST ===============\n";
 	test1();
 	std::cout << "=============== PRIMITIVE TEST ===============\n";
@@ -27,49 +52,26 @@ int main() {
 }
 
 
-// objects for testing 
-class pdf {
-public:
-	std::string data = "";
-	pdf(std::string const& dt) {
-		this->data = dt;
-	}
-	pdf() {}
-	~pdf() { }
-
-	pdf& operator = (pdf const& new_data) {
-		this->data = new_data.data;
-		return *this;
-	}
-	
-	void operator = (std::string new_value) {
-		this->data = new_value;
-	}
-
-};
 
 // test on objects
 void test1() {
 
-	arrays::dynamic_array<pdf> arr(5 ,{
+	arrays::dynamic_array<pdf> arr(10 ,{
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
 	});
+	
+	arr.resize();
 
-	/*
-	*/
+	arr[8] = pdf("pdf888");
+	arr[8] = pdf("pdf888");
+	arr[8] = pdf("pdf888");
+	arr[8] = pdf("pdf888");
 
-	arr.remove(1);
-	arr[1] = pdf("edit");
-
-	std::cout << "const : " << arr[1].data << "\n";
-	std::cout << "const : " << arr[2].data << "\n";
-
+	//arr[5] = pdf("edit");
 
 	arr.for_each(true, [](size_t i , bool emp , pdf& e) {
-		if (emp) std::cout << i << " : " << e.data << '\n';
-		else std::cout << i << " : EMPTY\n";
+		std::cout << i << " : " << e.data << '\n';
 	});
-
 
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
@@ -94,13 +96,10 @@ template<typename T> void p_test( size_t && size ) {
 	arr.remove(1);
 	arr.remove(2);
 
-	//arr.reverse();
-
 
 	arr.for_each(
 		true , [](size_t i , bool emp  , T& a) {
-			if (emp) std::cout << i << " : " << a << '\n';
-			else std::cout << i << " : EMPTY\n";
+			std::cout << i << " : " << a << '\n';
 		}
 	);
 

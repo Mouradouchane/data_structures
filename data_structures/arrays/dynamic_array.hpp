@@ -3,37 +3,62 @@
 
 #pragma once
 
-#define out_of_range "index out of range !"
+#define out_of_range "index out of range ."
 #define reversed_range "start_index should be smaller or equal to end_index ."
 #define illegal_type_const "const type is not allowed in dynamic_array use the alternative c_dynamic_array ."
+#define need_operator_not_equal "type T should support operator != for comparison ."
+#define need_empty_constructor "type T should support empty constructor() ."
 
 namespace arrays {
 
 	template<typename T> class dynamic_array {
 
+		// test's against some rules we need to work with type T
+
 		static_assert(!std::is_const<T>::value, illegal_type_const);
 
+		static void test_type_t() {
+			try {
+				T emp();
+			}
+			catch ( std::exception& error ) {
+				static_assert(true, need_empty_constructor);
+			}
+
+			try {
+				T a(), b();
+				a != b;
+			}
+			catch ( std::exception& error ) {
+				static_assert(true, need_operator_not_equal);
+			}
+		}
+
 	private:
-		
+	
 		size_t _len  = 0;
 		size_t _size = 0;
 		size_t _resize_factor = 0;
 
-		T* arr = nullptr;
+		T*    arr = nullptr;
 		bool* map = nullptr;
 
 	public :
-
+	
 		// def constructor 
 		dynamic_array() {
+
+			dynamic_array<T>::test_type_t();
 
 		}
 
 		// o(n)
 		// constructor 1
-		dynamic_array( size_t const& array_size , size_t const& resize_factor )
+		dynamic_array( size_t const& array_size , size_t const& resize_factor ) 
 			: _size{ array_size } , _resize_factor{ resize_factor } 
 		{
+
+			dynamic_array<T>::test_type_t();
 
 			if (this->_resize_factor < 1) this->_resize_factor = 1;
 			if (this->_size < 1) this->_size = 1;
@@ -56,6 +81,8 @@ namespace arrays {
 			: _resize_factor{ resize_factor }
 		{
 
+			dynamic_array<T>::test_type_t();
+
 			if (this->_resize_factor < 1) this->_resize_factor = 1;
 			this->_size = this->_resize_factor;
 
@@ -77,6 +104,8 @@ namespace arrays {
 			: _resize_factor{ resize_factor }
 		{
 
+			dynamic_array<T>::test_type_t();
+
 			if (this->_resize_factor < 1) this->_resize_factor = 1;
 			this->_size = array_elements.size();
 
@@ -97,6 +126,8 @@ namespace arrays {
 		// o(n)
 		// constructor 4
 		dynamic_array( std::initializer_list<T> const& array_elements ){
+
+			dynamic_array<T>::test_type_t();
 
 			this->_resize_factor = 1;
 			this->_size = array_elements.size();
@@ -136,35 +167,23 @@ namespace arrays {
 		); 
 		bool set_resize_factor(const size_t& new_resize_factor); // O(1)
 		bool insert(size_t const& index, T const& new_element);  // O(1)
-		bool remove(size_t const& index); // O(1)
+		void remove(size_t const& index); // O(1)
 		void reverse(); // O(n)
 		void resize();  // O(n+sz)
 		void push(T const& new_element); // O(1)
 
 		// o(1)
-		T& operator [] (size_t index) {
+		T& operator [] (size_t const& index) {
 
-			T empty = T();
-			
-			if (index >= this->_size) return empty; // need to throw error
-			else return *(this->arr + index);
-
-		}
-
-		/*
-		T const& operator [] (size_t const& index, T const& new_value) {
-			const T x = T();
-			if (index >= this->_size) return x; // need to throw error
-			else {
-
-				if ( *(this->map + index) == false ) {
-					*(this->map + index) = true;
-					this->len += 1;
-				}
-				*(this->arr + index) = new_value;
+			if (index >= this->_size) {
+				std::cerr << out_of_range << '\n';
+				throw out_of_range;
 			}
+			else 
+				return *(this->arr + index);
+
 		}
-		*/
+		
 
 		/*	
 			========= iterator class =========
@@ -216,46 +235,37 @@ namespace arrays {
 	}
 
 	// o(1)
-	// insert new element to the array
 	template<typename T> bool dynamic_array<T>::insert(size_t const& index, T const& new_element) {
-		try {
+		
+		if ( index >= (this->_size + this->_resize_factor) ) throw out_of_range;
+		else {
 
 			// if array need resize
-			if (this->_len >= this->_size) this->resize();
+			if ( index >= this->_size ) this->resize();
 
-			// if out_of_range
-			if (index >= this->_size) return false; // change return with -> throw error 
+			// insert new element
+			*(this->arr + index) = new_element;
+			*(this->map + index) = true;
 
-			if ( *(this->map + index) == false ) {
+			this->_len += 1;
 
-				// insert new element
-				*(this->arr + index) = new_element;
-				*(this->map + index) = true;
-
-				this->_len += 1;
-
-				return true;
-			}
-
+			return true;
 		}
-		catch ( std::exception const& err ) {
 
-		}
 	}
 
 	// o(1)
-	template<typename T> bool dynamic_array<T>::remove(size_t const& index) {
+	template<typename T> void dynamic_array<T>::remove(size_t const& index) {
 
-		if (index >= this->_size) return false; // change to throw error
+		if ( index >= this->_size ) return; // change to throw error
 
-		if (*(this->map + index) == false) return false;
+		if ( *(this->map + index) == false ) return ; // change to throw error 
 
 		*(this->arr + index) = T();
 		*(this->map + index) = false;
 
 		this->_len -= 1;
 
-		return true;
 	}
 
 	// o(n)
@@ -326,8 +336,18 @@ namespace arrays {
 		return this->_size;
 	}
 
-	// o(1)
+	// o(n)
 	template<typename T> size_t dynamic_array<T>::length() {
+
+		size_t temp_length = 0;
+		T emp();
+
+		for (size_t i = 0; i < this->_size; i += 1) {
+			if ( *(this->arr + i) != T() ) temp_length += 1;
+		}
+
+		this->_len = temp_length;
+
 		return this->_len;
 	}
 
@@ -339,7 +359,6 @@ namespace arrays {
 	// push element at last empty spot 
 	template<typename T> void dynamic_array<T>::push(T const& new_element) {
 
-		// o(n)
 		// if array need resize 
 		if (this->_len >= this->_size) this->resize();
 
