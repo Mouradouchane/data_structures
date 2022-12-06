@@ -31,6 +31,9 @@
     <Filter Include="Resource Files\arrays">
       <UniqueIdentifier>{979a5662-fb82-41d1-a0b3-53545731f816}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\graphs">
+      <UniqueIdentifier>{89720488-956c-494f-bb03-ccc45c86f279}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hash tables\hash_table.hpp">
@@ -86,6 +89,12 @@
     </ClInclude>
     <ClInclude Include="arrays\static_array.hpp">
       <Filter>Resource Files\arrays</Filter>
+    </ClInclude>
+    <ClInclude Include="graphs\graph_list.hpp">
+      <Filter>Resource Files\graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="graphs\graph_matrix.hpp">
+      <Filter>Resource Files\graphs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

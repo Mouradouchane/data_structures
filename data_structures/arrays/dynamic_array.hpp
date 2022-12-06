@@ -184,6 +184,11 @@ namespace arrays {
 
 		}
 		
+		// iterators 
+		T* begin();		// O(1)
+		T* end();		// O(1)
+		T* cbegin();	// O(1)
+		T* cend();		// O(1)
 
 		/*	
 			========= iterator class =========
@@ -371,17 +376,103 @@ namespace arrays {
 	}
 
 
+	template<typename T> T* dynamic_array<T>::begin() { 
+		return (this->arr + 0);
+	}
+
+	template<typename T> T* dynamic_array<T>::cbegin() { 
+		return (this->arr + this->_size);
+	}
+
+	template<typename T> T* dynamic_array<T>::end() { 
+		return (this->arr + this->_size - 1);
+	}
+
+	template<typename T> T* dynamic_array<T>::cend() { 
+		return (this->arr - 1);
+	}
+
 	/*
 		
 		---------- iterator class ----------
 
 	*/
 	template<typename T> class dynamic_array<T>::iterator {
+		
 		private:
 			T * addr;
+		
 		public :
 			iterator() { }
+
+			iterator( T* address ):addr(address) { }
+
 			~iterator() = default;
+
+			// ================== methods ==================
+
+			void operator = (T* address) {
+				this->addr = address;
+			}
+
+			// need to test , could be buggy !!!
+			void operator = ( dynamic_array<T>::iterator const& other_iterator) {
+				this->addr = other_iterator.address;
+			}
+
+			T* operator ++() {
+				this->addr = (this->addr + 1);
+				return this->addr;
+			}
+
+			T* operator --() {
+				this->addr = (this->addr - 1);
+				return this->addr;
+			}
+
+			T* operator +=( size_t const& index ) {
+				this->addr = (this->addr + index);
+				return this->addr;
+			}
+
+			T* operator -=( signed int const& index) {
+				this->addr = (this->addr - index);
+				return this->addr;
+			}
+
+			T* operator + ( size_t const& index ) {
+				return (this->addr + index);
+			}
+
+			T* operator - ( signed int const& index ) {
+				return (this->addr - index);
+			}
+			
+			T& operator &() {
+				return &(this->addr);
+			}
+
+			T operator *() {
+				return *(this->addr);
+			}
+
+			bool operator != (T* other_address) {
+
+				return (this->addr != other_address) ? true : false ;
+			}
+
+			bool operator != ( dynamic_array<T>::iterator & other_iterator) {
+
+				return (this->addr != other_iterator.addr) ? true : false ;
+			}
+
+			dynamic_array<T>::iterator& next() {
+				return (this + 1);
+			}
+
+			dynamic_array<T>::iterator& previous() {
+				return (this - 1);
+			}
 	};
 
 } // end of namespace arrays

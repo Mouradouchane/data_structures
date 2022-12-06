@@ -52,7 +52,6 @@ int main() {
 }
 
 
-
 // test on objects
 void test1() {
 
@@ -62,16 +61,14 @@ void test1() {
 	
 	arr.resize();
 
-	arr[8] = pdf("pdf888");
-	arr[8] = pdf("pdf888");
-	arr[8] = pdf("pdf888");
-	arr[8] = pdf("pdf888");
+	arrays::dynamic_array<pdf>::iterator s = arr.begin();
+	arrays::dynamic_array<pdf>::iterator e = arr.end();
 
-	//arr[5] = pdf("edit");
+	std::cout << (( s != &(arr[1]) ) ? "true" : "false") << '\n';
 
-	arr.for_each(true, [](size_t i , bool emp , pdf& e) {
-		std::cout << i << " : " << e.data << '\n';
-	});
+	for ( ; s != e; s += 1) {
+		std::cout << " iterator : " << (*s).data << '\n';
+	};
 
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
@@ -79,6 +76,7 @@ void test1() {
 	std::cout << "===============================================" << '\n';
 
 }
+
 
 // test on primitives "int float ..."
 template<typename T> void p_test( size_t && size ) {
