@@ -34,7 +34,11 @@ public:
 	}
 
 	bool operator != (pdf const& other) {
-		return (this->data == other.data);
+		return (this->data != other.data) ? true : false;
+	}
+
+	bool operator == (pdf const& other) {
+		return (this->data == other.data) ? true : false;
 	}
 };
 
@@ -55,10 +59,16 @@ int main() {
 // test on objects
 void test1() {
 
-	arrays::dynamic_array<pdf> arr(10 ,{
+	arrays::dynamic_array<pdf> arr(10, {
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
-	});
-	
+		});
+
+	arrays::dynamic_array<pdf>::iterator a = arr.begin();
+	a = a.next();
+	a = a.previous();
+
+
+	std::cout << a->data << '\n';
 
 	for ( pdf & s : arr ) {
 		std::cout << " iterator : " << s.data << '\n';

@@ -3,35 +3,54 @@
 
 #pragma once
 
+// array errors
 #define out_of_range "index out of range ."
-#define reTersed_range "start_index should be smaller or equal to end_index ."
-#define illegal_type_const "const type is not allowed in dynamic_array use the alternatiTe c_dynamic_array ."
+#define reversed_range "start_index should be smaller or equal to end_index ."
+#define illegal_type_const "const type is not allowed in dynamic_array use the alternative c_dynamic_array ."
+#define illegal_pointer_type "pointer type is not allowed in dynamic_array use the alternative p_dynamic_array ."
+
+// type errors
 #define need_operator_not_equal "type T should support operator != for comparison ."
-#define need_empty_constructor "type T should support empty constructor() ."
+#define need_operator_equal_to  "type T should support operator == for comparison ."
+#define need_empty_constructor  "type T should support empty constructor() ."
 
 namespace arrays {
 
 	template<typename T> class dynamic_array {
 
 		// test's against some rules we need to work with type T
+		static_assert(!std::is_const<T>::value, illegal_type_const); 
+		static_assert(!std::is_pointer<T>::value, illegal_pointer_type);
 
-		static_assert(!std::is_const<T>::value, illegal_type_const);
-
+		// test in construction time
 		static void test_type_t() {
+			
 			try {
-				T emp();
+				T empty();
 			}
-			catch ( std::exception& error ) {
+			catch (std::exception& error) {
 				static_assert(true, need_empty_constructor);
+				throw need_empty_constructor;
+			};
+
+			try {
+				T a() , b();
+				(a != b);
 			}
+			catch (std::exception& error) {
+				static_assert(true, need_operator_not_equal);
+				throw need_operator_not_equal;
+			};
 
 			try {
 				T a(), b();
-				a != b;
+				(a == b);
 			}
 			catch ( std::exception& error ) {
-				static_assert(true, need_operator_not_equal);
+				static_assert(true, need_operator_equal_to);
+				throw need_operator_equal_to;
 			}
+		
 		}
 
 	private:
@@ -149,7 +168,21 @@ namespace arrays {
 
 
 		// destructor 
-		~dynamic_array() = default;
+		~dynamic_array() {
+			try {
+
+				delete[] this->arr;
+				delete[] this->map;
+
+				this->arr = nullptr;
+				this->map = nullptr;
+
+			}
+			catch (std::exception& error) {
+				std::cerr << error.what() << '\n';
+				throw error.what();
+			}
+		};
 
 
 		/*
@@ -159,7 +192,7 @@ namespace arrays {
 		*/
 		
 		size_t size(); // O(1)
-		size_t length(); // O(n)
+		size_t length(); // O(1)
 		bool is_empty(); // O(1)
 		void for_each( // O(n)
 			bool const& forward, 
@@ -207,11 +240,14 @@ namespace arrays {
 
 				// ================== methods ==================
 
+				void operator = (T const& new_value) {
+					*(this->addr) = new_value;
+				}
+
 				void operator = (T* address) {
 					this->addr = address;
 				}
 
-				// need to test , could be buggy !!!
 				void operator = (iterator const& other_iterator) {
 					this->addr = other_iterator.addr;
 				}
@@ -244,11 +280,7 @@ namespace arrays {
 					return (this->addr - index);
 				}
 
-				T& operator &() {
-					return &(this->addr);
-				}
-
-				T operator *() {
+				T& operator *() {
 					return *(this->addr);
 				}
 
@@ -262,12 +294,26 @@ namespace arrays {
 					return (this->addr != other_iterator.addr) ? true : false;
 				}
 
-				iterator& next() {
-					return (this + 1);
+				bool operator == (T* other_address) {
+
+					return (this->addr == other_address) ? true : false;
 				}
 
-				iterator& preTious() {
-					return (this - 1);
+				bool operator == (iterator& other_iterator) {
+
+					return (this->addr == other_iterator.addr) ? true : false;
+				}
+
+				T* operator -> () {
+					return this->addr;
+				}
+
+				iterator next() {
+					return iterator(this->addr + 1);
+				}
+
+				iterator previous() {
+					return iterator(this->addr - 1);
 				}
 		};
 
@@ -338,9 +384,9 @@ namespace arrays {
 	// o(1)
 	template<typename T> void dynamic_array<T>::remove(size_t const& index) {
 
-		if ( index >= this->_size ) return; // change to throw error
+		if ( index >= this->_size ) throw out_of_range; 
 
-		if ( *(this->map + index) == false ) return ; // change to throw error 
+		if ( *(this->map + index) == false ) return; 
 
 		*(this->arr + index) = T();
 		*(this->map + index) = false;
@@ -377,39 +423,46 @@ namespace arrays {
 	// o(n)
 	// resize process
 	template<typename T> void dynamic_array<T>::resize() {
+		
+		try {
 
-		size_t old_size = this->_size;
-		// update size
-		this->_size += this->_resize_factor;
+			size_t old_size = this->_size;
+			// update size
+			this->_size += this->_resize_factor;
 
-		// allocate new area 
-		T*  new_array = new T[sizeof(T) * this->_size];
-		bool* new_map = new bool[sizeof(bool) * this->_size];
+			// allocate new area 
+			T*  new_array = new T[sizeof(T) * this->_size];
+			bool* new_map = new bool[sizeof(bool) * this->_size];
 
-		// copying process
-		for (size_t i = 0; i < old_size; i += 1) {
+			// copying process
+			for (size_t i = 0; i < old_size; i += 1) {
 
-			*(new_array + i) = *(this->arr + i);
-			*(new_map   + i) = *(this->map + i);
+				*(new_array + i) = *(this->arr + i);
+				*(new_map   + i) = *(this->map + i);
+
+			}
+			// fill empty sopts
+			for (size_t i = old_size; i < this->_size; i += 1) {
+
+				*(new_array + i) = T();
+				*(new_map   + i) = false;
+
+			}
+
+			delete[] this->arr;
+			delete[] this->map;
+
+			this->arr = new_array;
+			this->map = new_map;
+
+			new_array = nullptr;
+			new_map = nullptr;
 
 		}
-		// fill empty sopts
-		for (size_t i = old_size; i < this->_size; i += 1) {
-
-			*(new_array + i) = T();
-			*(new_map   + i) = false;
-
+		catch (std::exception& error) {
+			std::cerr << error.what() << '\n';
+			throw error;
 		}
-
-		delete[] this->arr;
-		delete[] this->map;
-
-		this->arr = new_array;
-		this->map = new_map;
-
-		new_array = nullptr;
-		new_map = nullptr;
-
 	}
 
 	// o(1)
@@ -417,7 +470,7 @@ namespace arrays {
 		return this->_size;
 	}
 
-	// o(n)
+	// o(1)
 	template<typename T> size_t dynamic_array<T>::length() {
 		return this->_len;
 	}
