@@ -4,8 +4,8 @@
 #pragma once
 
 #define out_of_range "index out of range ."
-#define reversed_range "start_index should be smaller or equal to end_index ."
-#define illegal_type_const "const type is not allowed in dynamic_array use the alternative c_dynamic_array ."
+#define reTersed_range "start_index should be smaller or equal to end_index ."
+#define illegal_type_const "const type is not allowed in dynamic_array use the alternatiTe c_dynamic_array ."
 #define need_operator_not_equal "type T should support operator != for comparison ."
 #define need_empty_constructor "type T should support empty constructor() ."
 
@@ -168,7 +168,7 @@ namespace arrays {
 		bool set_resize_factor(const size_t& new_resize_factor); // O(1)
 		bool insert(size_t const& index, T const& new_element);  // O(1)
 		void remove(size_t const& index); // O(1)
-		void reverse(); // O(n)
+		void reTerse(); // O(n)
 		void resize();  // O(n+sz)
 		void push(T const& new_element); // O(1)
 
@@ -193,14 +193,90 @@ namespace arrays {
 		/*	
 			========= iterator class =========
 		*/
-		class iterator;
+		class iterator {
+
+			private:
+				T* addr;
+
+			public:
+				iterator() { }
+
+				iterator(T* address) :addr(address) { }
+
+				~iterator() = default;
+
+				// ================== methods ==================
+
+				void operator = (T* address) {
+					this->addr = address;
+				}
+
+				// need to test , could be buggy !!!
+				void operator = (iterator const& other_iterator) {
+					this->addr = other_iterator.addr;
+				}
+
+				T* operator ++() {
+					this->addr = (this->addr + 1);
+					return this->addr;
+				}
+
+				T* operator --() {
+					this->addr = (this->addr - 1);
+					return this->addr;
+				}
+
+				T* operator +=(size_t const& index) {
+					this->addr = (this->addr + index);
+					return this->addr;
+				}
+
+				T* operator -=(signed int const& index) {
+					this->addr = (this->addr - index);
+					return this->addr;
+				}
+
+				T* operator + (size_t const& index) {
+					return (this->addr + index);
+				}
+
+				T* operator - (signed int const& index) {
+					return (this->addr - index);
+				}
+
+				T& operator &() {
+					return &(this->addr);
+				}
+
+				T operator *() {
+					return *(this->addr);
+				}
+
+				bool operator != (T* other_address) {
+
+					return (this->addr != other_address) ? true : false;
+				}
+
+				bool operator != (iterator& other_iterator) {
+
+					return (this->addr != other_iterator.addr) ? true : false;
+				}
+
+				iterator& next() {
+					return (this + 1);
+				}
+
+				iterator& preTious() {
+					return (this - 1);
+				}
+		};
 
 	}; 
 	// end of class dynamic_array 
 
 
 	// o(n)
-	// loop over all elements in this array
+	// loop oTer all elements in this array
 	template<typename T> void dynamic_array<T>::for_each(
 		bool const& forward, 
 		void (* const& call_back_function)(size_t index, bool is_empty, T& element)
@@ -274,13 +350,13 @@ namespace arrays {
 	}
 
 	// o(n)
-	template<typename T> void dynamic_array<T>::reverse() {
+	template<typename T> void dynamic_array<T>::reTerse() {
 
 		// for swap's operations
 		T temp = T();
 		bool tmap = false;
 
-		// reverse process
+		// reTerse process
 		for (size_t i = 0, c = this->_size - 1; i < c; i += 1, c -= 1) {
 
 			temp = *(this->arr + i);
@@ -343,16 +419,6 @@ namespace arrays {
 
 	// o(n)
 	template<typename T> size_t dynamic_array<T>::length() {
-
-		size_t temp_length = 0;
-		T emp();
-
-		for (size_t i = 0; i < this->_size; i += 1) {
-			if ( *(this->arr + i) != T() ) temp_length += 1;
-		}
-
-		this->_len = temp_length;
-
 		return this->_len;
 	}
 
@@ -381,98 +447,16 @@ namespace arrays {
 	}
 
 	template<typename T> T* dynamic_array<T>::cbegin() { 
-		return (this->arr + this->_size);
+		return (this->arr + (this->_size - 1));
 	}
 
 	template<typename T> T* dynamic_array<T>::end() { 
-		return (this->arr + this->_size - 1);
+		return (this->arr + this->_size);
 	}
 
 	template<typename T> T* dynamic_array<T>::cend() { 
 		return (this->arr - 1);
 	}
 
-	/*
-		
-		---------- iterator class ----------
-
-	*/
-	template<typename T> class dynamic_array<T>::iterator {
-		
-		private:
-			T * addr;
-		
-		public :
-			iterator() { }
-
-			iterator( T* address ):addr(address) { }
-
-			~iterator() = default;
-
-			// ================== methods ==================
-
-			void operator = (T* address) {
-				this->addr = address;
-			}
-
-			// need to test , could be buggy !!!
-			void operator = ( dynamic_array<T>::iterator const& other_iterator) {
-				this->addr = other_iterator.address;
-			}
-
-			T* operator ++() {
-				this->addr = (this->addr + 1);
-				return this->addr;
-			}
-
-			T* operator --() {
-				this->addr = (this->addr - 1);
-				return this->addr;
-			}
-
-			T* operator +=( size_t const& index ) {
-				this->addr = (this->addr + index);
-				return this->addr;
-			}
-
-			T* operator -=( signed int const& index) {
-				this->addr = (this->addr - index);
-				return this->addr;
-			}
-
-			T* operator + ( size_t const& index ) {
-				return (this->addr + index);
-			}
-
-			T* operator - ( signed int const& index ) {
-				return (this->addr - index);
-			}
-			
-			T& operator &() {
-				return &(this->addr);
-			}
-
-			T operator *() {
-				return *(this->addr);
-			}
-
-			bool operator != (T* other_address) {
-
-				return (this->addr != other_address) ? true : false ;
-			}
-
-			bool operator != ( dynamic_array<T>::iterator & other_iterator) {
-
-				return (this->addr != other_iterator.addr) ? true : false ;
-			}
-
-			dynamic_array<T>::iterator& next() {
-				return (this + 1);
-			}
-
-			dynamic_array<T>::iterator& previous() {
-				return (this - 1);
-			}
-	};
 
 } // end of namespace arrays

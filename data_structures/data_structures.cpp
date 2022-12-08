@@ -59,15 +59,9 @@ void test1() {
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
 	});
 	
-	arr.resize();
 
-	arrays::dynamic_array<pdf>::iterator s = arr.begin();
-	arrays::dynamic_array<pdf>::iterator e = arr.end();
-
-	std::cout << (( s != &(arr[1]) ) ? "true" : "false") << '\n';
-
-	for ( ; s != e; s += 1) {
-		std::cout << " iterator : " << (*s).data << '\n';
+	for ( pdf & s : arr ) {
+		std::cout << " iterator : " << s.data << '\n';
 	};
 
 	std::cout << "===============================================" << '\n';
@@ -79,27 +73,33 @@ void test1() {
 
 
 // test on primitives "int float ..."
-template<typename T> void p_test( size_t && size ) {
+template<typename V> void p_test( size_t && size ) {
 
-	arrays::dynamic_array<T> arr( size , size );
+	arrays::dynamic_array<V> arr( size , size );
 
 	std::srand(std::time(0));
 
 	for (size_t i = 0; i < size; i += 1) {
 
-		arr.insert( i, (T)std::rand());
+		arr.insert( i, (V)std::rand());
 		
 	}
 
 	arr.remove(1);
 	arr.remove(2);
 
-
 	arr.for_each(
-		true , [](size_t i , bool emp  , T& a) {
-			std::cout << i << " : " << a << '\n';
+		true, [](size_t i, bool b, V& e) {
+			std::cout << i << " " << e << '\n';
 		}
 	);
+	
+	arrays::dynamic_array<int>::iterator s = arr.begin();
+	arrays::dynamic_array<int>::iterator e = arr.end();
+	
+	for (; s != e; ++s) {
+		std::cout << " iterator : " << *s << '\n';
+	};
 
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
