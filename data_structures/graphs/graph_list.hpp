@@ -6,42 +6,76 @@
 
 namespace graphs {
 	
-	template<typename T> class graph_node{
+	namespace {
 
-		private : 
-			T value; 
-			std::list<graph_node*> edges; // represent the conncetion to other nodes
+		template<typename T> class vertex {
 
-	public : 
-		graph_node() {}
+			private:
+				T value;
+				std::set< vertex<T>* > edges; // represent the conncetion to other nodes
 
-		graph_node( T node_value ) :value(node_value) { }
+			public:
+				vertex() {}
 
-		~graph_node() {}
+				vertex(T node_value) :value(node_value) { }
+
+				~vertex() {}
+
+		};
+		// end of class node
+
+
 	};
-	
+	// end of anonymouse namespace
 
-	template<typename type> class graph_list {
+
+	/*
+		- graph based on list
+		- undirected graph
+		- dynamic graph
+	*/
+	template<typename type> class l_graph {
 
 		private :
-			std::set<graph_node> nodes;
+			std::set< vertex<type> > graph;
 
 		public :
 
-			graph_list() { }
+			// constructor's
 
-			graph_list( std::initializer_list<type> const& values ) { 
+			l_graph() { }
+
+			l_graph( std::initializer_list<type> const& values ) {
 			
 				// copy process
 				for (type value : values) {
-					this->nodes.insert( graph_node<type>(value) );
+					this->graph.insert( vertex<type>(value) );
 				}
 
 			}
 
-			~graph_list(){}
+			~l_graph(){}
 
-	}; // end of class graph_lish
+
+			// graph method's
+
+			void insert_vertex(type& new_vertex_value);
+			void insert(type& new_vertex_value, std::initializer_list<vertex<type>*> const& new_vertex_edges);
+
+			void delete_vertex(	type const& target_vertex);
+			void delete_vertex(	size_t const& vertex_index);
+
+			void insert_edge(type const& vertex_a, type const& vertex_b); // to connect to vertex's 
+
+			void delete_edge(type const& vertex_a, type const& vertex_b); // to delete connection between vertex's
+
+			void bfs(); // search algorithm !
+			void dfs(); // search algorithm !
+
+
+
+
+	}; // end of class l_graph
 
 
 } // end of namespace graphs

@@ -7,8 +7,8 @@
 #include <string>
 // #include <functional>
 
-#include "arrays/static_array.hpp"
-#include "arrays/dynamic_array.hpp"
+#include "graphs/graph_list.hpp"
+
 
 // objects for testing 
 class pdf {
@@ -59,34 +59,24 @@ int main() {
 // test on objects
 void test1() {
 
-	arrays::dynamic_array<pdf> arr(10, {
+	graphs::l_graph<pdf> g();
+
+	/*
+	{
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
-		});
+	}
+	*/
 
-	arrays::dynamic_array<pdf>::iterator a = arr.begin();
-	a = a.next();
-	a = a.previous();
-
-
-	std::cout << a->data << '\n';
-
-	for ( pdf & s : arr ) {
-		std::cout << " iterator : " << s.data << '\n';
-	};
-
-	std::cout << "===============================================" << '\n';
-	std::cout << "SIZE    : " << arr.size() << '\n';
-	std::cout << "LENGTH  : " << arr.length() << '\n';
-	std::cout << "===============================================" << '\n';
 
 }
 
 
-// test on primitives "int float ..."
-template<typename V> void p_test( size_t && size ) {
+// test on primitives "int , float , ..."
+template<typename type> void p_test( size_t && size ) {
 
-	arrays::dynamic_array<V> arr( size , size );
+	graphs::l_graph<type> g();
 
+	/*
 	std::srand(std::time(0));
 
 	for (size_t i = 0; i < size; i += 1) {
@@ -94,26 +84,13 @@ template<typename V> void p_test( size_t && size ) {
 		arr.insert( i, (V)std::rand());
 		
 	}
+	*/
 
-	arr.remove(1);
-	arr.remove(2);
 
-	arr.for_each(
-		true, [](size_t i, bool b, V& e) {
-			std::cout << i << " " << e << '\n';
-		}
-	);
-	
-	arrays::dynamic_array<int>::iterator s = arr.begin();
-	arrays::dynamic_array<int>::iterator e = arr.end();
-	
-	for (; s != e; ++s) {
-		std::cout << " iterator : " << *s << '\n';
-	};
-
+	/*
 	std::cout << "===============================================" << '\n';
 	std::cout << "SIZE    : " << arr.size() << '\n';
 	std::cout << "LENGTH  : " << arr.length() << '\n';
 	std::cout << "===============================================" << '\n';
-
+	*/
 }
