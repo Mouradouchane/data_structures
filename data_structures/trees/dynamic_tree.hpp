@@ -99,6 +99,26 @@ namespace trees{
                   value   { node_value } ,
                   parent  { parent_node }
             { 
+
+            }
+
+            // default destructor
+            ~dt_node() {
+
+                try {
+
+                    for ( dt_node<T> & child : this->children ) {
+                        child.~dt_node();
+                    }
+
+                    this->children.clear();
+
+                }
+                catch (std::exception& error) {
+                    std::cerr << error.what() << '\n';
+                    throw error;
+                }
+
             }
 
             // o( (n log n) + (log n) + 1 )

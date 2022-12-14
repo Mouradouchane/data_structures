@@ -149,21 +149,28 @@ namespace trees {
 			// node destructor
 			~bt_node() {
 
-				if (this->left != nullptr) {
-					this->left->~bt_node();
+				try {
 
-					free( (void*)(this->left) );
-					this->left = nullptr;
+					if (this->left != nullptr) {
+						this->left->~bt_node();
+
+						delete this->left;
+						this->left = nullptr;
+					}
+
+					if (this->right != nullptr) {
+						this->right->~bt_node();
+
+						delete this->right;
+						this->right = nullptr;
+					}
+
+				}
+				catch (std::exception& error) {
+					std::cerr << error.what() << '\n';
+					throw error;
 				}
 
-				if (this->right != nullptr) {
-					this->right->~bt_node();
-
-					free( (void*)(this->right) );
-					this->right = nullptr;
-				}
-
-				//free( (void*)(this->value) );
 			}
 
 			T get_value() {

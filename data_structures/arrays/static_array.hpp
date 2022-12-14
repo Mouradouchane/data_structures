@@ -72,7 +72,24 @@ namespace arrays {
 		}
 
 		// default destructor	
-		~static_array() { }
+		~static_array() { 
+
+			try {
+
+				if (this->arr != nullptr) {
+
+					delete[] this->arr;
+					this->arr = nullptr;
+
+				}
+
+			}
+			catch (std::exception& error) {
+				std::cerr << error.what() << '\n';
+				throw error.what();
+			}
+				
+		}
 
 		/*
 			===== methods =====

@@ -43,28 +43,94 @@ namespace linkedlist {
 
 // ============= node ===============
 template<typename t> class node {
-public:
-    node() { }
-    node(t Value):value(Value) { }
-    ~node(){ }
+
+    public:
+
+        // only value & pointer for next one :)
+        t value;
+        node<t>* next = nullptr;
+
+        // constructors
+        node() { }
+
+        node(t const& Value) : value(Value) { }
+
+        node(node<t> const& other_node): value(other_node.Value) , next(other_node.next) { }
+
+        // destructor
+        ~node(){ 
+        
+            try {
+
+                if (this->next != nullptr) {
+                    this->next->~node();
+                    this->next = nullptr;
+                }
+
+            }
+            catch (std::exception& error) {
+                std::cerr << error.what() << '\n';
+                throw error.what();
+            }
+
+        }
     
-    // only value & pointer for next one :)
-    t value;
-    node<t>* next = NULL;
 };
 
 
 // ========== singly linked list ============
 template<typename t> class singly_LinkedList {
 
-private : 
-        int len = 0; // len => length
-        node<t>* first = NULL; // head
-        node<t>* last  = NULL; // tail
+private :
+
+        int len = 0; 
+
+        node<t>* first = nullptr; // head
+        node<t>* last  = nullptr; // tail
 
 public:
+        // constructor
         singly_LinkedList() {}
-        ~singly_LinkedList() {}
+
+        singly_LinkedList(std::initializer_list<t> const& list_elements) {
+        
+            this->first = new node<t>();
+
+            node<t>* temp = this->first;
+            size_t i = 1;
+
+            for ( t element : list_elements ) {
+
+                temp->value = element;
+
+                if ( (list_elements.begin() + i) != list_elements.end()) {
+                    temp->next = new node<t>();
+                    temp = temp->next;
+                }
+                i += 1;
+            }
+
+            this->last = temp;
+
+        }
+
+        // destructor
+        ~singly_LinkedList() {
+
+            try {
+
+                if (this->first != nullptr) {
+                    this->first->~node();
+                    this->first = nullptr;
+                }
+
+            }
+            catch (std::exception& error) {
+                std::cerr << error.what() << '\n';
+                throw error.what();
+            }
+
+        }
 
         // o(1)
         // return "first/head" as pointer
@@ -78,10 +144,9 @@ public:
             return last;
         }
 
-
         // o(1)
         // push new value direct from the back of linked list (or you can say 'new tail')
-        void push_back(t value){
+        void push_back(t const& value){
             node<t>* newNode = new node<t>(value);
 
             len += 1;
@@ -99,7 +164,7 @@ public:
     
         // o(1)
         // push new value direct from the front of linked list (or you can say 'new head')
-        void push_front(t value) {
+        void push_front(t const& value) {
             node<t>* newNode = new node<t>(value);
 
             len += 1;
@@ -460,16 +525,19 @@ public:
         }
 
         // o(n)
-        // just "test function" who print all values in console
-        void print() {
-            node<t>* tempNode = first;
+        void foreach( void (* const& call_back_function)( size_t const& counter , t & node) ) {
 
-            std::cout << "==================================================" << std::endl;
-            while (tempNode != NULL) {
-                std::cout << tempNode->value << std::endl;
-                tempNode = tempNode->next;
+            node<t>* temp = first;
+            size_t ctr = 0;
+
+            while (temp != nullptr) {
+
+                call_back_function(ctr, temp->value);
+                temp = temp->next;
+                ctr += 1;
+
             }
-            std::cout << "==================================================" << std::endl;
+
         }
 
         // o(1) ==> o(n)
@@ -493,6 +561,95 @@ public:
             }
 
         }
+
+
+        // iterator function
+
+        node<t>* begin() {
+            return this->first;
+        }
+
+        node<t>* end() {
+            return this->last->next;
+        }
+
+
+        class iterator {
+
+            private : 
+
+                node<t>* addr = nullptr;
+
+            public : 
+
+                // constructors
+                iterator() {}
+                iterator(node<t>* address) :addr(address) { }
+                iterator(iterator & other) :addr(other.addr) { }
+                
+                // destructor
+                ~iterator(){}
+
+                /*
+                node<t>* next() {
+                    this->addr = addr->next;
+                    return addr;
+                }
+                */
+
+                iterator& next() {
+                    this->addr = addr->next;
+                    return this;
+                }
+
+                t & operator * () {
+                    return addr->value;
+                }
+
+                node<t>* operator ++() {
+                    if (this->addr != nullptr) this->addr = addr->next;
+                    return addr;
+                }
+
+
+                void operator += (size_t const& ctr) {
+
+                    size_t counter = ctr;
+
+                    while (counter != 0) {
+
+                        if (this->addr == nullptr || this->addr->next == nullptr) break;
+                        else {
+                            this->addr = addr->next;
+                            counter -= 1;
+                        }
+
+                    }
+
+                }
+
+                node<t>& operator ->() {
+                    return *addr;
+                }
+
+                bool operator != (iterator& other) {
+                    return (this->addr != other.addr);
+                }
+
+                bool operator != (node<t>* other) {
+                    return (this->addr != other->addr);
+                }
+
+                bool operator == (iterator& other) {
+                    return (this->addr == other.addr);
+                }
+
+                bool operator == (node<t>* other) {
+                    return (this->addr == other->addr);
+                }
+
+        };
+
 };
 
 

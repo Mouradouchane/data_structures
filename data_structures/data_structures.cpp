@@ -8,6 +8,7 @@
 // #include <functional>
 
 #include "graphs/graph_list.hpp"
+#include "linkedlists/singly_LinkedList.hpp"
 
 
 // objects for testing 
@@ -60,7 +61,20 @@ int main() {
 void test1() {
 
 	graphs::l_graph<pdf> g();
+	linkedlist::singly_LinkedList<pdf> arr = { pdf("a") , pdf("b") ,pdf("c") ,pdf("d") ,pdf("e") };
 
+	arr.push_back(pdf("x"));
+	arr.push_back(pdf("y"));
+	arr.push_back(pdf("z"));
+
+	linkedlist::singly_LinkedList<pdf>::iterator s = arr.begin();
+	linkedlist::singly_LinkedList<pdf>::iterator e = arr.end();
+
+	//for (linkedlist::node<pdf>& x : arr) {
+	for (; s != e; s += 1 ) {
+		std::cout << (*s).data << "\n";
+	}
+ 
 	/*
 	{
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")

@@ -484,16 +484,26 @@ namespace trees {
 		// node destructor
 		~avl_node() {
 
+			try {
 
-			if (this->left != nullptr) {
+				if (this->left != nullptr) {
+					this->left->~avl_node();
 
-				this->left->~avl_node();
+					delete this->left;
+					this->left = nullptr;
+				}
+
+				if (this->right != nullptr) {
+					this->right->~avl_node();
+
+					delete this->right;
+					this->right = nullptr;
+				}
+
 			}
-
-			if (this->right != nullptr) {
-
-				this->right->~avl_node();
-
+			catch (std::exception& error) {
+				std::cerr << error.what() << '\n';
+				throw error.what();
 			}
 
 		}
@@ -571,7 +581,7 @@ namespace trees {
 				this->root->~avl_node();
 
 				this->root = nullptr;
-				this->current_node = this->root;
+				this->current_node = nullptr;
 			}
 
 		}

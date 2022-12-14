@@ -198,8 +198,21 @@ namespace trees{
 
 			// destructor 
 			~binary_tree_arr(){ 
-				// delete dynamic allocated array of nodes from "heap"
-				delete[] this->nodes; 
+				
+				try{
+
+					if (this->nodes != nullptr) {
+
+						delete[] this->nodes; 
+						this->nodes = nullptr;
+
+					}
+
+				}
+				catch (std::exception& error) {
+					std::cerr << error.what() << '\n';
+					throw error.what();
+				}
 			}
 
 

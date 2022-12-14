@@ -181,8 +181,20 @@ namespace trees {
 		// def destructor
 		~binary_heap() {
 
-			// "delete/free" heap_array from "heap"
-			delete this->heap;
+			try {
+
+				if (this->heap != nullptr) {
+
+					delete[] this->heap;
+					this->heap = nullptr;
+
+				}
+
+			}
+			catch (std::exception& error) {
+				std::cerr << error.what() << '\n';
+				throw error.what();
+			}
 
 		}
 

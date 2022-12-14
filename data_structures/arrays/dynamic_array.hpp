@@ -171,11 +171,15 @@ namespace arrays {
 		~dynamic_array() {
 			try {
 
-				delete[] this->arr;
-				delete[] this->map;
+				if (this->arr != nullptr) {
+					delete[] this->arr;
+					this->arr = nullptr;
+				}
 
-				this->arr = nullptr;
-				this->map = nullptr;
+				if (this->map != nullptr) {
+					delete[] this->map;
+					this->map = nullptr;
+				}
 
 			}
 			catch (std::exception& error) {

@@ -22,36 +22,63 @@ namespace stacks {
 
 template<typename t> class static_stack {
 	private:
-		int len = 0; 
-		int size = 0;
-		t* stack = NULL;
+		size_t len = 0;
+		size_t _size = 0;
+		t * stack = nullptr;
 	public:
-		static_stack(unsigned int stack_size):size(stack_size),stack(new t[stack_size]) {
-			/*
-			stack = new t[stack_size];
-			size = stack_size;
-			*/
+		static_stack(size_t const& stack_size) :_size(stack_size) , stack(new t[sizeof(t) * stack_size]) 
+		{
 		}
-		~static_stack(){}
+
+		static_stack(std::initializer_list<t> const& stack_elements) {
+
+			this->_size  = stack_elements.size();
+			this->len   = this->_size - 1;
+			this->stack = new t[ sizeof(t) * this->_size ];
+
+			size_t i = 0;
+			for (t element : stack_elements) {
+				this->stack[i] = element;
+				i += 1;
+			}
+
+		}
+
+		~static_stack(){
+
+			try {
+
+				if (this->stack != nullptr) {
+					delete[] this->stack;
+					this->stack = nullptr;
+				}
+
+			}
+			catch (std::exception& error) {
+				std::cerr << error.what() << '\n';
+				throw error.what();
+			}
+
+		}
 
 		// o(1)
 		// push data to stack "make new top element :)"
 		void push(t newValue) {
-			if (len < size) {
-				stack[len] = newValue;
-				len += 1;
+			if (this->len < this->_size) {
+				this->stack[ this->len ] = newValue;
+				this->len += 1;
 			}
 		}
 
 		// o(1)
 		// get data in top index & delete it "pop data"
 		t pop() {
-			if (len == 0) return NULL;
+			if (this->len == 0) return NULL;
 
-			t value = stack[len - 1];
-			stack[len-1] = NULL;
+			t value = stack[ this->len - 1 ];
+			this->stack[ this->len - 1 ] = NULL;
 
-			len -= 1;
+			this->len -= 1;
 			return value;
 		}
 
@@ -65,13 +92,17 @@ template<typename t> class static_stack {
 		// o(1)
 		// check if stack is full or not
 		bool isFull() {
-			return (len == size) ? true : false;
+			return (len >= this->_size);
 		}
 
 		// o(1) 
-		// length => elements length not array/stack length
-		int length() {
-			return len;
+		// stack length
+		size_t length() {
+			return this->len;
+		}
+
+		size_t size() {
+			return this->_size;
 		}
 
 		// o(n)
@@ -94,13 +125,26 @@ template<typename t> class static_stack {
 		//o(1) ==> o(n)
 		// clear stack
 		void clear() {
+				
+			try {
 
-			// clear stack
-			delete stack;
+				// clear process
+				if (this->stack != nullptr) {
 
-			// make new stack with same size
-			stack = new t[size];
-			len = 0;
+					delete[] this->stack;
+
+					// reallocated stack
+					this->stack = new t[ sizeof(t) * this->_size ];
+
+					this->len = 0;
+				}
+
+			}
+			catch (std::exception& error) {
+				std::cerr << error.what() << '\n';
+				throw error.what();
+			}
+
 		}
 
 		// o(1) ==> o(n)
