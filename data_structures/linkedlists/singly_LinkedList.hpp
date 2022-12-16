@@ -55,7 +55,7 @@ template<typename t> class node {
 
         node(t const& Value) : value(Value) { }
 
-        node(node<t> const& other_node): value(other_node.Value) , next(other_node.next) { }
+        node(node<t> const& other_node): value(other_node.value) , next(other_node.next) { }
 
         // destructor
         ~node(){ 
@@ -75,10 +75,150 @@ template<typename t> class node {
 
         }
     
+
+        void operator = ( node<t>* & other_node ) {
+            this->value = other_node->value;
+            this->next = other_node->next;
+        }
+
+        void operator ++ () {
+            this = this->next;
+        }
+
+        bool operator != (node<t>& other_node){
+            return (this != &other_node) ? true : false ;
+        }
+        
+        bool operator != ( t & other_value ){
+            return (this->value != other_value);
+        }
+
+        bool operator == (node<t>& other_node) {
+            return (this == other_node);
+        }
+        bool operator == ( t & other_value ) {
+            return (this->value == other_value);
+        }
+
 };
 
 
-// ========== singly linked list ============
+
+
+
+/*
+
+    ------------ iterator ------------
+
+*/
+
+template<typename t> class iterator {
+
+private:
+
+    node<t>* addr = nullptr;
+
+public:
+
+    // constructors
+    iterator() {}
+    iterator(node<t>* address) :addr(address) { }
+    iterator(node<t> const& address) :addr(address) { }
+    iterator(iterator const& other) :addr(other.addr) { }
+
+    // destructor
+    ~iterator() {}
+
+    void next() {
+
+        if (this->addr != nullptr) this->addr = this->addr->next;
+
+    }
+
+    t& operator * () {
+        return this->addr->value;
+    }
+
+    void operator ++() {
+
+        if (this->addr != nullptr) this->addr = this->addr->next;
+
+    }
+
+    void operator += (size_t const& move_value) {
+
+        size_t counter = move_value;
+
+        while (counter != 0) {
+
+            if (this->addr == nullptr) break;
+            else {
+                this->addr = addr->next;
+                counter -= 1;
+            }
+
+        }
+
+    }
+
+
+    node<t>& operator ->() {
+        return *addr;
+    }
+
+    iterator& operator + (size_t const& move_value) {
+
+        size_t counter = move_value;
+
+        iterator temp(this->addr);
+
+        while (counter != 0) {
+
+            if (temp.addr == nullptr) break;
+            else {
+                temp.addr = temp.addr->next;
+                counter -= 1;
+            }
+
+        }
+
+        return temp;
+
+    }
+
+    bool operator != (iterator const& other) {
+        return (this->addr != other.addr);
+    }
+
+    bool operator == (iterator const& other) {
+        return (this->addr == other.addr);
+    }
+
+    void operator = (iterator const& other_itr) {
+        if (&other_itr != nullptr) this->addr = other_itr.addr;
+    }
+
+
+    node<t>& get_node() {
+        return *this->addr;
+    }
+
+};
+
+/*
+
+    ------------- end of class iterator -------------
+
+*/
+
+
+
+/*
+
+    ------------- singly linked list--------------
+
+*/ 
+
 template<typename t> class singly_LinkedList {
 
 private :
@@ -131,6 +271,7 @@ public:
             }
 
         }
+
 
         // o(1)
         // return "first/head" as pointer
@@ -562,97 +703,15 @@ public:
 
         }
 
-
-        // iterator function
-
-        node<t>* begin() {
-            return this->first;
+        iterator<t> begin() {
+            return iterator<t>( this->first );
         }
 
-        node<t>* end() {
-            return this->last->next;
+        iterator<t> end() {
+            return iterator<t>( this->last->next );
         }
-
-
-        class iterator {
-
-            private : 
-
-                node<t>* addr = nullptr;
-
-            public : 
-
-                // constructors
-                iterator() {}
-                iterator(node<t>* address) :addr(address) { }
-                iterator(iterator & other) :addr(other.addr) { }
-                
-                // destructor
-                ~iterator(){}
-
-                /*
-                node<t>* next() {
-                    this->addr = addr->next;
-                    return addr;
-                }
-                */
-
-                iterator& next() {
-                    this->addr = addr->next;
-                    return this;
-                }
-
-                t & operator * () {
-                    return addr->value;
-                }
-
-                node<t>* operator ++() {
-                    if (this->addr != nullptr) this->addr = addr->next;
-                    return addr;
-                }
-
-
-                void operator += (size_t const& ctr) {
-
-                    size_t counter = ctr;
-
-                    while (counter != 0) {
-
-                        if (this->addr == nullptr || this->addr->next == nullptr) break;
-                        else {
-                            this->addr = addr->next;
-                            counter -= 1;
-                        }
-
-                    }
-
-                }
-
-                node<t>& operator ->() {
-                    return *addr;
-                }
-
-                bool operator != (iterator& other) {
-                    return (this->addr != other.addr);
-                }
-
-                bool operator != (node<t>* other) {
-                    return (this->addr != other->addr);
-                }
-
-                bool operator == (iterator& other) {
-                    return (this->addr == other.addr);
-                }
-
-                bool operator == (node<t>* other) {
-                    return (this->addr == other->addr);
-                }
-
-        };
 
 };
-
-
 
 
 }
