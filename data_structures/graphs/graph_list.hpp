@@ -6,27 +6,36 @@
 
 namespace graphs {
 	
-	namespace {
+	template<typename T> class vertex {
 
-		template<typename T> class vertex {
+		private:
+			std::set< vertex<T>* > edges; // this vertex connection
 
-			private:
-				T value;
-				std::set< vertex<T>* > edges; // represent the conncetion to other nodes
+		public:
+			T value;
 
-			public:
-				vertex() {}
+			vertex() {}
 
-				vertex(T node_value) :value(node_value) { }
+			vertex(T vertex_value) :value(vertex_value) { }
 
-				~vertex() {}
+			vertex(T vertex_value , std::initializer_list< vertex<T>* > const& vertex_edges ) 
+				:value(vertex_value) 
+			{ 
 
-		};
-		// end of class node
+				for (vertex<T> *& vertex : vertex_edges) {
+					vertex->add_edge(this);
+					this->edges
+				}
 
+			}
+
+			~vertex() { }
+
+			void add_edge(vertex<T> *& other_vertex);
+			void delete_edge(vertex<T> *& other_vertex);
 
 	};
-	// end of anonymouse namespace
+	// end of class vertex
 
 
 	/*
@@ -59,23 +68,36 @@ namespace graphs {
 
 			// graph method's
 
-			void insert_vertex(type& new_vertex_value);
-			void insert(type& new_vertex_value, std::initializer_list<vertex<type>*> const& new_vertex_edges);
+			void insert_vertex(type vertex_value);
+			void insert_vertex(vertex<type> const& vertex_value);
+			void insert_vertex(type& vertex_value, std::initializer_list< vertex<type>& > const& vertex_edges);
+			void insert_edge(type const& vertex_a, type const& vertex_b); // to connect to vertex's 
 
 			void delete_vertex(	type const& target_vertex);
 			void delete_vertex(	size_t const& vertex_index);
-
-			void insert_edge(type const& vertex_a, type const& vertex_b); // to connect to vertex's 
-
 			void delete_edge(type const& vertex_a, type const& vertex_b); // to delete connection between vertex's
 
 			void bfs(); // search algorithm !
 			void dfs(); // search algorithm !
 
 
-
+			// for testing 
+			void print();
 
 	}; // end of class l_graph
 
+	template<typename type> void l_graph<type>::insert_vertex(type vertex_value) {
+		
+		this->graph.insert(vertex<type>(vertex_value));
+
+	}
+
+	template<typename type> void l_graph<type>::print() {
+
+		for (vertex<type> *& vertex : this->graph) {
+			std::cout << vertex.value << "\n";
+		}
+
+	}
 
 } // end of namespace graphs
