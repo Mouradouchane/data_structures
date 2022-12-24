@@ -43,6 +43,10 @@ public:
 	}
 };
 
+bool cp(pdf const& a, pdf const& b) {
+	return (a.data < b.data);
+}
+
 void test1();
 template<typename T> void p_test(size_t&& size);
 
@@ -51,16 +55,23 @@ int main() {
 	std::cout << "=============== OBJECTS TEST ===============\n";
 	test1();
 	std::cout << "=============== PRIMITIVE TEST ===============\n";
-	p_test<int>(6);
+	//p_test<int>(6);
 
 	return 0;
 }
 
-
 // test on objects
 void test1() {
 
-	graphs::l_graph<pdf> g();
+	graphs::l_graph<pdf> gp( [&](pdf const& a, pdf const& b) -> bool { return (a.data < b.data); } );
+
+	/*
+	gp.add_vertex(pdf("book 1"));
+	gp.add_vertex(pdf("book 2"));
+	gp.add_vertex(pdf("book 3"));
+	gp.add_vertex(pdf("book 4"));
+	*/
+
 	/*
 	{
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
@@ -88,7 +99,7 @@ void test1() {
 // test on primitives "int , float , ..."
 template<typename type> void p_test( size_t && size ) {
 
-	graphs::l_graph<type> g();
+	//graphs::l_graph<type> g();
 
 	/*
 	std::srand(std::time(0));
