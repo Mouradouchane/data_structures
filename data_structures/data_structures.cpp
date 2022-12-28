@@ -10,6 +10,7 @@
 #include "graphs/graph_list.hpp"
 #include "linkedlists/singly_LinkedList.hpp"
 
+using namespace graphs;
 
 // objects for testing 
 class pdf {
@@ -63,21 +64,24 @@ int main() {
 // test on objects
 void test1() {
 
-	graphs::l_graph<pdf> gp( [&](pdf const& a, pdf const& b) -> bool { return (a.data < b.data); } );
+	Vertex<pdf> va("a" , pdf("book a"));
+	Vertex<pdf> vb("b" , pdf("book b"));
+	Vertex<pdf> vc("c" , pdf("book c"));
 
-	/*
-	gp.add_vertex(pdf("book 1"));
-	gp.add_vertex(pdf("book 2"));
-	gp.add_vertex(pdf("book 3"));
-	gp.add_vertex(pdf("book 4"));
-	*/
+
+	graph_list<pdf> gp({ va , vb , vc });
+
+	gp.add_vertex(va);
+	gp.add_vertex(vb);
+	gp.add_vertex(vc);
+
+	gp.print();
 
 	/*
 	{
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
 	}
 	*/
-
 
 
 	/*
