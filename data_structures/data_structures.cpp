@@ -71,14 +71,18 @@ void test1() {
 
 	graph_list<pdf> gp({ va , vb , vc });
 
-	gp.add_vertex(va);
-	gp.add_vertex(vb);
-	gp.add_vertex(vc);
+	std::cout << gp.search("x") << "\n";
+	std::cout << gp.search(vb.get_name()) << "\n";
+	std::cout << gp.search(va.get_name()) << "\n";
 
 	gp.print();
 
 	/*
 	{
+	gp.add_vertex(va);
+	gp.add_vertex(vb);
+	gp.add_vertex(vc);
+
 		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
 	}
 	*/
