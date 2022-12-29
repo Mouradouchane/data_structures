@@ -97,7 +97,7 @@ namespace graphs {
 	private:
 		std::vector< Vertex<t> > vertices;
 
-		// privet methods
+		// graph private methods
 		
 		void bin_search_process(
 
@@ -137,14 +137,22 @@ namespace graphs {
 
 		}
 
-		void sort(); // quick sort
+		// basically quick sort 
+		void sort() {
+
+			std::sort(this->vertices.begin(), this->vertices.end(),
+				[&](Vertex<t>& a, Vertex<t>& b) -> bool {
+					return (a < b);
+				}
+			);
+
+		};
 
 	public:
 
 		Vertex<t>* vertex = nullptr; // current vertex you in
 
 		graph_list() { }
-
 
 		graph_list(std::initializer_list< Vertex<t> > const& graph_vertices) {
 
@@ -153,18 +161,14 @@ namespace graphs {
 				this->vertices.push_back(vtx);
 			}
 
-			std::sort(
-				this->vertices.begin(), this->vertices.end(), 
-				[&]( Vertex<t> a , Vertex<t> b) -> bool {
-					return (a.get_name() < b.get_name()) ? true : false ;
-				}
-			);
+			this->sort();
 
 		}
 
+
 		void print() {
 
-			for (Vertex<t>& v : this->vertices) {
+			for (Vertex<t> & v : this->vertices) {
 				v.print();	
 			}
 
@@ -176,16 +180,17 @@ namespace graphs {
 		bool add_vertex(
 			std::string vertex_name,
 			t vertex_value,
-			std::initializer_list<size_t> const& edges_indexes = {}
+			std::initializer_list<size_t> const& edges_indexes
 		);
 
 		bool add_vertex(
 			std::string vertex_name,
 			t vertex_value,
-			std::initializer_list< Vertex<t>* > const& edges_pointers = {}
+			std::initializer_list< Vertex<t>* > const& edges_pointers
 		);
 
-		bool add_vertex( Vertex<t> new_vertex );
+		bool add_vertex( Vertex<t> new_vertex ); 
+		bool add_vertex( std::string vertex_name, t vertex_value );
 
 		bool add_edge(size_t const& vertex_a_index, size_t const& vertex_b_index);
 		bool add_edge(std::string const& vertex_a_name, std::string const& vertex_b_name);
@@ -197,7 +202,7 @@ namespace graphs {
 		bool remove_edge(std::string const& vertex_a_name, std::string const& vertex_b_name);
 
 		int search(std::string const& vertex_name);
-		int search(Vertex<t> const& target_verter);
+		int search(Vertex<t> & target_vertex);
 
 		//bool is_connected( const vertex<t> &* vertex_a, const vertex<t> &* vertex_b);
 		bool is_connected(size_t const& vertex_a_index, size_t const& vertex_b_index);
@@ -206,18 +211,36 @@ namespace graphs {
 	// end of graph_list class
 	
 	
+
 	template<typename t> bool graph_list<t>::add_vertex( Vertex<t> new_vertex ) {
 
 		int index = this->search( new_vertex.get_name() );
 		
-	
-		if ( index < 0 ) return false;
-		else {
+		if (index == -1) {
 
 			this->vertices.push_back(new_vertex);
 			
+			this->sort();
+
 			return true;
 		}
+		else return false;
+
+	}
+
+	template<typename t> bool graph_list<t>::add_vertex( std::string vertex_name , t vertex_value ) {
+
+		int index = this->search(vertex_name);
+ 
+		if (index == -1) {
+
+			this->vertices.push_back( Vertex<t>( vertex_name , vertex_value ) );
+
+			this->sort();
+
+			return true;
+		}
+		else return false;
 
 	}
 
@@ -227,6 +250,16 @@ namespace graphs {
 		int index = -1;
 
 		this->bin_search_process(vertex_name, rslt, index, 0, this->vertices.size() - 1);
+
+		return index;
+	}
+
+	template<typename t> int graph_list<t>::search( Vertex<t> & target_vertex ) {
+
+		bool rslt = false;
+		int index = -1;
+
+		this->bin_search_process( target_vertex.get_name() , rslt, index, 0, this->vertices.size() - 1);
 
 		return index;
 	}

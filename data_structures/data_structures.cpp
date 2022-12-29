@@ -64,16 +64,16 @@ int main() {
 // test on objects
 void test1() {
 
-	Vertex<pdf> va("a" , pdf("book a"));
-	Vertex<pdf> vb("b" , pdf("book b"));
-	Vertex<pdf> vc("c" , pdf("book c"));
+	Vertex<pdf> vc("cat" , pdf("book c"));
+	Vertex<pdf> va("ae"  , pdf("book a"));
+	Vertex<pdf> vd("bet" , pdf("book d"));
+	Vertex<pdf> vb("bat" , pdf("book b"));
 
+	graph_list<pdf> gp({ vb , va , vc , vd});
 
-	graph_list<pdf> gp({ va , vb , vc });
-
-	std::cout << gp.search("x") << "\n";
-	std::cout << gp.search(vb.get_name()) << "\n";
-	std::cout << gp.search(va.get_name()) << "\n";
+	gp.add_vertex("caty", pdf("book cat"));
+	gp.add_vertex("ctty", pdf("book cat"));
+	gp.add_vertex( "caxy", pdf("book cat"));
 
 	gp.print();
 
