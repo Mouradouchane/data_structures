@@ -12,14 +12,16 @@ namespace graphs {
 	template<typename T> class Vertex {
 
 	private:
-		std::vector< Vertex<T>* > edges;
+		std::vector< Vertex<T>* > edges; // connection to other vertices
 		std::string name = "";
 
 	public:
 		T value;
 
+		// constructor 1
 		Vertex() { }
 
+		// constructor 2
 		Vertex(
 			std::string vertex_name , T vertex_value,
 			std::vector< Vertex<T>* > const& vertex_edges = {}
@@ -33,9 +35,34 @@ namespace graphs {
 
 		}
 
-
+		// destructor
 		~Vertex() { }
 
+
+		/*
+			-------------- vertex public methods--------------
+		*/ 
+
+		static void search_process(
+			Vertex<T> const& vertex , std::string const& target_name , 
+			int &catch_index , bool &catch_check , int l , int r
+		);
+		static void sort_process( Vertex<T> & vertex );
+
+
+		std::string get_name() {
+			return this->name;
+		}
+
+		Vertex<T>* go_to(size_t const& vertex_index);
+		Vertex<T>* go_to(std::string const& vertex_name);
+
+		bool add_edge( Vertex<T> * other_vertex );
+
+		bool remove_edge( std::string const& other_vertex_name );
+
+
+		// testing function
 		void print() {
 			std::cout << this->name << " : ";
 
@@ -46,16 +73,10 @@ namespace graphs {
 			std::cout << " ;\n";
 		}
 
-		// getters
-		std::string get_name() {
-			return this->name;
-		}
+		/*
+			-------------- operators -------------- 
+		*/
 
-		// vertex public methods 
-		Vertex<T>* go_to(size_t const& vertex_index);
-		Vertex<T>* go_to(std::string const& vertex_name);
-
-		// operators
 		bool operator < ( Vertex<T> const& other ) {
 			return (this->name < other.name);
 		}
@@ -86,6 +107,7 @@ namespace graphs {
 			return (this->name == other_vertex_name);
 		}
 
+
 	}; 
 	// end of vertex class
 
@@ -105,7 +127,7 @@ namespace graphs {
 			bool & result, 
 			int  & catch_target_index, 
 			int  l, // left  index
-			int  r // right index
+			int  r  // right index
 
 		) {
 			// calc mid index
@@ -152,19 +174,32 @@ namespace graphs {
 
 		Vertex<t>* vertex = nullptr; // current vertex you in
 
+		// constructor 1
 		graph_list() { }
 
+		// constructor 2
 		graph_list(std::initializer_list< Vertex<t> > const& graph_vertices) {
+
+			int check = -1;
 
 			// copy vertices to the graph
 			for (Vertex<t> vtx : graph_vertices) {
-				this->vertices.push_back(vtx);
-			}
 
-			this->sort();
+				// check to avoid duplicates
+				check = this->search(vtx.get_name());
+
+				if (check == -1) {
+					this->vertices.push_back(vtx);
+					this->sort();
+				}
+
+				check = -1;
+			}
 
 		}
 
+		// destructor 
+		~graph_list(){ }
 
 		void print() {
 
@@ -178,14 +213,12 @@ namespace graphs {
 		*/
 
 		bool add_vertex(
-			std::string vertex_name,
-			t vertex_value,
+			std::string vertex_name , t vertex_value ,
 			std::initializer_list<size_t> const& edges_indexes
 		);
 
 		bool add_vertex(
-			std::string vertex_name,
-			t vertex_value,
+			std::string vertex_name , t vertex_value ,
 			std::initializer_list< Vertex<t>* > const& edges_pointers
 		);
 
@@ -206,12 +239,100 @@ namespace graphs {
 
 		//bool is_connected( const vertex<t> &* vertex_a, const vertex<t> &* vertex_b);
 		bool is_connected(size_t const& vertex_a_index, size_t const& vertex_b_index);
+		bool is_connected(std::string const& vertex_a_name , std::string const& vertex_b_name);
 
 	}; 
 	// end of graph_list class
 	
 	
 
+
+	/*
+
+		---------- Vertex functions implementation ----------
+
+	*/
+
+	template<typename T> void Vertex<T>::search_process(
+		Vertex<T> const& vertex , std::string const& target_name,
+		int& catch_index, bool& catch_check, int l, int r
+	) {
+
+		// calc mid index
+		int mid = (l + r) / 2;
+
+		// if target not found
+		if (l > r) {
+			catch_check = false;
+			catch_index = -1;
+			return;
+		}
+
+		std::string v_name = vertex.edges[mid]->get_name();
+
+		// if target found
+		if (v_name == target_name) {
+			catch_check = true;
+			catch_index = mid;
+			return;
+		}
+
+		// compare 
+		if ( v_name > target_name) {
+			// go left
+			Vertex<T>::search_process(vertex, target_name , catch_index , catch_check , l , mid - 1);
+		}
+		else {
+			// go right
+			Vertex<T>::search_process(vertex, target_name , catch_index , catch_check , mid + 1 , r);
+		}
+
+
+	}
+
+	template<typename T> void Vertex<T>::sort_process(Vertex<T> & vertex) {
+		
+		std::sort(
+			vertex.edges.begin(), vertex.edges.end(), 
+			[&]( Vertex<T>* a , Vertex<T>* b ) -> bool {
+				return (a->get_name() > b->get_name());
+			}
+		);
+
+	}
+
+	template<typename T> bool Vertex<T>::add_edge(Vertex<T>* other_vertex) {
+
+		bool check = false;
+		int index = -1;
+
+		Vertex<T>::search_process( *this , other_vertex->name, index, check, 0, this->edges.size() - 1 );
+
+		// if edge already exist
+		if ( index >= 0 ) return false;
+		else {
+
+			this->edges.push_back(other_vertex);
+
+			Vertex<T>::sort_process( *this );
+
+			return true;
+
+		}
+
+	}
+
+
+
+
+
+	/*
+
+		---------- graph_list functions implementation ----------
+
+	*/
+
+	// add vertex
 	template<typename t> bool graph_list<t>::add_vertex( Vertex<t> new_vertex ) {
 
 		int index = this->search( new_vertex.get_name() );
@@ -244,6 +365,8 @@ namespace graphs {
 
 	}
 
+
+	// search
 	template<typename t> int graph_list<t>::search(std::string const& vertex_name) {
 
 		bool rslt = false;
@@ -259,9 +382,31 @@ namespace graphs {
 		bool rslt = false;
 		int index = -1;
 
-		this->bin_search_process( target_vertex.get_name() , rslt, index, 0, this->vertices.size() - 1);
+		this->bin_search_process( target_vertex.get_name(), rslt, index, 0, this->vertices.size() - 1);
 
 		return index;
+	}
+
+
+	// add edge
+	template<typename t> bool graph_list<t>::add_edge(size_t const& vertex_a_index, size_t const& vertex_b_index) {
+
+		// if invalid index
+
+		if (vertex_a_index >= this->vertices.size() || vertex_b_index >= this->vertices.size()) {
+			return false;
+		}
+		else {
+
+			Vertex<t>* vertex_a = &(this->vertices[vertex_a_index]);
+			Vertex<t>* vertex_b = &(this->vertices[vertex_b_index]);
+
+			bool connect_a = this->vertices[vertex_a_index].add_edge( vertex_b );
+			bool connect_b = this->vertices[vertex_b_index].add_edge( vertex_a );
+
+			return (connect_a && connect_b);
+		}
+
 	}
 
 } // end of namespace graphs 

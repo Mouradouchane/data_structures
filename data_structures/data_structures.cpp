@@ -69,11 +69,13 @@ void test1() {
 	Vertex<pdf> vd("bet" , pdf("book d"));
 	Vertex<pdf> vb("bat" , pdf("book b"));
 
-	graph_list<pdf> gp({ vb , va , vc , vd});
+	graph_list<pdf> gp({ vc , vc , va, vb , vb, vd});
 
-	gp.add_vertex("caty", pdf("book cat"));
-	gp.add_vertex("ctty", pdf("book cat"));
+	gp.add_vertex("ae", pdf("book cat"));
+	gp.add_vertex("bat", pdf("book cat"));
 	gp.add_vertex( "caxy", pdf("book cat"));
+
+	gp.add_edge( gp.search(vc) , gp.search(va) );
 
 	gp.print();
 
