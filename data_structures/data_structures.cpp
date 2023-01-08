@@ -79,8 +79,8 @@ void test1() {
 		(size_t)gp.search("v_4") 
 	});
 
-	gp.add_vertex(Vertex <pdf>("v_6", pdf("book 6")));
-	gp.add_vertex(Vertex <pdf>("v_7", pdf("book 7")));
+	gp.add_vertex( "v_6", pdf("book 6"));
+	gp.add_vertex( "v_7", pdf("book 7"));
 
 	gp.add_edge( gp.search(v1) , gp.search(v11));
 

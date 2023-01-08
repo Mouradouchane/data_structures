@@ -12,7 +12,7 @@ namespace graphs {
 	template<typename T> class Vertex {
 
 	private:
-		std::vector< Vertex<T>* > edges; // connection to other vertices
+		std::vector< std::string > edges; // connection to other vertices
 		std::string name = "";
 
 	public:
@@ -24,12 +24,12 @@ namespace graphs {
 		// constructor 2
 		Vertex(
 			std::string vertex_name , T vertex_value,
-			std::vector< Vertex<T>* > const& vertex_edges = {}
+			std::vector< std::string > const& vertex_edges = {}
 		) 
 			:name(vertex_name), value(vertex_value) {
 
 			// copy edges
-			for (Vertex<T>* edge : vertex_edges) {
+			for ( std::string edge : vertex_edges ) {
 				this->edges.push_back(edge);
 			}
 
@@ -54,10 +54,10 @@ namespace graphs {
 			return this->name;
 		}
 
-		Vertex<T>* go_to(size_t const& vertex_index);
-		Vertex<T>* go_to(std::string const& vertex_name);
+		//Vertex<T>* go_to(size_t const& vertex_index);
+		//Vertex<T>* go_to(std::string const& vertex_name);
 
-		bool add_edge( Vertex<T> * other_vertex );
+		bool add_edge( std::string other_vertex );
 
 		bool remove_edge( std::string const& other_vertex_name );
 
@@ -66,8 +66,8 @@ namespace graphs {
 		void print() {
 			std::cout << this->name << " : ";
 
-			for (Vertex<T>*& vptr : this->edges) {
-				std::cout << vptr->name << ", ";
+			for (std::string & vptr : this->edges) {
+				std::cout << vptr << ", ";
 			}
 
 			std::cout << " ;\n";
@@ -118,6 +118,7 @@ namespace graphs {
 
 	*/
 
+	// search for edge in vertex
 	template<typename T> void Vertex<T>::search_process(
 		Vertex<T> const& vertex, std::string const& target_name,
 		int& catch_index, bool& catch_check, int l, int r
@@ -133,7 +134,7 @@ namespace graphs {
 			return;
 		}
 
-		std::string v_name = vertex.edges[mid]->get_name();
+		std::string v_name = vertex.edges[mid];
 
 		// if target found
 		if (v_name == target_name) {
@@ -155,23 +156,24 @@ namespace graphs {
 
 	}
 
+	// sort edges of vertex
 	template<typename T> void Vertex<T>::sort_process(Vertex<T>& vertex) {
 
 		std::sort(
 			vertex.edges.begin(), vertex.edges.end(),
-			[&](Vertex<T>* a, Vertex<T>* b) -> bool {
-				return (a->get_name() > b->get_name());
+			[&](std::string & a, std::string & b) -> bool {
+				return (a > b);
 			}
 		);
 
 	}
 
-	template<typename T> bool Vertex<T>::add_edge(Vertex<T>* other_vertex) {
+	template<typename T> bool Vertex<T>::add_edge(std::string other_vertex) {
 
 		bool check = false;
 		int index = -1;
 
-		Vertex<T>::search_process(*this, other_vertex->name, index, check, 0, this->edges.size() - 1);
+		Vertex<T>::search_process(*this, other_vertex, index, check, 0, this->edges.size() - 1);
 
 		// if edge already exist
 		if (index >= 0) return false;
@@ -268,7 +270,7 @@ namespace graphs {
 				check = this->search(vtx.get_name());
 
 				if (check == -1) {
-					this->vertices.push_back(vtx);
+					this->vertices.push_back( Vertex<t>( vtx.get_name() , vtx.value ) );
 					this->sort();
 				}
 
@@ -298,12 +300,6 @@ namespace graphs {
 			std::initializer_list<size_t> const& edges_indexes
 		);
 
-		bool add_vertex(
-			std::string vertex_name , t vertex_value ,
-			std::initializer_list< Vertex<t>* > const& edges_pointers
-		);
-
-		bool add_vertex( Vertex<t> new_vertex ); 
 		bool add_vertex( std::string vertex_name, t vertex_value );
 
 		bool add_edge(size_t const& vertex_a_index, size_t const& vertex_b_index);
@@ -332,34 +328,6 @@ namespace graphs {
 		---------- graph_list functions implementation ----------
 
 	*/
-
-	// add_vertex functions
-	template<typename t> bool graph_list<t>::add_vertex( Vertex<t> new_vertex ) {
-		
-		// check if there's a vertex with same name
-		int index = this->search( new_vertex.get_name() );
-		
-		if (index == -1) {
-
-			/*
-				we don't want to lose "vertex" where we are in ,
-				so we get it's name to catch it later after "push_back" and "sort"
-			*/
-			std::string current_vertex_name = this->vertex->get_name();
-
-			// push and sort
-			this->vertices.push_back(new_vertex);
-			this->sort();
-
-			// catch "vertex" after sort
-			index = this->search(current_vertex_name);
-			this->vertex = &(this->vertices[index]);
-			
-			return true;
-		}
-		else return false;
-
-	}
 
 	template<typename t> bool graph_list<t>::add_vertex( std::string vertex_name , t vertex_value ) {
 
@@ -466,8 +434,8 @@ namespace graphs {
 		}
 		else {
 
-			Vertex<t>* vertex_a = &(this->vertices[vertex_a_index]);
-			Vertex<t>* vertex_b = &(this->vertices[vertex_b_index]);
+			std::string vertex_a = (this->vertices[vertex_a_index].get_name());
+			std::string vertex_b = (this->vertices[vertex_b_index].get_name());
 
 			bool connect_a = this->vertices[vertex_a_index].add_edge( vertex_b );
 			bool connect_b = this->vertices[vertex_b_index].add_edge( vertex_a );
