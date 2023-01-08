@@ -112,6 +112,85 @@ namespace graphs {
 	// end of vertex class
 
 
+	/*
+
+		---------- Vertex functions implementation ----------
+
+	*/
+
+	template<typename T> void Vertex<T>::search_process(
+		Vertex<T> const& vertex, std::string const& target_name,
+		int& catch_index, bool& catch_check, int l, int r
+	) {
+
+		// calc mid index
+		int mid = (l + r) / 2;
+
+		// if target not found
+		if (l > r) {
+			catch_check = false;
+			catch_index = -1;
+			return;
+		}
+
+		std::string v_name = vertex.edges[mid]->get_name();
+
+		// if target found
+		if (v_name == target_name) {
+			catch_check = true;
+			catch_index = mid;
+			return;
+		}
+
+		// compare 
+		if (v_name > target_name) {
+			// go left
+			Vertex<T>::search_process(vertex, target_name, catch_index, catch_check, l, mid - 1);
+		}
+		else {
+			// go right
+			Vertex<T>::search_process(vertex, target_name, catch_index, catch_check, mid + 1, r);
+		}
+
+
+	}
+
+	template<typename T> void Vertex<T>::sort_process(Vertex<T>& vertex) {
+
+		std::sort(
+			vertex.edges.begin(), vertex.edges.end(),
+			[&](Vertex<T>* a, Vertex<T>* b) -> bool {
+				return (a->get_name() > b->get_name());
+			}
+		);
+
+	}
+
+	template<typename T> bool Vertex<T>::add_edge(Vertex<T>* other_vertex) {
+
+		bool check = false;
+		int index = -1;
+
+		Vertex<T>::search_process(*this, other_vertex->name, index, check, 0, this->edges.size() - 1);
+
+		// if edge already exist
+		if (index >= 0) return false;
+		else {
+
+			this->edges.push_back(other_vertex);
+
+			Vertex<T>::sort_process(*this);
+
+			return true;
+
+		}
+
+	}
+
+
+
+
+
 
 
 	template<typename t> class graph_list {
@@ -196,6 +275,8 @@ namespace graphs {
 				check = -1;
 			}
 
+			this->vertex = &(this->vertices[0]);
+
 		}
 
 		// destructor 
@@ -244,86 +325,6 @@ namespace graphs {
 	}; 
 	// end of graph_list class
 	
-	
-
-
-	/*
-
-		---------- Vertex functions implementation ----------
-
-	*/
-
-	template<typename T> void Vertex<T>::search_process(
-		Vertex<T> const& vertex , std::string const& target_name,
-		int& catch_index, bool& catch_check, int l, int r
-	) {
-
-		// calc mid index
-		int mid = (l + r) / 2;
-
-		// if target not found
-		if (l > r) {
-			catch_check = false;
-			catch_index = -1;
-			return;
-		}
-
-		std::string v_name = vertex.edges[mid]->get_name();
-
-		// if target found
-		if (v_name == target_name) {
-			catch_check = true;
-			catch_index = mid;
-			return;
-		}
-
-		// compare 
-		if ( v_name > target_name) {
-			// go left
-			Vertex<T>::search_process(vertex, target_name , catch_index , catch_check , l , mid - 1);
-		}
-		else {
-			// go right
-			Vertex<T>::search_process(vertex, target_name , catch_index , catch_check , mid + 1 , r);
-		}
-
-
-	}
-
-	template<typename T> void Vertex<T>::sort_process(Vertex<T> & vertex) {
-		
-		std::sort(
-			vertex.edges.begin(), vertex.edges.end(), 
-			[&]( Vertex<T>* a , Vertex<T>* b ) -> bool {
-				return (a->get_name() > b->get_name());
-			}
-		);
-
-	}
-
-	template<typename T> bool Vertex<T>::add_edge(Vertex<T>* other_vertex) {
-
-		bool check = false;
-		int index = -1;
-
-		Vertex<T>::search_process( *this , other_vertex->name, index, check, 0, this->edges.size() - 1 );
-
-		// if edge already exist
-		if ( index >= 0 ) return false;
-		else {
-
-			this->edges.push_back(other_vertex);
-
-			Vertex<T>::sort_process( *this );
-
-			return true;
-
-		}
-
-	}
-
-
-
 
 
 	/*
@@ -332,17 +333,28 @@ namespace graphs {
 
 	*/
 
-	// add vertex
+	// add_vertex functions
 	template<typename t> bool graph_list<t>::add_vertex( Vertex<t> new_vertex ) {
-
+		
+		// check if there's a vertex with same name
 		int index = this->search( new_vertex.get_name() );
 		
 		if (index == -1) {
 
+			/*
+				we don't want to lose "vertex" where we are in ,
+				so we get it's name to catch it later after "push_back" and "sort"
+			*/
+			std::string current_vertex_name = this->vertex->get_name();
+
+			// push and sort
 			this->vertices.push_back(new_vertex);
-			
 			this->sort();
 
+			// catch "vertex" after sort
+			index = this->search(current_vertex_name);
+			this->vertex = &(this->vertices[index]);
+			
 			return true;
 		}
 		else return false;
@@ -351,13 +363,69 @@ namespace graphs {
 
 	template<typename t> bool graph_list<t>::add_vertex( std::string vertex_name , t vertex_value ) {
 
+		// check if there's a vertex with same name
 		int index = this->search(vertex_name);
  
 		if (index == -1) {
 
-			this->vertices.push_back( Vertex<t>( vertex_name , vertex_value ) );
+			/*
+				we don't want to lose "vertex" where we are in , 
+				so we get it's name to catch it later after "push_back" and "sort"
+			*/ 
+			std::string current_vertex_name = this->vertex->get_name();
 
+			// push and sort
+			this->vertices.push_back( Vertex<t>( vertex_name , vertex_value ) );
 			this->sort();
+
+			// catch "vertex" after sort
+			index = this->search(current_vertex_name);
+			this->vertex = &(this->vertices[index]);
+
+			return true;
+		}
+		else return false;
+
+	}
+
+	template<typename t> bool graph_list<t>::add_vertex(
+		std::string vertex_name , t vertex_value , std::initializer_list<size_t> const& edges_indexes
+	) {
+
+		// check if there's a vertex with same name
+		int index = this->search(vertex_name);
+
+		if (index == -1) {
+
+			/*
+				we don't want to lose "vertex" where we are in ,
+				so we get it's name to catch it later after "push_back" and "sort"
+			*/
+			std::string current_vertex_name = this->vertex->get_name();
+
+			// push and sort
+			this->vertices.push_back(Vertex<t>(vertex_name, vertex_value));
+			this->sort();
+
+			// add edges process 
+
+			int vertices_size = this->vertices.size();
+			int added_vertex_index = this->search(vertex_name);
+
+			for (size_t const& index : edges_indexes) {
+
+				if (index >= vertices_size) continue;
+				else {
+
+					this->add_edge( index , added_vertex_index );
+
+				}
+
+			}
+
+			// catch "vertex" after sort
+			index = this->search(current_vertex_name);
+			this->vertex = &(this->vertices[index]);
 
 			return true;
 		}
@@ -366,7 +434,7 @@ namespace graphs {
 	}
 
 
-	// search
+	// search functions
 	template<typename t> int graph_list<t>::search(std::string const& vertex_name) {
 
 		bool rslt = false;
@@ -388,11 +456,11 @@ namespace graphs {
 	}
 
 
-	// add edge
+	// add edge functions
 	template<typename t> bool graph_list<t>::add_edge(size_t const& vertex_a_index, size_t const& vertex_b_index) {
 
 		// if invalid index
-
+		if (vertex_a_index == vertex_b_index) return false;
 		if (vertex_a_index >= this->vertices.size() || vertex_b_index >= this->vertices.size()) {
 			return false;
 		}

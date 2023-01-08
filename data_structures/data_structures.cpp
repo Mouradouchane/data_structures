@@ -53,9 +53,9 @@ template<typename T> void p_test(size_t&& size);
 
 int main() {
 	
-	std::cout << "=============== OBJECTS TEST ===============\n";
+	std::cout << "=============== OBJECT's TEST ===============\n";
 	test1();
-	std::cout << "=============== PRIMITIVE TEST ===============\n";
+	std::cout << "=============== PRIMITIVE's TEST ===============\n";
 	//p_test<int>(6);
 
 	return 0;
@@ -64,30 +64,30 @@ int main() {
 // test on objects
 void test1() {
 
-	Vertex<pdf> vc("cat" , pdf("book c"));
-	Vertex<pdf> va("ae"  , pdf("book a"));
-	Vertex<pdf> vd("bet" , pdf("book d"));
-	Vertex<pdf> vb("bat" , pdf("book b"));
+	Vertex<pdf> v1("v_1" , pdf("book 1"));
+	Vertex<pdf> v2("v_2" , pdf("book 2"));
+	Vertex<pdf> v3("v_3" , pdf("book 3"));
+	Vertex<pdf> v4("v_4" , pdf("book 4"));
+	Vertex <pdf> v11("v_11", pdf("book 11"));
 
-	graph_list<pdf> gp({ vc , vc , va, vb , vb, vd});
+	graph_list<pdf> gp( { v2 , v4 , v1, v3 , v1, v4} );
 
-	gp.add_vertex("ae", pdf("book cat"));
-	gp.add_vertex("bat", pdf("book cat"));
-	gp.add_vertex( "caxy", pdf("book cat"));
 
-	gp.add_edge( gp.search(vc) , gp.search(va) );
+	gp.add_vertex("v_9", pdf("book 9") , { 
+		(size_t)gp.search("v_2") , 
+		(size_t)gp.search("v_3") , 
+		(size_t)gp.search("v_4") 
+	});
+
+	gp.add_vertex(Vertex <pdf>("v_6", pdf("book 6")));
+	gp.add_vertex(Vertex <pdf>("v_7", pdf("book 7")));
+
+	gp.add_edge( gp.search(v1) , gp.search(v11));
 
 	gp.print();
 
-	/*
-	{
-	gp.add_vertex(va);
-	gp.add_vertex(vb);
-	gp.add_vertex(vc);
-
-		pdf("pdf0") ,  pdf("pdf1") ,  pdf("pdf2") ,  pdf("pdf3") , pdf("pdf4") , pdf("pdf5")
-	}
-	*/
+	std::cout << "====================================\n";
+	std::cout << gp.vertex->get_name()  << " : " << gp.vertex->value.data << "\n";
 
 
 	/*
