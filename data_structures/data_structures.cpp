@@ -73,14 +73,10 @@ void test1() {
 	graph_list<pdf> gp( { v2 , v4 , v1, v3 , v1, v4} );
 
 
-	gp.add_vertex("v_9", pdf("book 9") , { 
-		(size_t)gp.search("v_2") , 
-		(size_t)gp.search("v_3") , 
-		(size_t)gp.search("v_4") 
-	});
+	gp.add_vertex( "v_9", pdf("book 9") , { "v_2" , "v_3", "v_1" , "v_4"});
 
-	gp.add_vertex( "v_6", pdf("book 6"));
-	gp.add_vertex( "v_7", pdf("book 7"));
+	gp.add_vertex( "v_6", pdf("book 6") );
+	gp.add_vertex( "v_7", pdf("book 7") );
 
 	gp.add_edge( gp.search(v1) , gp.search(v11));
 
