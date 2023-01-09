@@ -33,6 +33,8 @@ namespace graphs {
 				this->edges.push_back(edge);
 			}
 
+			Vertex<T>::sort_process(*this);
+
 		}
 
 		// destructor
@@ -61,6 +63,9 @@ namespace graphs {
 
 		bool remove_edge( std::string const& other_vertex_name );
 
+		size_t size() {
+			return this->edges.size();
+		}
 
 		// testing function
 		void print() {
@@ -118,7 +123,7 @@ namespace graphs {
 
 	*/
 
-	// search for edge in vertex
+	// search for edge connection in edges of vertex
 	template<typename T> void Vertex<T>::search_process(
 		Vertex<T> const& vertex, std::string const& target_name,
 		int& catch_index, bool& catch_check, int l, int r
@@ -167,7 +172,8 @@ namespace graphs {
 		);
 
 	}
-
+	
+	// add edge connection to vertex
 	template<typename T> bool Vertex<T>::add_edge(std::string other_vertex) {
 
 		bool check = false;
@@ -188,7 +194,6 @@ namespace graphs {
 		}
 
 	}
-
 
 
 
@@ -263,7 +268,7 @@ namespace graphs {
 
 			int check = -1;
 
-			// copy vertices to the graph
+			// copy vertices to the graph , 'NOTE' we copying only name & value , "no edges"
 			for (Vertex<t> vtx : graph_vertices) {
 
 				// check to avoid duplicates
@@ -276,25 +281,29 @@ namespace graphs {
 
 				check = -1;
 			}
-
+			// keep track vertex
 			this->vertex = &(this->vertices[0]);
 
 		}
 
 		// destructor 
-		~graph_list(){ }
-
-		void print() {
-
-			for (Vertex<t> & v : this->vertices) {
-				v.print();	
-			}
+		~graph_list(){ 
+		
+			this->vertex = nullptr;
 
 		}
-		
+
 		/*
 			graph public methods
 		*/
+
+		void print() {
+
+			for (Vertex<t>& v : this->vertices) {
+				v.print();
+			}
+
+		}
 
 		bool add_vertex(
 			std::string vertex_name , t vertex_value , std::initializer_list<size_t> const& edges_indexes
@@ -316,7 +325,6 @@ namespace graphs {
 		int search(std::string const& vertex_name);
 		int search(Vertex<t> & target_vertex);
 
-		//bool is_connected( const vertex<t> &* vertex_a, const vertex<t> &* vertex_b);
 		bool is_connected(size_t const& vertex_a_index, size_t const& vertex_b_index);
 		bool is_connected(std::string const& vertex_a_name , std::string const& vertex_b_name);
 
@@ -377,8 +385,8 @@ namespace graphs {
 			this->vertices.push_back(Vertex<t>(vertex_name, vertex_value));
 			this->sort();
 
-			// add edges process 
 
+			// add edges process 
 			int vertices_size = this->vertices.size();
 			int added_vertex_index = this->search(vertex_name);
 
@@ -501,6 +509,83 @@ namespace graphs {
 			bool connect_b = this->vertices[vertex_b_index].add_edge(vertex_a_name);
 
 			return (connect_a && connect_b);
+		}
+
+	}
+
+
+	// is connected functions
+	template<typename t> bool graph_list<t>::is_connected(size_t const& vertex_a_index, size_t const& vertex_b_index) {
+
+		// if invalid args
+		if (vertex_a_index == vertex_b_index) return false;
+		if (vertex_a_index >= this->vertices.size() || vertex_b_index >= this->vertices.size()) return false;
+
+		int  catch_index = -1;
+		bool catch_check = false;
+
+		// search on vertex_a for veretx_b
+		Vertex<t>::search_process(
+			this->vertices[vertex_a_index] , this->vertices[vertex_b_index].get_name() , 
+			catch_index , catch_check , 0 , this->vertices[vertex_a_index].size() - 1
+		);
+
+		// if a not connected with b
+		if ( !catch_check ) return false;
+		else {
+
+			catch_index = -1;
+			catch_check = false;
+
+			// search on vertex_b for veretx_a
+			Vertex<t>::search_process(
+				this->vertices[vertex_b_index], this->vertices[vertex_a_index].get_name(),
+				catch_index, catch_check, 0, this->vertices[vertex_b_index].size() - 1
+			);
+
+			// if b not connected with a
+			if (!catch_check) return false;
+			else return true;
+
+		}
+
+	}
+
+	template<typename t> bool graph_list<t>::is_connected(std::string const& vertex_a_name, std::string const& vertex_b_name) {
+
+		int vertex_a_index = this->search(vertex_a_name);
+		int vertex_b_index = this->search(vertex_b_name);
+
+		// if invalid args
+		if (vertex_a_index == vertex_b_index) return false;
+		if (vertex_a_index >= this->vertices.size() || vertex_b_index >= this->vertices.size()) return false;
+
+		int  catch_index = -1;
+		bool catch_check = false;
+
+		// search on vertex_a for veretx_b
+		Vertex<t>::search_process(
+			this->vertices[vertex_a_index], vertex_b_name ,
+			catch_index, catch_check, 0, this->vertices[vertex_a_index].size() - 1
+		);
+
+		// if a not connected with b
+		if (!catch_check) return false;
+		else {
+
+			catch_index = -1;
+			catch_check = false;
+
+			// search on vertex_b for veretx_a
+			Vertex<t>::search_process(
+				this->vertices[vertex_b_index], vertex_a_name ,
+				catch_index, catch_check, 0, this->vertices[vertex_b_index].size() - 1
+			);
+
+			// if b not connected with a
+			if (!catch_check) return false;
+			else return true;
+
 		}
 
 	}
