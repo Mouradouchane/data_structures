@@ -15,6 +15,12 @@ namespace graphs {
 		std::vector< std::string > edges; // connection to other vertices
 		std::string name = "";
 
+		// some private methods
+		bool remove_edge(std::string const& edge_name);
+		bool remove_edge(size_t const& edge_index);
+
+		void remove_edges();
+
 	public:
 		T value;
 
@@ -60,8 +66,6 @@ namespace graphs {
 		//Vertex<T>* go_to(std::string const& vertex_name);
 
 		bool add_edge( std::string other_vertex );
-
-		bool remove_edge( std::string const& other_vertex_name );
 
 		size_t size() {
 			return this->edges.size();
@@ -112,7 +116,7 @@ namespace graphs {
 			return (this->name == other_vertex_name);
 		}
 
-
+		template<typename t> friend class graph_list<t>;
 	}; 
 	// end of vertex class
 
@@ -195,7 +199,44 @@ namespace graphs {
 
 	}
 
+	// remove edge's functions
+	template<typename T> bool Vertex<T>::remove_edge(std::string const& edge_name) {
 
+		int  catch_index = -1;
+		bool catch_check = false;
+
+		// search for edge index
+		Vertex<T>::search_process(*this, edge_name, catch_index, catch_check, 0, this->edges.size() - 1);
+
+		// if invalid
+		if (catch_index == -1) return false;
+		else {
+			// earse and sort edges
+			this->edges.erase(this->edges.begin() + catch_index, this->edges.begin() + catch_index);
+			Vertex<T>::sort_process(*this);
+
+			return true;
+		}
+	}
+
+	template<typename T> bool Vertex<T>::remove_edge(size_t const& edge_index) {
+
+		// if invalid index
+		if (edge_index >= this->edges.size()) return false;
+		else {
+
+			this->edges.erase(this->edges.begin() + edge_index, this->edges.begin() + edge_index);
+			Vertex<T>::sort_process(*this);
+
+			return true;
+		}
+
+	}
+
+	// remove all edges
+	template<typename T> void Vertex<T>::remove_edges() {
+		this->edges.clear();
+	}
 
 
 
@@ -339,6 +380,7 @@ namespace graphs {
 
 	*/
 
+	// add vertex functions
 	template<typename t> bool graph_list<t>::add_vertex( std::string vertex_name , t vertex_value ) {
 
 		// check if there's a vertex with same name
@@ -447,25 +489,31 @@ namespace graphs {
 
 	}
 
-	// search functions
-	template<typename t> int graph_list<t>::search(std::string const& vertex_name) {
+	// remove vertex functions
+	template<typename t> bool graph_list<t>::remove_vertex(size_t const& vertex_index) {
+		
+		if ( vertex_index >= this->vertices.size() ) return false;
+		else {
 
-		bool rslt = false;
-		int index = -1;
+			// to keep track current vertex after sort
+			std::string current_vertex_name = this->vertex->get_name();
 
-		this->bin_search_process(vertex_name, rslt, index, 0, this->vertices.size() - 1);
+			// remove process
 
-		return index;
+			// this->vertices[vertex_index].remove_edges();
+			this->vertices.erase(this->vertices.begin() + vertex_index, this->vertices.begin() + vertex_index);
+		
+			this->sort();
+
+			// get current vertex new position
+			this->vertex = this->vertices[ this->search(current_vertex_name) ];
+
+		}
+
 	}
 
-	template<typename t> int graph_list<t>::search( Vertex<t> & target_vertex ) {
-
-		bool rslt = false;
-		int index = -1;
-
-		this->bin_search_process( target_vertex.get_name(), rslt, index, 0, this->vertices.size() - 1);
-
-		return index;
+	template<typename t> bool graph_list<t>::remove_vertex(std::string const& vertex_name) {
+		return false;
 	}
 
 
@@ -513,6 +561,50 @@ namespace graphs {
 
 	}
 
+
+	// remove edge functions
+	template<typename t> bool graph_list<t>::remove_edge(
+		size_t const& vertex_a_index , size_t const& vertex_b_index
+	) {
+
+		if (vertex_a_index == vertex_b_index) return false;
+		if (vertex_a_index >= this->vertices.size() || vertex_b_index >= this->vertices.size()) return false;
+		else {
+
+			bool check_remove_1 = this->vertices[vertex_a_index].remove_edge( vertex_b_index );
+			bool check_remove_2 = this->vertices[vertex_b_index].remove_edge( vertex_a_index );
+
+			return (check_remove_1 && check_remove_2);
+		}
+		
+	}
+
+	template<typename t> bool graph_list<t>::remove_edge(
+		std::string const& vertex_a_name , std::string const& vertex_b_name
+	) {
+		return false;
+	}
+
+	// search functions
+	template<typename t> int graph_list<t>::search(std::string const& vertex_name) {
+
+		bool rslt = false;
+		int index = -1;
+
+		this->bin_search_process(vertex_name, rslt, index, 0, this->vertices.size() - 1);
+
+		return index;
+	}
+
+	template<typename t> int graph_list<t>::search(Vertex<t>& target_vertex) {
+
+		bool rslt = false;
+		int index = -1;
+
+		this->bin_search_process(target_vertex.get_name(), rslt, index, 0, this->vertices.size() - 1);
+
+		return index;
+	}
 
 	// is connected functions
 	template<typename t> bool graph_list<t>::is_connected(size_t const& vertex_a_index, size_t const& vertex_b_index) {
