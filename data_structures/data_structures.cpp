@@ -77,16 +77,27 @@ void test1() {
 	gp.add_vertex( "v_6", pdf("book 6") );
 	gp.add_vertex( "v_7", pdf("book 7") );
 
-	gp.add_edge(gp.search("v_2"), gp.search("v_1"));
-	gp.add_edge(gp.search("v_2"), gp.search("v_3"));
-	gp.add_edge(gp.search("v_3"), gp.search("v_9"));
+	gp.add_edge(gp.index_of("v_2"), gp.index_of("v_9"));
+	gp.add_edge(gp.index_of("v_2"), gp.index_of("v_3"));
+	gp.add_edge(gp.index_of("v_4"), gp.index_of("v_3"));
+	gp.add_edge(gp.index_of("v_5"), gp.index_of("v_2"));
+	gp.add_edge(gp.index_of("v_3"), gp.index_of("v_9"));
+	gp.add_edge(gp.index_of("v_1"), gp.index_of("v_6"));
+	gp.add_edge(gp.index_of("v_1"), gp.index_of("v_7"));
 
 	gp.print();
 
 	std::cout << "====================================\n";
-	std::cout << gp.is_connected("v_3", "v_7") << "\n";
-	std::cout << gp.is_connected("v_9", "v_9") << "\n";
-	std::cout << gp.is_connected("v_6", "v_7") << "\n";
+	std::cout << gp.remove_vertex("v_1") << "\n";
+	std::cout << gp.remove_vertex("v_3") << "\n";
+	std::cout << "====================================\n";
+
+	gp.print();
+	/*
+		std::cout << gp.is_connected("v_3", "v_7") << "\n";
+		std::cout << gp.is_connected("v_9", "v_9") << "\n";
+		std::cout << gp.is_connected("v_6", "v_7") << "\n";
+	*/
 
 
 	/*
