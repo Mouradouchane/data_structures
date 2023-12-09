@@ -57,27 +57,36 @@ project "arrays"
         optimize "Off"
 
 
+lib_name = "static_stack"
+lib_path = "stacks/static_stack/"
 
-project "stacks"
+project(lib_name)
    
-    location "stacks"
-    files { "stacks/**" }
+    location(lib_path)
+    
+    files { 
+      lib_path .. "*.hpp" , lib_path .. "*.cpp"
+    }
+
     removefiles {
-        "stacks/*.vcxproj",
-        "stacks/*.vcxproj.filters",
-        "stacks/*.vcxproj.user",
+        lib_path .. "*.vcxproj",
+        lib_path .. "*.vcxproj.filters",
+        lib_path .. "*.vcxproj.user",
     }
     
+    -- virtual folders in IDE
     vpaths { 
-        ["static_stack/*" ] = "stacks/static_stack/*",   
-        ["dynamic_stack/*"] = "stacks/dynamic_stack/*",
+        -- [ lib_name .. "/*" ] = lib_path .. "*",   
+        [ lib_name .. "/tests" ] = lib_path .. "tests/*"
     }
+
+    print(lib_path .. "tests/")
     
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
     targetdir "bin/%{cfg.buildcfg}"
 
-   filter "configurations:Debug"
+    filter "configurations:Debug"
         defines { "DEBUG" }
         symbols "On"
 

@@ -7,24 +7,32 @@
 	#include <iostream>
 #endif
 
+/*
+*/
 #include "static_stack.hpp"
+
+
+#ifndef STATIC_STACK_CLASS_CPP
+
+	#define STATIC_STACK_CLASS_CPP
+
 
 /*
 			constructor's
 */
 
-template<typename t> static_stack<t>::static_stack( size_t stacksize )
-	: size(stacksize) , memory(new t[ sizeof(t) * (stacksize + 1) ])
+template<typename t> static_stack<t>::static_stack( size_t stack_size ) :
+	_size(stack_size) , 
+	memory(new t[ sizeof(t) * (stack_size + 1) ]) 
 {
+
 }
 
-template<typename t> static_stack<t>::static_stack( 
-	std::initializer_list<t> const& stack_elements 
-) {
+template<typename t> static_stack<t>::static_stack( std::initializer_list<t> const& stack_elements ) {
 
-	this->size  = stack_elements.size();
-	this->len   = this->size - 1;
-	this->memory = new t[ sizeof(t) * (this->size + 1) ];
+	this->_size  = stack_elements.size();
+	this->len    = this->_size - 1;
+	this->memory = new t[ sizeof(t) * (this->_size + 1) ];
 
 	size_t i = 0;
 
@@ -39,7 +47,7 @@ template<typename t> static_stack<t>::static_stack(
 			destructor
 */
 
-template<typename t> static_stack<t>::~static_stack(){
+template<typename t> static_stack<t>::~static_stack() {
 
 	try {
 
@@ -64,19 +72,24 @@ template<typename t> static_stack<t>::~static_stack(){
 			method's
 */
 
-// push data to the top of the stack 
-template<typename t> static bool static_stack<t>::push( static_stack<t>& stack, t new_value ) {
+
+template<typename t> bool static_stack<t>::push(static_stack<t>&stack, t new_value) {
 	
-	if ( (stack.len < stack.size) && stack.memory != nullptr ) {
+	// push data to the top of the stack 
+	
+	if ( (stack.len < stack._size) && stack.memory != nullptr ) {
 		stack.memory[ stack.len ] = new_value;
 		stack.len += 1;	
+		
+		return true;
 	}
 
+	return false;
 }
 
-// get last element at the top of the stack then delete it 
-template<typename t> static t static_stack<t>::pop( static_stack<t>& stack ) {
+template<typename t> t static_stack<t>::pop( static_stack<t>& stack ) {
 	
+	// get last element at the top of the stack then delete it 
 	if (stack.len == 0 && stack.memory != nullptr) return NULL;
 
 	t value = stack.memory[ stack.len - 1 ];
@@ -87,34 +100,32 @@ template<typename t> static t static_stack<t>::pop( static_stack<t>& stack ) {
 	return value;
 }
 
-
-// get copy of the element who at top of the stack "without delete it"
-template<typename t> static t static_stack<t>::peek(static_stack<t>& stack) {
+template<typename t> t static_stack<t>::peek(static_stack<t>& stack) {
 	
+	// get copy of the element who at top of the stack "without delete it"
 	return (stack.len != 0 && stack.memory != nullptr) ? stack.memory[ stack.len - 1] : NULL ;
 	
 }
 
+template<typename t> bool static_stack<t>::is_full(static_stack<t>& stack) noexcept {
 
-template<typename t> static bool static_stack<t>::is_full(static_stack<t>& stack) noexcept {
-
-	return (stack.len >= stack.size);
+	return (stack.len >= stack._size);
 
 }
 
-template<typename t> static bool static_stack<t>::is_empty(static_stack<t>& stack) noexcept {
+template<typename t> bool static_stack<t>::is_empty(static_stack<t>& stack) noexcept {
 
 	return (stack.len == 0);
 
 }
 
-template<typename t> static size_t static_stack<t>::size(static_stack<t>& stack) noexcept {
+template<typename t> size_t static_stack<t>::size(static_stack<t>& stack) noexcept {
 
-	return stack.size;
+	return stack._size;
 
 }
 
-template<typename t> static size_t static_stack<t>::length(static_stack<t>& stack) noexcept {
+template<typename t> size_t static_stack<t>::length(static_stack<t>& stack) noexcept {
 
 	return stack.len;
 
@@ -139,7 +150,7 @@ template<typename t> static void static_stack<t>::print( static_stack<t>& stack 
 #endif 
 
 // wipe the hole stack
-template<typename t> static void static_stack<t>::clear( static_stack& stack ) {
+template<typename t> void static_stack<t>::clear( static_stack& stack ) {
 				
 	try {
 
@@ -149,8 +160,8 @@ template<typename t> static void static_stack<t>::clear( static_stack& stack ) {
 			delete[] stack.memory;
 
 			// reallocated stack
-			stack.memory = new t[ sizeof(t) * stack.size ];
-			stack.memory[stack.size - 1] = '\0';
+			stack.memory = new t[ sizeof(t) * stack._size ];
+			stack.memory[stack._size - 1] = '\0';
 
 			stack.len = 0;
 		}
@@ -167,11 +178,11 @@ template<typename t> static void static_stack<t>::clear( static_stack& stack ) {
 }
 
 
-template<typename t> static bool static_stack<t>::search( static_stack<t>& stack , t const& target_value ) {
+template<typename t> bool static_stack<t>::search( static_stack<t>& stack , t const& target_value ) {
 
 	if (stack.memory == nullptr) return false;
 	
-	for ( size_t i = 0; i < stack.size ; i += 1 ) {
+	for ( size_t i = 0; i < stack._size ; i += 1 ) {
 	
 		if (stack.memory[i] == target_value) return true;
 
@@ -181,5 +192,13 @@ template<typename t> static bool static_stack<t>::search( static_stack<t>& stack
 };
 
 
+/*
+	NOTE : explicit instantiate is here !!!
+	you have to instantiate the types your gonna use befor "build/link" .
+
+	EXAMPLE : template class static_stack< float >;      // instantiate for float type 
+*/ 
 
 
+
+#endif

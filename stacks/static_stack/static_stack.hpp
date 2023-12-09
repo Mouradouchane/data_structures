@@ -5,17 +5,12 @@
 
 	#define STATIC_STACK_CLASS_HPP
 
-
-#ifdef DLL_EXPORT
-	template<typename t> __declspec(dllexport) class static_stack {
-#else
-	template<typename t> class static_stack {
-#endif
+template<typename t> class static_stack {
 
 		private:
 
 			size_t len = 0;
-			size_t size = 0;
+			size_t _size = 0;
 
 			t* memory = nullptr; // stack array
 	
@@ -30,7 +25,7 @@
 
 			// method's
 
-			static bool   push( static_stack<t>& stack , t new_value ); // o(1)
+			static bool   push(static_stack<t>&stack, t new_value); // o(1)
 			static t      pop( static_stack<t>& stack ); // o(1)
 			static t      peek( static_stack<t>& stack ); // o(1)
 			static bool   is_full( static_stack<t>& stack ) noexcept; // o(1)
@@ -45,9 +40,11 @@
 			static void clear( static_stack<t>& stack ); // o(n)
 			static bool search( static_stack<t>& stack , t const& target_value ); // o(n)
 
-			static operator = ( static_stack<t>& current_stack , static_stack<t>& new_stack ); // o(n)
+			// static_stack<t>& current_stack , 
+			void operator = ( static_stack<t>& new_stack ); // o(n)
 
 	}; // end of class "static_stack"
+
 
 
 #endif

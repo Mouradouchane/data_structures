@@ -1,60 +1,27 @@
-// c++ STD 
-#include <iostream>
-#include <vector>
-#include <array> 
-#include <algorithm>
-#include <map>
-#include <string>
-// #include <functional>
+ 
+#ifndef INCLUDE_LIBS
+	#define INCLUDE_LIBS
 
-#include "static_array.hpp"
-#include "dynamic_array.hpp"
+	#include <iostream>
+	#include <vector>
+	#include <array> 
+	#include <algorithm>
+	#include <map>
+	#include <string>
 
-// objects for testing 
-class tobj {
-public:
-	std::string data = "";
-	tobj(std::string const& dt) {
-		this->data = dt;
-	}
-	tobj() { }
-	~tobj() { }
+	#include "tobj.cpp"
 
-	tobj& operator = (tobj const& new_data) {
-		this->data = new_data.data;
-		return *this;
-	}
+#endif
 
-	void operator = (std::string new_value) {
-		this->data = new_value;
-	}
-
-	void operator = (int const& index) {
-		this->data = "";
-	}
-
-	bool operator != (tobj const& other) {
-		return (this->data != other.data) ? true : false;
-	}
-
-	bool operator == (tobj const& other) {
-		return (this->data == other.data) ? true : false;
-	}
-};
+#include "static_stack.hpp"
 
 bool cp(tobj const& a, tobj const& b) {
 	return (a.data < b.data);
 }
 
-
 int main() {
 	
-	/*
-	std::cout << "=============== OBJECT's TEST ===============\n";
-	test1();
-	std::cout << "=============== PRIMITIVE's TEST ===============\n";
-	//p_test<int>(6);
-	*/
+	static_stack<int> ss(10);
 
 	return 0;
 }
