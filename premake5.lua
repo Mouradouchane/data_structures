@@ -1,73 +1,40 @@
 
+-- worksapce config's
+
+print("\nstart generating workspace")
 
 workspace("ds_workspace")
-    configurations { "Debug", "Release" }
+configurations { "Debug", "Release" }
 
-project "tester"
-   
-    location "tester"
+print("generating workspace done !\n")
+
+-- include external build file
+include "tester/tester.lua"
+
+-- function act like template , for generating porject's
+function make_project_for_lib( 
+  lib_name , lib_path , lib_type
+) 
     
-    includedirs { 
-        "arrays/static_array/",
-        "arrays/dynamic_array/",
-        "stacks/static_stack/",
-        "stacks/dynamic_stack/",
-    }
-
-    kind "ConsoleApp"
-    language "C++"
-    targetdir "bin/%{cfg.buildcfg}"
-
-    files { "tester/tester.cpp" }
-
-    filter "configurations:Debug"
-        defines { "DEBUG" }
-        symbols "On"
-
-    filter "configurations:Release"
-        defines { "NDEBUG" }
-        optimize "Off"
-
-
-project "arrays"
+    -- check parameters   
+    lib_type = lib_type or "StaticLib"
    
-    location "arrays"
-    files { "arrays/**" }
-    removefiles {
-        "arrays/*.vcxproj",
-        "arrays/*.vcxproj.filters",
-        "arrays/*.vcxproj.user",
-    }
-    
-    vpaths { 
-        ["static_array/*" ] = "arrays/static_array/*",   
-        ["dynamic_array/*"] = "arrays/dynamic_array/*",
-    }
-    
-    kind "SharedLib"
-    language "C++"
-    targetdir "bin/%{cfg.buildcfg}"
+    print("\n[ " .. lib_name .. " ] : generate project ! ")
 
-   filter "configurations:Debug"
-        defines { "DEBUG" }
-        symbols "On"
+    -- project name
+    project(lib_name)
 
-    filter "configurations:Release"
-        defines { "NDEBUG" }
-        optimize "Off"
-
-
-lib_name = "static_stack"
-lib_path = "stacks/static_stack/"
-
-project(lib_name)
-   
+    -- project path 
     location(lib_path)
-    
+  
+    -- seleceted folders
     files { 
-      lib_path .. "*.hpp" , lib_path .. "*.cpp"
+      lib_path .. "*.hpp" , 
+      lib_path .. "*.cpp" , 
+      lib_path .. "tests/*.cpp",
     }
 
+    -- ignored files/folders
     removefiles {
         lib_path .. "*.vcxproj",
         lib_path .. "*.vcxproj.filters",
@@ -76,21 +43,28 @@ project(lib_name)
     
     -- virtual folders in IDE
     vpaths { 
-        -- [ lib_name .. "/*" ] = lib_path .. "*",   
-        [ lib_name .. "/tests" ] = lib_path .. "tests/*"
+        [ lib_name .. "/*" ] = lib_path .. "**",
     }
 
-    print(lib_path .. "tests/")
-    
-    kind "StaticLib"
-    language "C++"
-    targetdir "bin/%{cfg.buildcfg}"
+    -- project type/deatilis
+    kind(lib_type)
+    language("C++")
 
-    filter "configurations:Debug"
+    targetdir("bin/%{cfg.buildcfg}")
+
+    filter("configurations:Debug")
         defines { "DEBUG" }
-        symbols "On"
+        symbols("On")
 
-    filter "configurations:Release"
+    filter("configurations:Release")
         defines { "NDEBUG" }
-        optimize "Off"
+        optimize("Off")
   
+    print( "\n[ " .. lib_name .. " ] : finished !\n" )
+
+end
+
+make_project_for_lib("static_stack" , "stacks/static_stack/")
+make_project_for_lib("dynamic_stack" , "stacks/dynamic_stack/")
+
+
