@@ -15,7 +15,7 @@ project("tester")
 
     kind("ConsoleApp")
     language("C++")
-    targetdir("bin/%{cfg.buildcfg}")
+    targetdir("../bin/%{cfg.buildcfg}")
 
     files { "*.cpp", "*.hpp" }
 

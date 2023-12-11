@@ -14,14 +14,22 @@
 #endif
 
 #include "static_stack.hpp"
+#include "../stacks/static_stack/tests/test1.cpp"
+#include "../stacks/static_stack/tests/test2.cpp"
 
-bool cp(tobj const& a, tobj const& b) {
-	return (a.data < b.data);
+void run_test( bool (*test_fn)() , const char * fn_name ) {
+
+	if ( test_fn() ) {
+		std::cout << "PASS :: static_stack " <<  fn_name << " .\n";
+	}
+	else std::cout << "FAILED :: static_stack" << fn_name << " !\n";
+
 }
 
 int main() {
 	
-	static_stack<int> ss(10);
+	run_test(test1, "test1");
+	run_test(test2, "test2");
 
 	return 0;
 }
