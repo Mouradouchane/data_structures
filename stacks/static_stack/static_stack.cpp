@@ -1,19 +1,27 @@
 
 #pragma once
 
-#include <list>
-
-#ifdef DEBUG_ON_CONSOLE
-	#include <iostream>
+#ifndef std_list
+	#define std_list
+	#include <list>
 #endif
 
+#ifdef DEBUG_ON_CONSOLE
+	
+	#ifndef std_iostream
+		#define std_iostream	
+		#include <iostream>
+	#endif
 
-#include "static_stack.hpp"
+#endif
+
+#ifndef STATIC_STACK_CLASS_HPP
+	#include "static_stack.hpp"
+#endif
 
 #ifndef STATIC_STACK_CLASS_CPP
 
 	#define STATIC_STACK_CLASS_CPP
-
 
 /*
 			constructor's
