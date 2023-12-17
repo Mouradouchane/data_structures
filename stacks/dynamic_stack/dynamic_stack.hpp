@@ -22,14 +22,12 @@ template<typename t> class dynamic_stack {
 
 private:
 
-	size_t _size = 0;
 	size_t  len  = 0;
-	std::vector<t> memory;
+	std::vector<t> * memory = nullptr;
 
 public:
 	
 	// constructor's
-
 	dynamic_stack(size_t stack_size);
 	dynamic_stack(std::initializer_list<t> const& stack_elements);
 	
@@ -38,14 +36,13 @@ public:
 
 	// method's 
 	
-	static void   push(dynamic_stack<t>& stack , t new_value); // o(1)
+	static bool   push(dynamic_stack<t>& stack , t const& new_value); // o(1)
 	static t      pop(dynamic_stack<t>& stack ); // o(1)
 	
 	static t      peek(dynamic_stack<t>& stack) noexcept; // o(1)
 	static t      get(dynamic_stack<t>& stack , size_t const& index); // o(1)
 	
 	static size_t length(dynamic_stack<t>& stack) noexcept; // o(1)
-	static size_t size(dynamic_stack<t>& stack) noexcept; // o(1)
 	static bool   is_empty(dynamic_stack<t>& stack) noexcept; // o(1)
 	
 	static bool   search(dynamic_stack<t>& stack , t const& target_value) noexcept; // o(n)

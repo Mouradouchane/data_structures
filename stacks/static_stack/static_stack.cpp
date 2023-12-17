@@ -30,7 +30,7 @@
 template<typename t> static_stack<t>::static_stack( size_t stack_size ) 
 	: _size(stack_size + 1) , memory ( new t[sizeof(t) * (stack_size + 1)] ) 
 {
-	this->memory[stack_size] = NULL;
+	// this->memory[stack_size] = NULL;
 }
 
 template<typename t> static_stack<t>::static_stack( std::initializer_list<t> const& stack_elements ) {
@@ -64,7 +64,7 @@ template<typename t> static_stack<t>::~static_stack() {
 		}
 
 	}
-	catch (std::exception error) {
+	catch (std::exception &error) {
 
 		#ifdef DEBUG_ON_CONSOLE
 			std::cerr << error.what() << '\n';
@@ -109,7 +109,7 @@ template<typename t> t static_stack<t>::pop( static_stack<t>& stack ) {
 // get copy of the current element at top of the stack "without delete it"
 template<typename t> t static_stack<t>::peek(static_stack<t>& stack) noexcept {
 	
-	return ( (stack.len != 0) && (stack.memory != nullptr) ) ? stack.memory[ stack.len - 1 ] : NULL ;
+	return ( (stack.len >= 0) && (stack.memory != nullptr) ) ? stack.memory[ stack.len - 1 ] : NULL ;
 	
 }
 
@@ -203,7 +203,7 @@ template<typename t> void static_stack<t>::operator = (static_stack<t>& stack_to
 
 	// copying process
 
-	delete[] this->memory;
+	if(this->memory != nullptr) delete[] this->memory;
 	this->memory = new t[sizeof(t) * stack_to_copy._size];
 	
 	this->len = stack_to_copy.len;
